@@ -1,0 +1,11 @@
+{
+  "name": "vocabify",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/MikeDigitize/vocabify",
+  "author": "MikeDigitize <chad_01@hotmail.co.uk>",
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^24.9.0"
+  }
+}
