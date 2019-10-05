@@ -56,8 +56,15 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
   document
+    .getElementById("vocabify")
+    .addEventListener("click", function() {
+      chrome.tabs.create({ url : 'chrome://newtab' });
+    });
+
+  document
     .getElementById("save")
     .addEventListener("click", function() {
+
       let items = localStorage.getItem(__VOCABIFY_SAVED_ITEMS__);
       if(!items) {
         items = [];
@@ -69,8 +76,10 @@ document.addEventListener("DOMContentLoaded", function() {
         word: localStorage.getItem(__VOCABIFY_WORD__),
         definition: localStorage.getItem(__VOCABIFY_DEFINITION__)
       };
+
       items.push(item)
       localStorage.setItem(__VOCABIFY_SAVED_ITEMS__, JSON.stringify(items));
+
       wordText = "";
       definitionText = "";
       wordCountText = items.length;
@@ -79,6 +88,7 @@ document.addEventListener("DOMContentLoaded", function() {
       word.textContent = "";
       definition.textContent = "";
       wordCount.textContent = wordCountText;
-    })
+
+    });
 
 });
