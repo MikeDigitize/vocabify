@@ -1,19 +1,23 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener("DOMContentLoaded", function() {
 
-    const selectedText = document.getElementById('selectedText');
-  
-    document
-      .getElementById("activateVocabify")
-      .addEventListener("click", function() {
-        chrome.runtime.sendMessage({ action: 'GET_SELECTED_TEXT' }, function(response) {
-          console.log('popup received message!', response);
-          selectedText.textContent = response.data;
-        });
-        
+    const word = document.getElementById("word");
+    const definition = document.getElementById("definition");
+
+    function getSelectedText(placeholder) {
+      chrome.runtime.sendMessage({ action: "GET_SELECTED_TEXT" }, function(response) {
+        placeholder.textContent = response.data;
       });
-  },
-  false
-);
+    }
+
+    document.getElementById("getWord").addEventListener("click", function() {
+      getSelectedText(word);
+    });
+
+    document.getElementById("getDefinition").addEventListener("click", function() {
+      getSelectedText(definition);
+    });
+
+});
 
 function saveToLocalStorage(key, value) {
   localStorage.setItem(key, value);
@@ -22,5 +26,3 @@ function saveToLocalStorage(key, value) {
 function retrieveFromLocalStorage(key) {
   return localStorage.getItem(key);
 }
-
-

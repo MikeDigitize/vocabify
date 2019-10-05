@@ -3,18 +3,26 @@
 
 <head>
     <style>
+        body {
+            padding: 20px;
+        }
         button {
             height: 100px;
             width: 100px;
             padding: 20px;
             outline: none;
         }
+        p {
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 
 <body>
-    <button id="activateVocabify">Activate vocabify!</button>
-    <p>Selected word: <span id="selectedText"></span</p>
+    <button id="getWord">Save new word</button>
+    <p>Word: <span id="word"></span></p>
+    <button id="getDefinition">Save word definition</button>
+    <p>Definition: <span id="definition"></span</p>
 </body>
 <script src="popup.js"></script>
 </html>

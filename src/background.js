@@ -5,7 +5,6 @@ chrome.runtime.onConnect.addListener(function(port) {
   port.onMessage.addListener(function(msg) {
     if (msg.action === "SET_SELECTED_TEXT") {
       selectedText = msg.data;
-      alert('SET: ' + selectedText);
     }
   });
 
@@ -13,7 +12,6 @@ chrome.runtime.onConnect.addListener(function(port) {
 
 chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
   if (msg.action === 'GET_SELECTED_TEXT') {
-    alert('GET: ' + selectedText);
     sendResponse({ data: selectedText });
   }
 });
