@@ -1,22 +1,19 @@
-// chrome.runtime.onInstalled.addListener(function() {
-//   chrome.storage.sync.set({ color: "#3aa757" }, function() {
-//     console.log("The color is green.");
-//   });
-// });
+chrome.runtime.onConnect.addListener(function(port) {
 
-// function doStuffWithDom(domContent) {
-//     console.log('I received the following DOM content:\n' + domContent);
-// }
+  let selectedText = "TEST";
 
-// // When the browser-action button is clicked...
-// chrome.browserAction.onClicked.addListener(function (tab) {
-//     chrome.tabs.sendMessage(tab.id, {text: 'report_back'}, doStuffWithDom);
-// });
+  port.onMessage.addListener(function(msg) {
+    if (msg.action === "SET_SELECTED_TEXT") {
+      selectedText = msg.data;
+    }
+  });
 
-// chrome.browserAction.onClicked.addListener(function(tab) {
-//   // No tabs or host permissions needed!
-//   console.log('Turning ' + tab.url + ' red!');
-//   chrome.tabs.executeScript({
-//     code: 'document.body.style.backgroundColor="red"'
-//   });
-// });
+  chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
+    if (msg.action === 'GET_SELECTED_TEXT') {
+      sendResponse({ action: 'SET_SELECTED_TEXT', data: selectedText });
+    }
+  });
+
+});
+
+

@@ -1,28 +1,17 @@
-document.addEventListener(
-  "DOMContentLoaded",
-  function() {
-    
-    const VOCABIFY_CURRENT_URL = "__VOCABIFY_CURRENT_URL__";
-    const VOCABIFY_UNKNOWN_URL = "unknown";
+document.addEventListener('DOMContentLoaded', function() {
 
-    const currentURLdisplay = document.getElementById("currentURLdisplay");
-    const currentURLtext = retrieveFromLocalStorage(VOCABIFY_CURRENT_URL) || VOCABIFY_UNKNOWN_URL;
-
-    currentURLdisplay.textContent = currentURLtext;
-
+    const selectedWord = document.getElementById('selectedWord');
+  
     document
       .getElementById("activateVocabify")
       .addEventListener("click", function() {
-        chrome.tabs.getSelected(null, function(tab) {
-          saveToLocalStorage(VOCABIFY_CURRENT_URL, tab.url);
-          currentURLdisplay.textContent = tab.url;
+        chrome.runtime.sendMessage({ action: 'GET_SELECTED_TEXT' }, function(response) {
+          console.log('popup received message!', response);
+          if(response.action === 'SET_SELECTED_TEXT') {
+            selectedWord.textContent = response.data;
+          }
         });
-        // chrome.tabs.executeScript({
-        //   code: 'document.body.style.backgroundColor="red"'
-        // });
-        // chrome.tabs.executeScript({
-        //   file: 'content.js'
-        // });
+        
       });
   },
   false
@@ -35,3 +24,5 @@ function saveToLocalStorage(key, value) {
 function retrieveFromLocalStorage(key) {
   return localStorage.getItem(key);
 }
+
+
