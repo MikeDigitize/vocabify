@@ -1,15 +1,13 @@
 document.addEventListener('DOMContentLoaded', function() {
 
-    const selectedWord = document.getElementById('selectedWord');
+    const selectedText = document.getElementById('selectedText');
   
     document
       .getElementById("activateVocabify")
       .addEventListener("click", function() {
         chrome.runtime.sendMessage({ action: 'GET_SELECTED_TEXT' }, function(response) {
           console.log('popup received message!', response);
-          if(response.action === 'SET_SELECTED_TEXT') {
-            selectedWord.textContent = response.data;
-          }
+          selectedText.textContent = response.data;
         });
         
       });

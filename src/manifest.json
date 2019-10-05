@@ -3,7 +3,7 @@
   "version": "1.0",
   "description": "Build your vocabulary!",
   "manifest_version": 2,
-  "permissions": ["activeTab", "storage"],
+  "permissions": ["activeTab", "storage", "tabs"],
   "browser_action": {
     "default_icon": "images/get_started16.png",
     "default_popup": "popup.html"
