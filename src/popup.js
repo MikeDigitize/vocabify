@@ -2,6 +2,9 @@ const __VOCABIFY_WORD__ = "__VOCABIFY_WORD__";
 const __VOCABIFY_DEFINITION__ = "__VOCABIFY_DEFINITION__";
 const __VOCABIFY_SAVED_ITEMS__ = "__VOCABIFY_SAVED_ITEMS__";
 
+const __VOCABIFY_NO_WORD_SELECTED__ = "Choose a word";
+const __VOCABIFY_NO_DEFINITION_SELECTED__ = "Find a definiton";
+
 function getSelectedText(placeholder) {
 
   return new Promise(function(resolve, reject) {
@@ -20,24 +23,18 @@ document.addEventListener("DOMContentLoaded", function() {
 
   const word = document.getElementById("word");
   const definition = document.getElementById("definition");
-  const wordCount = document.getElementById("wordCount");
 
-  let wordText = localStorage.getItem(__VOCABIFY_WORD__) || "";
-  let definitionText = localStorage.getItem(__VOCABIFY_DEFINITION__) || "";
-  let wordCountText;
-
-  const savedItems = localStorage.getItem(__VOCABIFY_SAVED_ITEMS__);
-  if(savedItems) {
-    wordCountText = JSON.parse(savedItems).length
-  }
+  let wordText = localStorage.getItem(__VOCABIFY_WORD__) || __VOCABIFY_NO_WORD_SELECTED__;
+  let definitionText = localStorage.getItem(__VOCABIFY_DEFINITION__) || __VOCABIFY_NO_DEFINITION_SELECTED__;
 
   word.textContent = wordText;
   definition.textContent = definitionText;
-  wordCount.textContent = wordCountText || 0;
 
   document
     .getElementById("getWord")
     .addEventListener("click", function() {
+
+      console.log('click')
 
       getSelectedText(word)
         .then(function(data) {
@@ -84,12 +81,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
       wordText = "";
       definitionText = "";
-      wordCountText = items.length;
+    
       localStorage.setItem(__VOCABIFY_WORD__, wordText);
       localStorage.setItem(__VOCABIFY_DEFINITION__, definitionText);
-      word.textContent = "";
-      definition.textContent = "";
-      wordCount.textContent = wordCountText;
+      
+      word.textContent = __VOCABIFY_NO_WORD_SELECTED__;
+      definition.textContent = __VOCABIFY_NO_DEFINITION_SELECTED__;
 
     });
 

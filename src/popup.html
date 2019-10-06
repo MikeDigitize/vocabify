@@ -2,30 +2,125 @@
 <html>
 
 <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Lato|Raleway&display=swap" rel="stylesheet">
+    <link href="css/all.min.css" rel="stylesheet">
     <style>
+        h1 {
+            font-family: 'Raleway', sans-serif;
+        }
+
+        h2 {
+            font-size: 16px;
+        }
+
+        .emphasise {
+            font-size: 28px;
+            font-family: 'Raleway', sans-serif;
+            font-weight: bold;
+        }
+
+        #definition {
+            font-size: 22px;
+        }
+
         body {
-            padding: 20px;
+            font-family: 'Lato', sans-serif;
+            width: 440px;
+            margin: auto;
+            padding: 10px;
+            border: 1px solid silver;
+            border-radius: 10px;
         }
-        button {
-            height: 100px;
-            width: 100px;
-            padding: 20px;
-            outline: none;
+
+        .col {
+            position: relative;
         }
-        p {
-            margin-bottom: 20px;
+
+        .subtitle {
+            font-style: italic;
+            color: darkgray;
+        }
+
+        i {
+            cursor: pointer;
+            color: darkslategrey;
+            transition: color 0.5s ease-in-out;
+        }
+
+        i:hover {
+            color: black
+        }
+
+        .divider-right {
+            border-right: 1px solid slategrey;
+        }
+
+        .last-row {
+            padding-bottom: 5px;
         }
     </style>
 </head>
 
 <body>
-    <button id="getWord">Get word</button>
-    <p>Word: <span id="word" contenteditable="true"></span></p>
-    <button id="getDefinition">Get definition</button>
-    <p>Definition: <span contenteditable="true" id="definition"></span></p>
-    <button id="save">Save</button>
-    <p>Words saved: <span id="wordCount">0</span></p>
-    <button id="vocabify">Vocabify</button>
+    <div class="container text-center">
+        <header class="row">
+            <div class="col">
+                <div>
+                    <h1>Vocabify</h1>
+                    <p class="subtitle">Vocabulary Builder</p>
+                    <p>Highlight a word or definition and copy to Vocabify</p>
+                    <hr />
+                </div>
+            </div>
+        </header>
+        <div class="row">
+            <div class="col divider-right">
+                <h2>Copy word</h2>
+                <i id="getWord" title="Copy word from page" class="fas fa-copy fa-2x"></i>
+            </div>
+            <div class="col">
+                <h2>Copy definition</h2>
+                <i id="getDefinition" title="Copy definition from page" class="fas fa-copy fa-2x"></i>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <hr />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <h2 class="subtitle">Word</h2>
+                <p class="emphasise" id="word" contenteditable="true"></p>
+                <hr />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <h2 class="subtitle">Definition</h2>
+                <p id="definition" contenteditable="true"></p>
+                <hr />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col divider-right">
+                <h2>Save to Vocabify</h2>
+                <i id="save" title="Copy word from page" class="fas fa-save fa-2x"></i>
+            </div>
+            <div class="col">
+                <h2>Launch Vocabify</h2>
+                <i id="vocabify" title="Copy word from page" class="fas fa-external-link-alt fa-2x"></i>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <hr />
+                <p>You can edit the word or definition by clicking into the text. When you're happy, save it to Vocabify</p>
+            </div>
+        </div>
+    </div>
 </body>
 <script src="popup.js"></script>
 </html>
