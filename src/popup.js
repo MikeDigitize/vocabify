@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function() {
   document
     .getElementById("vocabify")
     .addEventListener("click", function() {
-      chrome.tabs.create({ url : 'chrome://newtab' });
+      chrome.runtime.openOptionsPage();
     });
 
   document

@@ -3,8 +3,9 @@
   "version": "1.0",
   "description": "Build your vocabulary!",
   "manifest_version": 2,
-  "chrome_url_overrides" : {
-    "newtab": "vocabify.html"
+  "options_ui": {
+    "page": "vocabify.html",
+    "open_in_tab": true
   },
   "permissions": ["activeTab", "storage", "tabs"],
   "browser_action": {
