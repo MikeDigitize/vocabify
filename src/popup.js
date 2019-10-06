@@ -16,6 +16,8 @@ function getSelectedText(placeholder) {
 
 document.addEventListener("DOMContentLoaded", function() {
 
+  let isEditing = false;
+
   const word = document.getElementById("word");
   const definition = document.getElementById("definition");
   const wordCount = document.getElementById("wordCount");
@@ -89,6 +91,30 @@ document.addEventListener("DOMContentLoaded", function() {
       definition.textContent = "";
       wordCount.textContent = wordCountText;
 
+    });
+
+    word.addEventListener('input', function() {
+      isEditing = true;
+    });
+  
+    word.addEventListener('blur', function() {
+      if(isEditing) {
+        wordText = word.textContent;
+        localStorage.setItem(__VOCABIFY_WORD__, wordText);
+        isEditing = false;
+      }
+    });
+
+    definition.addEventListener('input', function() {
+      isEditing = true;
+    });
+  
+    definition.addEventListener('blur', function() {
+      if(isEditing) {
+        definitionText = definition.textContent;
+        localStorage.setItem(__VOCABIFY_DEFINITION__, definitionText);
+        isEditing = false;
+      }
     });
 
 });
