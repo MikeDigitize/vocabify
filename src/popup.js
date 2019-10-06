@@ -34,8 +34,6 @@ document.addEventListener("DOMContentLoaded", function() {
     .getElementById("getWord")
     .addEventListener("click", function() {
 
-      console.log('click')
-
       getSelectedText(word)
         .then(function(data) {
           localStorage.setItem(__VOCABIFY_WORD__, data);
