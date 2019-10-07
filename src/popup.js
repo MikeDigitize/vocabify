@@ -1,31 +1,41 @@
 const __VOCABIFY_WORD__ = "__VOCABIFY_WORD__";
 const __VOCABIFY_DEFINITION__ = "__VOCABIFY_DEFINITION__";
 const __VOCABIFY_SAVED_ITEMS__ = "__VOCABIFY_SAVED_ITEMS__";
-
 const __VOCABIFY_NO_WORD_SELECTED__ = "Choose a word";
 const __VOCABIFY_NO_DEFINITION_SELECTED__ = "Find a definiton";
 
 function getSelectedText(placeholder) {
-
-  return new Promise(function(resolve, reject) {
-
+  return new Promise(function(resolve) {
     chrome.runtime.sendMessage({ action: "GET_SELECTED_TEXT" }, function(response) {
       placeholder.textContent = response.data;
       resolve(response.data);
     });
-
   });
 }
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", async function() {
 
   let isEditing = false;
 
   const word = document.getElementById("word");
   const definition = document.getElementById("definition");
+  let wordText = await getVocabifyData(__VOCABIFY_WORD__);
 
-  let wordText = localStorage.getItem(__VOCABIFY_WORD__) || __VOCABIFY_NO_WORD_SELECTED__;
-  let definitionText = localStorage.getItem(__VOCABIFY_DEFINITION__) || __VOCABIFY_NO_DEFINITION_SELECTED__;
+  if(!Object.keys(wordText).length || wordText[__VOCABIFY_WORD__] === "") {
+    wordText = __VOCABIFY_NO_WORD_SELECTED__;
+  }
+  else {
+    wordText = wordText[__VOCABIFY_WORD__];
+  }
+  
+  let definitionText = await getVocabifyData(__VOCABIFY_DEFINITION__);
+
+  if(!Object.keys(definitionText).length || definitionText[__VOCABIFY_DEFINITION__] === "") {
+    definitionText = __VOCABIFY_NO_DEFINITION_SELECTED__;
+  }
+  else {
+    definitionText = definitionText[__VOCABIFY_DEFINITION__];
+  }
 
   word.textContent = wordText;
   definition.textContent = definitionText;
@@ -35,8 +45,8 @@ document.addEventListener("DOMContentLoaded", function() {
     .addEventListener("click", function() {
 
       getSelectedText(word)
-        .then(function(data) {
-          localStorage.setItem(__VOCABIFY_WORD__, data);
+        .then(async function(data) {
+          await setVocabifyData(__VOCABIFY_WORD__, data);
         });
 
   });
@@ -46,8 +56,8 @@ document.addEventListener("DOMContentLoaded", function() {
     .addEventListener("click", function() {
 
       getSelectedText(definition)
-        .then(function(data) {
-          localStorage.setItem(__VOCABIFY_DEFINITION__, data);
+        .then(async function(data) {
+          await setVocabifyData(__VOCABIFY_DEFINITION__, data);
         });
 
     });
@@ -60,28 +70,33 @@ document.addEventListener("DOMContentLoaded", function() {
 
   document
     .getElementById("save")
-    .addEventListener("click", function() {
+    .addEventListener("click", async function() {
 
-      let items = localStorage.getItem(__VOCABIFY_SAVED_ITEMS__);
-      if(!items) {
+      let items = await getVocabifyData(__VOCABIFY_SAVED_ITEMS__); 
+      
+      if(!Object.keys(items).length) {
         items = [];
       }
       else {
-        items = JSON.parse(items);
+        items = items[__VOCABIFY_SAVED_ITEMS__];
       }
+      
+      let currentWord = await getVocabifyData(__VOCABIFY_WORD__);
+      let currentDefinition = await getVocabifyData(__VOCABIFY_DEFINITION__);
+      
       let item = {
-        word: localStorage.getItem(__VOCABIFY_WORD__),
-        definition: localStorage.getItem(__VOCABIFY_DEFINITION__)
+        word: currentWord[__VOCABIFY_WORD__],
+        definition: currentDefinition[__VOCABIFY_DEFINITION__]
       };
 
-      items.push(item)
-      localStorage.setItem(__VOCABIFY_SAVED_ITEMS__, JSON.stringify(items));
+      items.push(item);
+      await setVocabifyData(__VOCABIFY_SAVED_ITEMS__, items);
 
       wordText = "";
       definitionText = "";
     
-      localStorage.setItem(__VOCABIFY_WORD__, wordText);
-      localStorage.setItem(__VOCABIFY_DEFINITION__, definitionText);
+      await setVocabifyData(__VOCABIFY_WORD__, wordText);
+      await setVocabifyData(__VOCABIFY_DEFINITION__, definitionText);
       
       word.textContent = __VOCABIFY_NO_WORD_SELECTED__;
       definition.textContent = __VOCABIFY_NO_DEFINITION_SELECTED__;
@@ -92,10 +107,10 @@ document.addEventListener("DOMContentLoaded", function() {
       isEditing = true;
     });
   
-    word.addEventListener('blur', function() {
+    word.addEventListener('blur', async function() {
       if(isEditing) {
         wordText = word.textContent;
-        localStorage.setItem(__VOCABIFY_WORD__, wordText);
+        await setVocabifyData(__VOCABIFY_WORD__, wordText);
         isEditing = false;
       }
     });
@@ -104,12 +119,32 @@ document.addEventListener("DOMContentLoaded", function() {
       isEditing = true;
     });
   
-    definition.addEventListener('blur', function() {
+    definition.addEventListener('blur', async function() {
       if(isEditing) {
         definitionText = definition.textContent;
-        localStorage.setItem(__VOCABIFY_DEFINITION__, definitionText);
+        await setVocabifyData(__VOCABIFY_DEFINITION__, definitionText);
         isEditing = false;
       }
     });
 
 });
+
+function setVocabifyData(key, value) {
+  return new Promise(function(resolve) {
+    let store = {};
+    store[key] = value;
+    chrome.storage.sync.set(store, function() {
+      resolve(value);
+    });
+  });
+  
+}
+
+function getVocabifyData(key) {
+  return new Promise(function(resolve) {
+    chrome.storage.sync.get([`${key}`], function(result) {
+      resolve(result);
+    });
+  });
+  
+}
