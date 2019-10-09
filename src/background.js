@@ -1,4 +1,4 @@
-let selectedText = "TEST";
+let selectedText = "";
 
 chrome.runtime.onConnect.addListener(function(port) {
 
