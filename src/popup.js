@@ -15,10 +15,10 @@ function getSelectedText(placeholder) {
 
 document.addEventListener("DOMContentLoaded", async function() {
 
-  let isEditing = false;
-
   const word = document.getElementById("word");
   const definition = document.getElementById("definition");
+
+  let isEditing = false;
   let wordText = await getVocabifyData(__VOCABIFY_WORD__);
 
   if(!Object.keys(wordText).length || wordText[__VOCABIFY_WORD__] === "") {
@@ -90,6 +90,7 @@ document.addEventListener("DOMContentLoaded", async function() {
       };
 
       items.push(item);
+      
       await setVocabifyData(__VOCABIFY_SAVED_ITEMS__, items);
 
       wordText = "";

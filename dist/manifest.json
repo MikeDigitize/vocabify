@@ -1,0 +1,32 @@
+{
+  "name": "Vocabify",
+  "version": "1.0",
+  "description": "Build your vocabulary!",
+  "manifest_version": 2,
+  "options_ui": {
+    "page": "vocabify.html",
+    "open_in_tab": true
+  },
+  "permissions": ["activeTab", "storage", "tabs"],
+  "browser_action": {
+    "default_icon": "images/vocabify_icon32.png",
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "all_frames": true,
+      "js": ["content.js"]
+    }
+  ],
+  "icons": {
+    "16": "images/vocabify16.png",
+    "32": "images/vocabify32.png",
+    "48": "images/vocabify48.png",
+    "128": "images/vocabify128.png"
+  }
+}
