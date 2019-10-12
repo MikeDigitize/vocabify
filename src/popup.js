@@ -20,7 +20,11 @@ function setPlaceholderText(placeholder, text) {
   placeholder.textContent = text;
 }
 
-function getInitialTextValue(result, key, fallback) {
+function setEditState(state = true) {
+  isEditing = state;
+}
+
+function getInitialValue({result, key, fallback}) {
   if (!Object.keys(result).length || result[key] === '') {
     result = fallback;
   } else {
@@ -34,10 +38,17 @@ async function popupInitialise() {
   wordText = await getVocabifyData(__VOCABIFY_WORD__);
   definitionText = await getVocabifyData(__VOCABIFY_DEFINITION__);
 
-  wordText = getInitialTextValue(wordText, __VOCABIFY_WORD__, __VOCABIFY_NO_WORD_SELECTED__);
-  definitionText = getInitialTextValue(definitionText, __VOCABIFY_DEFINITION__, __VOCABIFY_NO_DEFINITION_SELECTED__);  
+  wordText = getInitialValue({ 
+    result: wordText, 
+    key: __VOCABIFY_WORD__, 
+    fallback: __VOCABIFY_NO_WORD_SELECTED__
+  });
 
-  console.log('pre', wordText, definitionText);
+  definitionText = getInitialValue({
+    result: definitionText,
+    key: __VOCABIFY_DEFINITION__,
+    fallback: __VOCABIFY_NO_DEFINITION_SELECTED__
+  });
 
   setPlaceholderText(word, wordText);
   setPlaceholderText(definition, definitionText);
@@ -63,13 +74,14 @@ document.getElementById('vocabify').addEventListener('click', function() {
 });
 
 document.getElementById('save').addEventListener('click', async function() {
+  
   let items = await getVocabifyData(__VOCABIFY_SAVED_ITEMS__);
 
-  if (!Object.keys(items).length) {
-    items = [];
-  } else {
-    items = items[__VOCABIFY_SAVED_ITEMS__];
-  }
+  items = getInitialValue({
+    result: items, 
+    key: __VOCABIFY_SAVED_ITEMS__, 
+    fallback: []
+  });
 
   let currentWord = await getVocabifyData(__VOCABIFY_WORD__);
   let currentDefinition = await getVocabifyData(__VOCABIFY_DEFINITION__);
@@ -91,29 +103,25 @@ document.getElementById('save').addEventListener('click', async function() {
 
   setPlaceholderText(word, __VOCABIFY_NO_WORD_SELECTED__);
   setPlaceholderText(definition, __VOCABIFY_NO_DEFINITION_SELECTED__);
+
 });
 
-word.addEventListener('input', function() {
-  isEditing = true;
-});
+word.addEventListener('input', setEditState);
+definition.addEventListener('input', setEditState);
 
 word.addEventListener('blur', async function() {
   if (isEditing) {
     wordText = word.textContent;
     await setVocabifyData(__VOCABIFY_WORD__, wordText);
-    isEditing = false;
+    setEditState(false);
   }
-});
-
-definition.addEventListener('input', function() {
-  isEditing = true;
 });
 
 definition.addEventListener('blur', async function() {
   if (isEditing) {
     definitionText = definition.textContent;
     await setVocabifyData(__VOCABIFY_DEFINITION__, definitionText);
-    isEditing = false;
+    setEditState(false);
   }
 });
 

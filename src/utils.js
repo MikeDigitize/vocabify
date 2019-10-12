@@ -33,3 +33,10 @@ export function getVocabifyData(key) {
 }
 
 // console.log(chrome.runtime.getURL('popup.html'));
+// function highlightDom(node) {
+//   let selection = window.getSelection();
+//   selection.removeAllRanges();
+//   let range = document.createRange();
+//   range.selectNode(node);
+//   selection.addRange(range);
+// }

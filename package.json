@@ -6,7 +6,9 @@
   "author": "MikeDigitize <chad_01@hotmail.co.uk>",
   "license": "MIT",
   "devDependencies": {
-    "@babel/core": "^7.6.3",
+    "@babel/core": "^7.6.4",
+    "@babel/preset-env": "^7.6.3",
+    "babel-jest": "^24.9.0",
     "babel-loader": "^8.0.6",
     "copy-webpack-plugin": "^5.0.4",
     "html-webpack-plugin": "^3.2.0",
@@ -15,6 +17,7 @@
     "webpack-cli": "^3.3.9"
   },
   "scripts": {
-    "start": "webpack"
+    "start": "webpack",
+    "test": "jest --watchAll --verbose"
   }
 }
