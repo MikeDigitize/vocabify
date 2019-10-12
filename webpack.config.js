@@ -1,19 +1,3 @@
-/**
- * Create html files -
- *  popup.html
- *  vocabify.html
- *
- * copy directories -
- *  css
- *  images
- *  webfonts
- *
- * compile and minify js -
- *  background
- *  content
- *  popup
- *  vocabify
- */
 const CopyPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
