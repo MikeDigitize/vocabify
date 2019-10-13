@@ -16,7 +16,7 @@ import {
  *
  * Edit the word or definition directly in the popup
  *
- * Save the word into chrome storage
+ * Save the word and defintion into chrome storage, only if both exist
  *
  * Launch vocabify
  *

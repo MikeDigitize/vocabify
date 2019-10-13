@@ -6,7 +6,8 @@ import {
   __VOCABIFY_NO_DEFINITION_SELECTED__,
   getSelectedText,
   setVocabifyData,
-  getVocabifyData
+  getVocabifyData,
+  getInitialValue
 } from './utils';
 
 const word = document.getElementById('word');
@@ -77,6 +78,14 @@ document.getElementById('save').addEventListener('click', async function() {
   let currentWord = await getVocabifyData(__VOCABIFY_WORD__);
   let currentDefinition = await getVocabifyData(__VOCABIFY_DEFINITION__);
 
+  if(Object.keys(currentWord).length === 0 || currentWord[__VOCABIFY_WORD__] === '') {
+    return;
+  }
+
+  if(Object.keys(currentDefinition).length === 0 || currentDefinition[__VOCABIFY_DEFINITION__] === '') {
+    return;
+  }
+
   let item = {
     word: currentWord[__VOCABIFY_WORD__],
     definition: currentDefinition[__VOCABIFY_DEFINITION__]
@@ -103,7 +112,9 @@ definition.addEventListener('input', setEditState);
 word.addEventListener('blur', async function() {
   if (isEditing) {
     wordText = word.textContent;
-    await setVocabifyData(__VOCABIFY_WORD__, wordText);
+    if(wordText !== __VOCABIFY_NO_WORD_SELECTED__) {
+      await setVocabifyData(__VOCABIFY_WORD__, wordText);
+    }
     setEditState(false);
   }
 });
@@ -111,7 +122,9 @@ word.addEventListener('blur', async function() {
 definition.addEventListener('blur', async function() {
   if (isEditing) {
     definitionText = definition.textContent;
-    await setVocabifyData(__VOCABIFY_DEFINITION__, definitionText);
+    if(definitionText !== __VOCABIFY_NO_DEFINITION_SELECTED__) {
+      await setVocabifyData(__VOCABIFY_DEFINITION__, definitionText);
+    }
     setEditState(false);
   }
 });
