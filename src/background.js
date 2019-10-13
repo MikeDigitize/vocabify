@@ -14,7 +14,8 @@ chrome.runtime.onConnect.addListener(function(port) {
 });
 
 chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
-  if (msg.action === __VOCABIFY_GET_SELECTED_TEXT__) {
+  if (msg.action === __VOCABIFY_GET_SELECTED_TEXT__ && selectedText !== '') {
     sendResponse({ data: selectedText });
+    selectedText = '';
   }
 });

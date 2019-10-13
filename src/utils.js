@@ -32,11 +32,10 @@ export function getVocabifyData(key) {
   });
 }
 
-// console.log(chrome.runtime.getURL('popup.html'));
-// function highlightDom(node) {
-//   let selection = window.getSelection();
-//   selection.removeAllRanges();
-//   let range = document.createRange();
-//   range.selectNode(node);
-//   selection.addRange(range);
-// }
+export function getHighlightedText() {
+  let highlighted = window.getSelection().toString();
+  if (highlighted.length > 400 || highlighted.length < 2) {
+    return false;
+  }
+  return { action: __VOCABIFY_SET_SELECTED_TEXT__, data: highlighted };
+}
