@@ -8,7 +8,7 @@ export const __VOCABIFY_GET_SELECTED_TEXT__ = 'GET_SELECTED_TEXT';
 
 export function getSelectedText() {
   return new Promise(function(resolve) {
-    chrome.runtime.sendMessage({ action: 'GET_SELECTED_TEXT' }, function(response) {
+    chrome.runtime.sendMessage({ action: __VOCABIFY_GET_SELECTED_TEXT__ }, function(response) {
       resolve(response.data);
     });
   });
@@ -39,3 +39,24 @@ export function getHighlightedText() {
   }
   return { action: __VOCABIFY_SET_SELECTED_TEXT__, data: highlighted };
 }
+
+export const background = (function() {
+  let selectedText = '';
+  return {
+    onNewSelectedText(msg) {
+      if (msg.action === __VOCABIFY_SET_SELECTED_TEXT__) {
+        selectedText = msg.data;
+      }
+      return selectedText;
+    },
+    onRequestForSelectedText(msg, callback) {
+      if (msg.action === __VOCABIFY_GET_SELECTED_TEXT__ && selectedText !== '') {
+        callback({ data: selectedText });
+        selectedText = '';
+      }
+      return selectedText;
+    }
+  } 
+})();
+
+

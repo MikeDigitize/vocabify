@@ -1,4 +1,9 @@
-import { getHighlightedText, __VOCABIFY_SET_SELECTED_TEXT__ } from '../utils';
+import {
+  getHighlightedText,
+  __VOCABIFY_SET_SELECTED_TEXT__,
+  background,
+  __VOCABIFY_GET_SELECTED_TEXT__
+} from '../utils';
 
 /**
  *
@@ -104,5 +109,106 @@ describe('getHighlightedText tests - note: JSDOM does not support window.getSele
     result = getHighlightedText();
     expect(window.getSelection.mock.calls.length).toBe(1);
     expect(result.data).toBe(highlighted);
+  });
+});
+
+describe(`background is the middleman - 
+    a util that listens for updates to highlighted text from the browser through onNewSelectedText 
+    and listens for requests for highlighted texts from the popup through onRequestForSelectedText`, function() {
+  afterEach(function() {
+    let msg = {
+      action: __VOCABIFY_SET_SELECTED_TEXT__,
+      data: ''
+    };
+
+    background.onNewSelectedText(msg);
+  });
+
+  it(`...onNewSelectedText updates the highlighted text when passed the action ${__VOCABIFY_SET_SELECTED_TEXT__} and highlight data`, function() {
+    let highlighted = 'Some text';
+
+    let msg = {
+      action: __VOCABIFY_SET_SELECTED_TEXT__,
+      data: highlighted
+    };
+
+    let result = background.onNewSelectedText(msg);
+
+    expect(result).toEqual(highlighted);
+  });
+
+  it(`...onNewSelectedText does not update if it doesn't receive the action ${__VOCABIFY_SET_SELECTED_TEXT__}`, function() {
+    let highlighted = 'Some text';
+
+    let msg = {
+      action: __VOCABIFY_SET_SELECTED_TEXT__,
+      data: highlighted
+    };
+
+    let result = background.onNewSelectedText(msg);
+
+    let nextHighlighted = 'Some other text';
+    msg = {
+      action: __VOCABIFY_GET_SELECTED_TEXT__,
+      data: nextHighlighted
+    };
+
+    result = background.onNewSelectedText(msg);
+
+    expect(result).not.toEqual(nextHighlighted);
+    expect(result).toEqual(highlighted);
+  });
+
+  it('...onRequestForSelectedText fires the callback with the highlighted word and resets the highlighted word to an empty string', function() {
+    let highlighted = 'Some text';
+
+    let msg = {
+      action: __VOCABIFY_SET_SELECTED_TEXT__,
+      data: highlighted
+    };
+
+    background.onNewSelectedText(msg);
+
+    msg = {
+      action: __VOCABIFY_GET_SELECTED_TEXT__
+    };
+
+    let callback = jest.fn(function() {
+      return {
+        data: highlighted
+      };
+    });
+
+    let result = background.onRequestForSelectedText(msg, callback);
+
+    expect(callback.mock.calls.length).toBe(1);
+    expect(callback.mock.results[0].value.data).toBe(highlighted);
+    expect(result).toBe('');
+  });
+
+  it(`...onRequestForSelectedText doesn't fire the callback if it doesn't receive the ${__VOCABIFY_GET_SELECTED_TEXT__} action`, function() {
+    let msg = {
+      action: __VOCABIFY_SET_SELECTED_TEXT__
+    };
+
+    let callback = jest.fn();
+
+    let result = background.onRequestForSelectedText(msg, callback);
+
+    expect(callback.mock.calls.length).toBe(0);
+    expect(result).toBe('');
+  });
+
+  it(`...onRequestForSelectedText doesn't fire the callback if the highlighted word is an empty string`, function() {
+    let msg = {
+      action: __VOCABIFY_GET_SELECTED_TEXT__
+    };
+
+    let callback = jest.fn();
+
+    let result = background.onRequestForSelectedText(msg, callback);
+
+    expect(callback.mock.calls.length).toBe(0);
+    expect(result).toBe('');
   });
 });
