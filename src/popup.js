@@ -24,15 +24,6 @@ function setEditState(state = true) {
   isEditing = state;
 }
 
-function getInitialValue({result, key, fallback}) {
-  if (!Object.keys(result).length || result[key] === '') {
-    result = fallback;
-  } else {
-    result = result[key];
-  }
-  return result;
-}
-
 async function popupInitialise() {
 
   wordText = await getVocabifyData(__VOCABIFY_WORD__);

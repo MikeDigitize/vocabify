@@ -2,7 +2,14 @@ import {
   getHighlightedText,
   __VOCABIFY_SET_SELECTED_TEXT__,
   background,
-  __VOCABIFY_GET_SELECTED_TEXT__
+  __VOCABIFY_GET_SELECTED_TEXT__,
+  __VOCABIFY_WORD__,
+  __VOCABIFY_NO_WORD_SELECTED__,
+  getInitialValue,
+  __VOCABIFY_DEFINITION__,
+  __VOCABIFY_NO_DEFINITION_SELECTED__,
+  __VOCABIFY_SAVED_ITEMS__,
+  __VOCABIFY_NO_SAVED_ITEMS__
 } from '../utils';
 
 /**
@@ -210,5 +217,111 @@ describe(`background is the middleman -
 
     expect(callback.mock.calls.length).toBe(0);
     expect(result).toBe('');
+  });
+});
+
+describe(`Popup tests - 
+        getInitialValue is called with any word, definition and result values saved in storage (even when no results) 
+        to populate the popup with upon opening.
+        It gets passed the object that comes back from storage, 
+        the key to access the value and a fallback to use if there were no results found`, function() {
+
+  it(`...getInitialValue should fallback to the default message if an empty object is returned back from storage`, function() {
+    let result = {};
+    let wordText = getInitialValue({
+      result,
+      key: __VOCABIFY_WORD__,
+      fallback: __VOCABIFY_NO_WORD_SELECTED__
+    });
+
+    expect(wordText).toEqual(__VOCABIFY_NO_WORD_SELECTED__);
+
+    result = {};
+    let definitionText = getInitialValue({
+      result,
+      key: __VOCABIFY_DEFINITION__,
+      fallback: __VOCABIFY_NO_DEFINITION_SELECTED__
+    });
+
+    expect(definitionText).toEqual(__VOCABIFY_NO_DEFINITION_SELECTED__);
+
+    result = {};
+    let savedItems = getInitialValue({
+      result,
+      key: __VOCABIFY_SAVED_ITEMS__,
+      fallback: __VOCABIFY_NO_SAVED_ITEMS__
+    });
+
+    expect(savedItems).toEqual(__VOCABIFY_NO_SAVED_ITEMS__);
+  });
+
+  it(`...getInitialValue for the word should fallback to the default message if an empty string is returned back from storage`, function() {
+
+    let result = {};
+    result[__VOCABIFY_WORD__] = '';
+    let wordText = getInitialValue({
+      result,
+      key: __VOCABIFY_WORD__,
+      fallback: __VOCABIFY_NO_WORD_SELECTED__
+    });
+
+    expect(wordText).toEqual(__VOCABIFY_NO_WORD_SELECTED__);
+
+    result = {};
+    result[__VOCABIFY_DEFINITION__] = '';
+    let definitionText = getInitialValue({
+      result,
+      key: __VOCABIFY_DEFINITION__,
+      fallback: __VOCABIFY_NO_DEFINITION_SELECTED__
+    });
+
+    expect(definitionText).toEqual(__VOCABIFY_NO_DEFINITION_SELECTED__);
+
+    result = {};
+    result[__VOCABIFY_SAVED_ITEMS__] = '';
+    let savedItems = getInitialValue({
+      result,
+      key: __VOCABIFY_SAVED_ITEMS__,
+      fallback: __VOCABIFY_NO_SAVED_ITEMS__
+    });
+
+    expect(savedItems).toEqual(__VOCABIFY_NO_SAVED_ITEMS__);
+  });
+
+  it(`...getInitialValue should return the saved word, defintion or results if returned back from storage`, function() {
+
+    let result = {};
+    let word = 'Some word';
+    result[__VOCABIFY_WORD__] = word;
+    let wordText = getInitialValue({
+      result,
+      key: __VOCABIFY_WORD__,
+      fallback: __VOCABIFY_NO_WORD_SELECTED__
+    });
+
+    expect(wordText).toEqual(word);
+
+    result = {};
+    let definition = 'Some definition';
+    result[__VOCABIFY_DEFINITION__] = definition;
+    let definitionText = getInitialValue({
+      result,
+      key: __VOCABIFY_DEFINITION__,
+      fallback: __VOCABIFY_NO_DEFINITION_SELECTED__
+    });
+
+    expect(definitionText).toEqual(definition);
+
+    result = {};
+    let items = [{ word: 'Some word', definition: 'Some definition'}];
+    result[__VOCABIFY_SAVED_ITEMS__] = items;
+    let savedItems = getInitialValue({
+      result,
+      key: __VOCABIFY_SAVED_ITEMS__,
+      fallback: __VOCABIFY_NO_SAVED_ITEMS__
+    });
+
+    expect(savedItems).toEqual(items);
+
   });
 });

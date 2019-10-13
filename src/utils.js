@@ -3,6 +3,7 @@ export const __VOCABIFY_DEFINITION__ = '__VOCABIFY_DEFINITION__';
 export const __VOCABIFY_SAVED_ITEMS__ = '__VOCABIFY_SAVED_ITEMS__';
 export const __VOCABIFY_NO_WORD_SELECTED__ = 'Choose a word';
 export const __VOCABIFY_NO_DEFINITION_SELECTED__ = 'Find a definiton';
+export const __VOCABIFY_NO_SAVED_ITEMS__ = 'Find a definiton';
 export const __VOCABIFY_SET_SELECTED_TEXT__ = 'SET_SELECTED_TEXT';
 export const __VOCABIFY_GET_SELECTED_TEXT__ = 'GET_SELECTED_TEXT';
 
@@ -58,5 +59,14 @@ export const background = (function() {
     }
   } 
 })();
+
+export function getInitialValue({result, key, fallback}) {
+  if (!Object.keys(result).length || result[key] === '') {
+    result = fallback;
+  } else {
+    result = result[key];
+  }
+  return result;
+}
 
 
