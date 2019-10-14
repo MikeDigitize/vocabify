@@ -7,6 +7,18 @@ export const __VOCABIFY_NO_SAVED_ITEMS__ = 'Find a definiton';
 export const __VOCABIFY_SET_SELECTED_TEXT__ = 'SET_SELECTED_TEXT';
 export const __VOCABIFY_GET_SELECTED_TEXT__ = 'GET_SELECTED_TEXT';
 
+export function isDefaultText(text) {
+  return text === __VOCABIFY_NO_WORD_SELECTED__ || text === __VOCABIFY_NO_DEFINITION_SELECTED__;
+}
+
+export function isTwoCharactersOrMore(text) {
+  return text.length >= 2;
+}
+
+export function isFourHundredCharactersOrLess(text) {
+  return text.length <= 400;
+}
+
 export function getSelectedText() {
   return new Promise(function(resolve) {
     chrome.runtime.sendMessage({ action: __VOCABIFY_GET_SELECTED_TEXT__ }, function(response) {
@@ -35,10 +47,19 @@ export function getVocabifyData(key) {
 
 export function getHighlightedText() {
   let highlighted = window.getSelection().toString();
-  if (highlighted.length > 400 || highlighted.length < 2) {
+  if (!isFourHundredCharactersOrLess(highlighted) || !isTwoCharactersOrMore(highlighted)) {
     return false;
   }
   return { action: __VOCABIFY_SET_SELECTED_TEXT__, data: highlighted };
+}
+
+export function getInitialValue({result, key, fallback}) {
+  if (!Object.keys(result).length || result[key] === '') {
+    result = fallback;
+  } else {
+    result = result[key];
+  }
+  return result;
 }
 
 export const background = (function() {
@@ -59,14 +80,3 @@ export const background = (function() {
     }
   } 
 })();
-
-export function getInitialValue({result, key, fallback}) {
-  if (!Object.keys(result).length || result[key] === '') {
-    result = fallback;
-  } else {
-    result = result[key];
-  }
-  return result;
-}
-
-

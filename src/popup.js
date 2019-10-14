@@ -7,7 +7,10 @@ import {
   getSelectedText,
   setVocabifyData,
   getVocabifyData,
-  getInitialValue
+  getInitialValue,
+  isDefaultText,
+  isFourHundredCharactersOrLess,
+  isTwoCharactersOrMore
 } from './utils';
 
 const word = document.getElementById('word');
@@ -112,8 +115,12 @@ definition.addEventListener('input', setEditState);
 word.addEventListener('blur', async function() {
   if (isEditing) {
     wordText = word.textContent;
-    if(wordText !== __VOCABIFY_NO_WORD_SELECTED__) {
+    if(!isDefaultText(wordText) && isTwoCharactersOrMore(wordText) && isFourHundredCharactersOrLess(wordText)) {
       await setVocabifyData(__VOCABIFY_WORD__, wordText);
+    }
+    else {
+      await setVocabifyData(__VOCABIFY_WORD__, '');
+      word.textContent = __VOCABIFY_NO_WORD_SELECTED__;
     }
     setEditState(false);
   }
@@ -122,8 +129,12 @@ word.addEventListener('blur', async function() {
 definition.addEventListener('blur', async function() {
   if (isEditing) {
     definitionText = definition.textContent;
-    if(definitionText !== __VOCABIFY_NO_DEFINITION_SELECTED__) {
+    if(!isDefaultText(definitionText) && isTwoCharactersOrMore(definitionText) && isFourHundredCharactersOrLess(definitionText)) {
       await setVocabifyData(__VOCABIFY_DEFINITION__, definitionText);
+    }
+    else {
+      await setVocabifyData(__VOCABIFY_DEFINITION__, '');
+      definition.textContent = __VOCABIFY_NO_DEFINITION_SELECTED__;
     }
     setEditState(false);
   }
