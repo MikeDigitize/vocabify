@@ -19,6 +19,26 @@ export function isFourHundredCharactersOrLess(text) {
   return text.length <= 400;
 }
 
+export function isEmptyObject(obj) {
+  return Object.keys(obj).length === 0;
+}
+
+export function isEmptyString(str) {
+  return str.length === 0;
+}
+
+export function addToItems(item, items) {
+  return items.concat(item);
+}
+
+export async function saveItem(key, items, callback) {
+  return await callback(key, items);
+}
+
+export function setPlaceholderText(placeholder, text) {
+  placeholder.textContent = text;
+}
+
 export function getSelectedText() {
   return new Promise(function(resolve) {
     chrome.runtime.sendMessage({ action: __VOCABIFY_GET_SELECTED_TEXT__ }, function(response) {

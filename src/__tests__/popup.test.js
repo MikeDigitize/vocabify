@@ -10,7 +10,11 @@ import {
   __VOCABIFY_NO_DEFINITION_SELECTED__,
   __VOCABIFY_SAVED_ITEMS__,
   __VOCABIFY_NO_SAVED_ITEMS__,
-  onManualUpdate
+  onManualUpdate,
+  isEmptyObject,
+  isEmptyString,
+  addToItems,
+  saveItem
 } from '../utils';
 
 /**
@@ -224,7 +228,6 @@ describe(`Popup tests -
         to populate the popup with upon opening.
         It gets passed the object that comes back from storage, 
         the key to access the value and a fallback to use if there were no results found`, function() {
-
   it(`...getValueOrFallback should fallback to the default message if an empty object is returned back from storage`, function() {
     let response = {};
     let wordText = getValueOrFallback({
@@ -255,7 +258,6 @@ describe(`Popup tests -
   });
 
   it(`...getValueOrFallback for the word should fallback to the default message if an empty string is returned back from storage`, function() {
-
     let response = {};
     response[__VOCABIFY_WORD__] = '';
     let wordText = getValueOrFallback({
@@ -288,7 +290,6 @@ describe(`Popup tests -
   });
 
   it(`...getValueOrFallback should return the saved word, defintion or results if returned back from storage`, function() {
-
     let response = {};
     let word = 'Some word';
     response[__VOCABIFY_WORD__] = word;
@@ -312,7 +313,7 @@ describe(`Popup tests -
     expect(definitionText).toEqual(definition);
 
     response = {};
-    let items = [{ word: 'Some word', definition: 'Some definition'}];
+    let items = [{ word: 'Some word', definition: 'Some definition' }];
     response[__VOCABIFY_SAVED_ITEMS__] = items;
     let savedItems = getValueOrFallback({
       response,
@@ -321,19 +322,15 @@ describe(`Popup tests -
     });
 
     expect(savedItems).toEqual(items);
-
   });
 });
 
-describe(
-  `onManualUpdate tests - handle the manual editing of the word and definition text.
+describe(`onManualUpdate tests - handle the manual editing of the word and definition text.
   Should only fire if the elements have had focus first.
   Should only save the word within if it's between 2-400 characters and isn't the default text for either.
   If it is any of the above, the text content is set to the default and an empty string is saved.
   The empty string ensure it won't be saved if a user attempts to`, function() {
-
   it('...should not update if onFocus has not first been called before onBlur is called', async function() {
-
     let text = 'Word';
     let key = __VOCABIFY_WORD__;
     let p = document.createElement('p');
@@ -351,11 +348,9 @@ describe(
 
     result = await onManualUpdate.onBlur(text, key, p, fallback, callback);
     expect(result).toBe(false);
-
   });
 
   it('...should update if a word between 2 and 400 characters is in the text field', async function() {
-    
     onManualUpdate.onFocus();
 
     let text = 'Word';
@@ -371,13 +366,11 @@ describe(
     expect(callback.mock.results[0].value).toBe(text);
     expect(result).toBe(text);
     expect(p.textContent).toBe('');
-
   });
 
   it('...should update with an empty string if a word less than 2 or more than 400 characters is in the text field', async function() {
-    
     onManualUpdate.onFocus();
-    
+
     let text = '';
     let key = __VOCABIFY_WORD__;
     let p = document.createElement('p');
@@ -393,7 +386,7 @@ describe(
     expect(p.textContent).toBe(fallback);
 
     text = '';
-    for(let i = 0; i < 401; i++) {
+    for (let i = 0; i < 401; i++) {
       text += 'a';
     }
 
@@ -406,13 +399,11 @@ describe(
     expect(callback.mock.results[1].value).toBe('');
     expect(result).toBe('');
     expect(p.textContent).toBe(fallback);
-
   });
 
   it('...should update with an empty string if a default word is in the text field', async function() {
-    
     onManualUpdate.onFocus();
-    
+
     let text = __VOCABIFY_NO_WORD_SELECTED__;
     let key = __VOCABIFY_WORD__;
     let p = document.createElement('p');
@@ -431,46 +422,67 @@ describe(
     fallback = __VOCABIFY_NO_DEFINITION_SELECTED__;
 
     onManualUpdate.onFocus();
-    result = await onManualUpdate.onBlur(text, key, p, __VOCABIFY_NO_DEFINITION_SELECTED__, callback);
+    result = await onManualUpdate.onBlur(
+      text,
+      key,
+      p,
+      __VOCABIFY_NO_DEFINITION_SELECTED__,
+      callback
+    );
 
     expect(callback.mock.calls).toHaveLength(2);
     expect(callback.mock.results[1].value).toBe('');
     expect(result).toBe('');
     expect(p.textContent).toBe(fallback);
-
   });
 });
 
-describe(
-  `Save tests - save should only occur if -
+describe(`Save tests - save should only occur if -
     the item in storage is not an empty object (i.e. not used the popup at all)
     the item is not an empty string
     the item is not the default
     the item is not less than 2 or more than 400 characters`, function() {
+  it(`...isEmptyObject should return true when empty and false when not`, function() {
+    let obj = {};
+    expect(isEmptyObject(obj)).toBeTruthy();
+    obj.items = [];
+    expect(isEmptyObject(obj)).toBeFalsy();
+  });
 
-      it(`...isEmptyObject should return true when empty and false when not`, function() {
-        let obj = {};
-        expect(isEmptyObject(obj)).toBeTruthy();
-        obj.items = [];
-        expect(isEmptyObject(obj)).toBeFalsy();
-      });
+  it(`...isEmptyString should return true when empty and false when not`, function() {
+    let str = '';
+    expect(isEmptyString(str)).toBeTruthy();
+    str = 'Not empty';
+    expect(isEmptyString(str)).toBeFalsy();
+  });
 
-      it(`...isEmptyString should return true when empty and false when not`, function() {
-        let str = '';
-        expect(isEmptyString(str)).toBeTruthy();
-        str = 'Not empty';
-        expect(isEmptyString(str)).toBeFalsy();
-      });
+  it('...addToItems should add an item to the array and return it', function() {
+    let item = {
+      word: 'Word',
+      definition: 'A single distinct meaningful element of speech or writing'
+    };
+    let items = [];
+    expect(addToItems(item, items)).toMatchObject([item]);
+  });
 
-      it(`...save should add word and definition as an object to the array and save to storage`, function() {
-        let item = {
-          word: 'Some word',
-          definition: 'Some definition'
-        };
-        let callback = jest.fn(function(key, value) {
+  it(`...saveItem should add word and definition as an object to the array and save to storage`, async function() {
+    let key = __VOCABIFY_SAVED_ITEMS__;
+    let items = [
+      { word: 'Word', definition: 'A single distinct meaningful element of speech or writing' }
+    ];
+    let response = {};
+    response[key] = items;
+    let callback = jest.fn(function(key, value) {
+      let obj = {};
+      obj[key] = value;
+      return obj;
+    });
+    let result = await saveItem(key, items, callback);
 
-        });
-
-        expect(save(item)).toBe(true);
-      });
+    expect(callback.mock.calls).toHaveLength(1);
+    expect(callback.mock.calls[0][0]).toBe(key);
+    expect(callback.mock.calls[0][1]).toBe(items);
+    expect(callback.mock.results[0].value).toMatchObject(response);
+    expect(result).toMatchObject(response);
+  });
 });

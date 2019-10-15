@@ -8,10 +8,12 @@ import {
   setVocabifyData,
   getVocabifyData,
   getValueOrFallback,
-  isDefaultText,
-  isFourHundredCharactersOrLess,
-  isTwoCharactersOrMore,
-  onManualUpdate
+  onManualUpdate,
+  isEmptyObject,
+  isEmptyString,
+  addToItems,
+  saveItem,
+  setPlaceholderText
 } from './utils';
 
 const word = document.getElementById('word');
@@ -19,15 +21,6 @@ const definition = document.getElementById('definition');
 
 let wordText;
 let definitionText;
-let isEditing = false;
-
-function setPlaceholderText(placeholder, text) {
-  placeholder.textContent = text;
-}
-
-function setEditState(state = true) {
-  isEditing = state;
-}
 
 async function popupInitialise() {
 
@@ -82,11 +75,11 @@ document.getElementById('save').addEventListener('click', async function() {
   let currentWord = await getVocabifyData(__VOCABIFY_WORD__);
   let currentDefinition = await getVocabifyData(__VOCABIFY_DEFINITION__);
 
-  if(Object.keys(currentWord).length === 0 || currentWord[__VOCABIFY_WORD__] === '') {
+  if(isEmptyObject(currentWord) || isEmptyString(currentWord[__VOCABIFY_WORD__])) {
     return;
   }
 
-  if(Object.keys(currentDefinition).length === 0 || currentDefinition[__VOCABIFY_DEFINITION__] === '') {
+  if(isEmptyObject(currentWord) || isEmptyString(currentDefinition[__VOCABIFY_DEFINITION__])) {
     return;
   }
 
@@ -95,9 +88,8 @@ document.getElementById('save').addEventListener('click', async function() {
     definition: currentDefinition[__VOCABIFY_DEFINITION__]
   };
 
-  items.push(item);
-
-  await setVocabifyData(__VOCABIFY_SAVED_ITEMS__, items);
+  items = addToItems(item, items);
+  await saveItem(__VOCABIFY_SAVED_ITEMS__, items, setVocabifyData);
 
   wordText = '';
   definitionText = '';
