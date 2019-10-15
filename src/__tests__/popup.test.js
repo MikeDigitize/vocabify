@@ -12,7 +12,6 @@ import {
   __VOCABIFY_NO_SAVED_ITEMS__,
   onManualUpdate
 } from '../utils';
-import { on } from 'cluster';
 
 /**
  *
@@ -326,7 +325,12 @@ describe(`Popup tests -
   });
 });
 
-describe('test', function() {
+describe(
+  `onManualUpdate tests - handle the manual editing of the word and definition text.
+  Should only fire if the elements have had focus first.
+  Should only save the word within if it's between 2-400 characters and isn't the default text for either.
+  If it is any of the above, the text content is set to the default and an empty string is saved.
+  The empty string ensure it won't be saved if a user attempts to`, function() {
 
   it('...should not update if onFocus has not first been called before onBlur is called', async function() {
 
