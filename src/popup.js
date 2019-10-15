@@ -7,7 +7,7 @@ import {
   getSelectedText,
   setVocabifyData,
   getVocabifyData,
-  getInitialValue,
+  getValueOrFallback,
   isDefaultText,
   isFourHundredCharactersOrLess,
   isTwoCharactersOrMore,
@@ -34,14 +34,14 @@ async function popupInitialise() {
   wordText = await getVocabifyData(__VOCABIFY_WORD__);
   definitionText = await getVocabifyData(__VOCABIFY_DEFINITION__);
 
-  wordText = getInitialValue({ 
-    result: wordText, 
+  wordText = getValueOrFallback({ 
+    response: wordText, 
     key: __VOCABIFY_WORD__, 
     fallback: __VOCABIFY_NO_WORD_SELECTED__
   });
 
-  definitionText = getInitialValue({
-    result: definitionText,
+  definitionText = getValueOrFallback({
+    response: definitionText,
     key: __VOCABIFY_DEFINITION__,
     fallback: __VOCABIFY_NO_DEFINITION_SELECTED__
   });
@@ -73,8 +73,8 @@ document.getElementById('save').addEventListener('click', async function() {
   
   let items = await getVocabifyData(__VOCABIFY_SAVED_ITEMS__);
 
-  items = getInitialValue({
-    result: items, 
+  items = getValueOrFallback({
+    response: items, 
     key: __VOCABIFY_SAVED_ITEMS__, 
     fallback: []
   });

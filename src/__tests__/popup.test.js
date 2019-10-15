@@ -5,7 +5,7 @@ import {
   __VOCABIFY_GET_SELECTED_TEXT__,
   __VOCABIFY_WORD__,
   __VOCABIFY_NO_WORD_SELECTED__,
-  getInitialValue,
+  getValueOrFallback,
   __VOCABIFY_DEFINITION__,
   __VOCABIFY_NO_DEFINITION_SELECTED__,
   __VOCABIFY_SAVED_ITEMS__,
@@ -220,33 +220,33 @@ describe(`background is the middleman -
 });
 
 describe(`Popup tests - 
-        getInitialValue is called with any word, definition and result values saved in storage (even when no results) 
+        getValueOrFallback is called with any word, definition and result values saved in storage (even when no results) 
         to populate the popup with upon opening.
         It gets passed the object that comes back from storage, 
         the key to access the value and a fallback to use if there were no results found`, function() {
 
-  it(`...getInitialValue should fallback to the default message if an empty object is returned back from storage`, function() {
-    let result = {};
-    let wordText = getInitialValue({
-      result,
+  it(`...getValueOrFallback should fallback to the default message if an empty object is returned back from storage`, function() {
+    let response = {};
+    let wordText = getValueOrFallback({
+      response,
       key: __VOCABIFY_WORD__,
       fallback: __VOCABIFY_NO_WORD_SELECTED__
     });
 
     expect(wordText).toEqual(__VOCABIFY_NO_WORD_SELECTED__);
 
-    result = {};
-    let definitionText = getInitialValue({
-      result,
+    response = {};
+    let definitionText = getValueOrFallback({
+      response,
       key: __VOCABIFY_DEFINITION__,
       fallback: __VOCABIFY_NO_DEFINITION_SELECTED__
     });
 
     expect(definitionText).toEqual(__VOCABIFY_NO_DEFINITION_SELECTED__);
 
-    result = {};
-    let savedItems = getInitialValue({
-      result,
+    response = {};
+    let savedItems = getValueOrFallback({
+      response,
       key: __VOCABIFY_SAVED_ITEMS__,
       fallback: __VOCABIFY_NO_SAVED_ITEMS__
     });
@@ -254,32 +254,32 @@ describe(`Popup tests -
     expect(savedItems).toEqual(__VOCABIFY_NO_SAVED_ITEMS__);
   });
 
-  it(`...getInitialValue for the word should fallback to the default message if an empty string is returned back from storage`, function() {
+  it(`...getValueOrFallback for the word should fallback to the default message if an empty string is returned back from storage`, function() {
 
-    let result = {};
-    result[__VOCABIFY_WORD__] = '';
-    let wordText = getInitialValue({
-      result,
+    let response = {};
+    response[__VOCABIFY_WORD__] = '';
+    let wordText = getValueOrFallback({
+      response,
       key: __VOCABIFY_WORD__,
       fallback: __VOCABIFY_NO_WORD_SELECTED__
     });
 
     expect(wordText).toEqual(__VOCABIFY_NO_WORD_SELECTED__);
 
-    result = {};
-    result[__VOCABIFY_DEFINITION__] = '';
-    let definitionText = getInitialValue({
-      result,
+    response = {};
+    response[__VOCABIFY_DEFINITION__] = '';
+    let definitionText = getValueOrFallback({
+      response,
       key: __VOCABIFY_DEFINITION__,
       fallback: __VOCABIFY_NO_DEFINITION_SELECTED__
     });
 
     expect(definitionText).toEqual(__VOCABIFY_NO_DEFINITION_SELECTED__);
 
-    result = {};
-    result[__VOCABIFY_SAVED_ITEMS__] = '';
-    let savedItems = getInitialValue({
-      result,
+    response = {};
+    response[__VOCABIFY_SAVED_ITEMS__] = '';
+    let savedItems = getValueOrFallback({
+      response,
       key: __VOCABIFY_SAVED_ITEMS__,
       fallback: __VOCABIFY_NO_SAVED_ITEMS__
     });
@@ -287,35 +287,35 @@ describe(`Popup tests -
     expect(savedItems).toEqual(__VOCABIFY_NO_SAVED_ITEMS__);
   });
 
-  it(`...getInitialValue should return the saved word, defintion or results if returned back from storage`, function() {
+  it(`...getValueOrFallback should return the saved word, defintion or results if returned back from storage`, function() {
 
-    let result = {};
+    let response = {};
     let word = 'Some word';
-    result[__VOCABIFY_WORD__] = word;
-    let wordText = getInitialValue({
-      result,
+    response[__VOCABIFY_WORD__] = word;
+    let wordText = getValueOrFallback({
+      response,
       key: __VOCABIFY_WORD__,
       fallback: __VOCABIFY_NO_WORD_SELECTED__
     });
 
     expect(wordText).toEqual(word);
 
-    result = {};
+    response = {};
     let definition = 'Some definition';
-    result[__VOCABIFY_DEFINITION__] = definition;
-    let definitionText = getInitialValue({
-      result,
+    response[__VOCABIFY_DEFINITION__] = definition;
+    let definitionText = getValueOrFallback({
+      response,
       key: __VOCABIFY_DEFINITION__,
       fallback: __VOCABIFY_NO_DEFINITION_SELECTED__
     });
 
     expect(definitionText).toEqual(definition);
 
-    result = {};
+    response = {};
     let items = [{ word: 'Some word', definition: 'Some definition'}];
-    result[__VOCABIFY_SAVED_ITEMS__] = items;
-    let savedItems = getInitialValue({
-      result,
+    response[__VOCABIFY_SAVED_ITEMS__] = items;
+    let savedItems = getValueOrFallback({
+      response,
       key: __VOCABIFY_SAVED_ITEMS__,
       fallback: __VOCABIFY_NO_SAVED_ITEMS__
     });
@@ -338,8 +338,8 @@ describe(
     let key = __VOCABIFY_WORD__;
     let p = document.createElement('p');
     let fallback = __VOCABIFY_NO_WORD_SELECTED__;
-    let callback = jest.fn(function(a, b) {
-      return b;
+    let callback = jest.fn(function(key, value) {
+      return value;
     });
 
     let result = await onManualUpdate.onBlur(text, key, p, fallback, callback);
@@ -362,8 +362,8 @@ describe(
     let key = __VOCABIFY_WORD__;
     let p = document.createElement('p');
     let fallback = __VOCABIFY_NO_WORD_SELECTED__;
-    let callback = jest.fn(function(a, b) {
-      return b;
+    let callback = jest.fn(function(key, value) {
+      return value;
     });
     let result = await onManualUpdate.onBlur(text, key, p, fallback, callback);
 
@@ -382,8 +382,8 @@ describe(
     let key = __VOCABIFY_WORD__;
     let p = document.createElement('p');
     let fallback = __VOCABIFY_NO_WORD_SELECTED__;
-    let callback = jest.fn(function(a, b) {
-      return b;
+    let callback = jest.fn(function(key, value) {
+      return value;
     });
     let result = await onManualUpdate.onBlur(text, key, p, fallback, callback);
 
@@ -417,8 +417,8 @@ describe(
     let key = __VOCABIFY_WORD__;
     let p = document.createElement('p');
     let fallback = __VOCABIFY_NO_WORD_SELECTED__;
-    let callback = jest.fn(function(a, b) {
-      return b;
+    let callback = jest.fn(function(key, value) {
+      return value;
     });
     let result = await onManualUpdate.onBlur(text, key, p, fallback, callback);
 
@@ -439,4 +439,38 @@ describe(
     expect(p.textContent).toBe(fallback);
 
   });
+});
+
+describe(
+  `Save tests - save should only occur if -
+    the item in storage is not an empty object (i.e. not used the popup at all)
+    the item is not an empty string
+    the item is not the default
+    the item is not less than 2 or more than 400 characters`, function() {
+
+      it(`...isEmptyObject should return true when empty and false when not`, function() {
+        let obj = {};
+        expect(isEmptyObject(obj)).toBeTruthy();
+        obj.items = [];
+        expect(isEmptyObject(obj)).toBeFalsy();
+      });
+
+      it(`...isEmptyString should return true when empty and false when not`, function() {
+        let str = '';
+        expect(isEmptyString(str)).toBeTruthy();
+        str = 'Not empty';
+        expect(isEmptyString(str)).toBeFalsy();
+      });
+
+      it(`...save should add word and definition as an object to the array and save to storage`, function() {
+        let item = {
+          word: 'Some word',
+          definition: 'Some definition'
+        };
+        let callback = jest.fn(function(key, value) {
+
+        });
+
+        expect(save(item)).toBe(true);
+      });
 });

@@ -39,8 +39,8 @@ export function setVocabifyData(key, value) {
 
 export function getVocabifyData(key) {
   return new Promise(function(resolve) {
-    chrome.storage.sync.get([`${key}`], function(result) {
-      resolve(result);
+    chrome.storage.sync.get([`${key}`], function(response) {
+      resolve(response);
     });
   });
 }
@@ -53,13 +53,13 @@ export function getHighlightedText() {
   return { action: __VOCABIFY_SET_SELECTED_TEXT__, data: highlighted };
 }
 
-export function getInitialValue({result, key, fallback}) {
-  if (!Object.keys(result).length || result[key] === '') {
-    result = fallback;
+export function getValueOrFallback({response, key, fallback}) {
+  if (!Object.keys(response).length || response[key] === '') {
+    response = fallback;
   } else {
-    result = result[key];
+    response = response[key];
   }
-  return result;
+  return response;
 }
 
 export const background = (function() {
