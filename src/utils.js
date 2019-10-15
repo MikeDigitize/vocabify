@@ -80,3 +80,29 @@ export const background = (function() {
     }
   } 
 })();
+
+export const onManualUpdate = (function() {
+  let isEditing = false;
+  return {
+    setEditState(state = true) {
+      isEditing = state;
+    },
+    onFocus() {
+      this.setEditState();
+    },
+    async onBlur(text, key, element, fallback, callback) {
+      if (isEditing) {
+        this.setEditState(false);
+        if(!isDefaultText(text) && isTwoCharactersOrMore(text) && isFourHundredCharactersOrLess(text)) {
+          return await callback(key, text);
+        }
+        else {
+          element.textContent = fallback;
+          return await callback(key, '');
+        }
+      }
+      return false;
+    }
+  }
+
+})();

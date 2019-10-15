@@ -10,7 +10,8 @@ import {
   getInitialValue,
   isDefaultText,
   isFourHundredCharactersOrLess,
-  isTwoCharactersOrMore
+  isTwoCharactersOrMore,
+  onManualUpdate
 } from './utils';
 
 const word = document.getElementById('word');
@@ -109,35 +110,15 @@ document.getElementById('save').addEventListener('click', async function() {
 
 });
 
-word.addEventListener('input', setEditState);
-definition.addEventListener('input', setEditState);
+word.addEventListener('input', onManualUpdate.setEditState);
+definition.addEventListener('input', onManualUpdate.setEditState);
 
 word.addEventListener('blur', async function() {
-  if (isEditing) {
-    wordText = word.textContent;
-    if(!isDefaultText(wordText) && isTwoCharactersOrMore(wordText) && isFourHundredCharactersOrLess(wordText)) {
-      await setVocabifyData(__VOCABIFY_WORD__, wordText);
-    }
-    else {
-      await setVocabifyData(__VOCABIFY_WORD__, '');
-      word.textContent = __VOCABIFY_NO_WORD_SELECTED__;
-    }
-    setEditState(false);
-  }
+  await onManualUpdate.onBlur(word.textContent, __VOCABIFY_WORD__, word, __VOCABIFY_NO_WORD_SELECTED__, setVocabifyData);
 });
 
 definition.addEventListener('blur', async function() {
-  if (isEditing) {
-    definitionText = definition.textContent;
-    if(!isDefaultText(definitionText) && isTwoCharactersOrMore(definitionText) && isFourHundredCharactersOrLess(definitionText)) {
-      await setVocabifyData(__VOCABIFY_DEFINITION__, definitionText);
-    }
-    else {
-      await setVocabifyData(__VOCABIFY_DEFINITION__, '');
-      definition.textContent = __VOCABIFY_NO_DEFINITION_SELECTED__;
-    }
-    setEditState(false);
-  }
+  await onManualUpdate.onBlur(definition.textContent, __VOCABIFY_DEFINITION__, definition, __VOCABIFY_NO_DEFINITION_SELECTED__, setVocabifyData);
 });
 
 popupInitialise();

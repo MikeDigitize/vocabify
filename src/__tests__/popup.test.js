@@ -9,12 +9,12 @@ import {
   __VOCABIFY_DEFINITION__,
   __VOCABIFY_NO_DEFINITION_SELECTED__,
   __VOCABIFY_SAVED_ITEMS__,
-  __VOCABIFY_NO_SAVED_ITEMS__
+  __VOCABIFY_NO_SAVED_ITEMS__,
+  onManualUpdate
 } from '../utils';
+import { on } from 'cluster';
 
 /**
- *
- * Edit the word or definition directly in the popup
  *
  * Save the word and defintion into chrome storage, only if both exist
  *
@@ -39,7 +39,7 @@ describe('getHighlightedText tests - note: JSDOM does not support window.getSele
     });
 
     let result = getHighlightedText();
-    expect(window.getSelection.mock.calls.length).toBe(1);
+    expect(window.getSelection.mock.calls).toHaveLength(1);
     expect(result.data).toBe(MOCKED_GET_SELECTION_RESPONSE);
     expect(result.action).toBe(__VOCABIFY_SET_SELECTED_TEXT__);
   });
@@ -54,7 +54,7 @@ describe('getHighlightedText tests - note: JSDOM does not support window.getSele
     });
 
     let result = getHighlightedText();
-    expect(window.getSelection.mock.calls.length).toBe(1);
+    expect(window.getSelection.mock.calls).toHaveLength(1);
     expect(result).toBe(false);
 
     window.getSelection = jest.fn().mockImplementation(function() {
@@ -66,7 +66,7 @@ describe('getHighlightedText tests - note: JSDOM does not support window.getSele
     });
 
     result = getHighlightedText();
-    expect(window.getSelection.mock.calls.length).toBe(1);
+    expect(window.getSelection.mock.calls).toHaveLength(1);
     expect(result).toBe(false);
 
     window.getSelection = jest.fn().mockImplementation(function() {
@@ -78,7 +78,7 @@ describe('getHighlightedText tests - note: JSDOM does not support window.getSele
     });
 
     result = getHighlightedText();
-    expect(window.getSelection.mock.calls.length).toBe(1);
+    expect(window.getSelection.mock.calls).toHaveLength(1);
     expect(result.data).toBe('aa');
   });
 
@@ -97,7 +97,7 @@ describe('getHighlightedText tests - note: JSDOM does not support window.getSele
     });
 
     let result = getHighlightedText();
-    expect(window.getSelection.mock.calls.length).toBe(1);
+    expect(window.getSelection.mock.calls).toHaveLength(1);
     expect(result).toBe(false);
 
     highlighted = '';
@@ -114,7 +114,7 @@ describe('getHighlightedText tests - note: JSDOM does not support window.getSele
     });
 
     result = getHighlightedText();
-    expect(window.getSelection.mock.calls.length).toBe(1);
+    expect(window.getSelection.mock.calls).toHaveLength(1);
     expect(result.data).toBe(highlighted);
   });
 });
@@ -188,7 +188,7 @@ describe(`background is the middleman -
 
     let result = background.onRequestForSelectedText(msg, callback);
 
-    expect(callback.mock.calls.length).toBe(1);
+    expect(callback.mock.calls).toHaveLength(1);
     expect(callback.mock.results[0].value.data).toBe(highlighted);
     expect(result).toBe('');
   });
@@ -202,7 +202,7 @@ describe(`background is the middleman -
 
     let result = background.onRequestForSelectedText(msg, callback);
 
-    expect(callback.mock.calls.length).toBe(0);
+    expect(callback.mock.calls).toHaveLength(0);
     expect(result).toBe('');
   });
 
@@ -215,7 +215,7 @@ describe(`background is the middleman -
 
     let result = background.onRequestForSelectedText(msg, callback);
 
-    expect(callback.mock.calls.length).toBe(0);
+    expect(callback.mock.calls).toHaveLength(0);
     expect(result).toBe('');
   });
 });
@@ -322,6 +322,117 @@ describe(`Popup tests -
     });
 
     expect(savedItems).toEqual(items);
+
+  });
+});
+
+describe('test', function() {
+
+  it('...should not update if onFocus has not first been called before onBlur is called', async function() {
+
+    let text = 'Word';
+    let key = __VOCABIFY_WORD__;
+    let p = document.createElement('p');
+    let fallback = __VOCABIFY_NO_WORD_SELECTED__;
+    let callback = jest.fn(function(a, b) {
+      return b;
+    });
+
+    let result = await onManualUpdate.onBlur(text, key, p, fallback, callback);
+    expect(result).toBe(false);
+
+    onManualUpdate.onFocus();
+    result = await onManualUpdate.onBlur(text, key, p, fallback, callback);
+    expect(result).toBeTruthy();
+
+    result = await onManualUpdate.onBlur(text, key, p, fallback, callback);
+    expect(result).toBe(false);
+
+  });
+
+  it('...should update if a word between 2 and 400 characters is in the text field', async function() {
+    
+    onManualUpdate.onFocus();
+
+    let text = 'Word';
+    let key = __VOCABIFY_WORD__;
+    let p = document.createElement('p');
+    let fallback = __VOCABIFY_NO_WORD_SELECTED__;
+    let callback = jest.fn(function(a, b) {
+      return b;
+    });
+    let result = await onManualUpdate.onBlur(text, key, p, fallback, callback);
+
+    expect(callback.mock.calls).toHaveLength(1);
+    expect(callback.mock.results[0].value).toBe(text);
+    expect(result).toBe(text);
+    expect(p.textContent).toBe('');
+
+  });
+
+  it('...should update with an empty string if a word less than 2 or more than 400 characters is in the text field', async function() {
+    
+    onManualUpdate.onFocus();
+    
+    let text = '';
+    let key = __VOCABIFY_WORD__;
+    let p = document.createElement('p');
+    let fallback = __VOCABIFY_NO_WORD_SELECTED__;
+    let callback = jest.fn(function(a, b) {
+      return b;
+    });
+    let result = await onManualUpdate.onBlur(text, key, p, fallback, callback);
+
+    expect(callback.mock.calls).toHaveLength(1);
+    expect(callback.mock.results[0].value).toBe('');
+    expect(result).toBe(text);
+    expect(p.textContent).toBe(fallback);
+
+    text = '';
+    for(let i = 0; i < 401; i++) {
+      text += 'a';
+    }
+
+    fallback = __VOCABIFY_NO_DEFINITION_SELECTED__;
+
+    onManualUpdate.onFocus();
+    result = await onManualUpdate.onBlur(text, key, p, fallback, callback);
+
+    expect(callback.mock.calls).toHaveLength(2);
+    expect(callback.mock.results[1].value).toBe('');
+    expect(result).toBe('');
+    expect(p.textContent).toBe(fallback);
+
+  });
+
+  it('...should update with an empty string if a default word is in the text field', async function() {
+    
+    onManualUpdate.onFocus();
+    
+    let text = __VOCABIFY_NO_WORD_SELECTED__;
+    let key = __VOCABIFY_WORD__;
+    let p = document.createElement('p');
+    let fallback = __VOCABIFY_NO_WORD_SELECTED__;
+    let callback = jest.fn(function(a, b) {
+      return b;
+    });
+    let result = await onManualUpdate.onBlur(text, key, p, fallback, callback);
+
+    expect(callback.mock.calls).toHaveLength(1);
+    expect(callback.mock.results[0].value).toBe('');
+    expect(result).toBe('');
+    expect(p.textContent).toBe(fallback);
+
+    text = __VOCABIFY_NO_DEFINITION_SELECTED__;
+    fallback = __VOCABIFY_NO_DEFINITION_SELECTED__;
+
+    onManualUpdate.onFocus();
+    result = await onManualUpdate.onBlur(text, key, p, __VOCABIFY_NO_DEFINITION_SELECTED__, callback);
+
+    expect(callback.mock.calls).toHaveLength(2);
+    expect(callback.mock.results[1].value).toBe('');
+    expect(result).toBe('');
+    expect(p.textContent).toBe(fallback);
 
   });
 });
