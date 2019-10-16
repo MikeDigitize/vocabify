@@ -11,9 +11,13 @@ import {
   onManualUpdate,
   isEmptyObject,
   isEmptyString,
+  isFourHundredCharactersOrLess,
+  isTwoCharactersOrMore,
   addToItems,
   saveItem,
-  setPlaceholderText
+  setPlaceholderText,
+  toEmptyString,
+  reset
 } from './utils';
 
 const word = document.getElementById('word');
@@ -23,13 +27,12 @@ let wordText;
 let definitionText;
 
 async function popupInitialise() {
-
   wordText = await getVocabifyData(__VOCABIFY_WORD__);
   definitionText = await getVocabifyData(__VOCABIFY_DEFINITION__);
 
-  wordText = getValueOrFallback({ 
-    response: wordText, 
-    key: __VOCABIFY_WORD__, 
+  wordText = getValueOrFallback({
+    response: wordText,
+    key: __VOCABIFY_WORD__,
     fallback: __VOCABIFY_NO_WORD_SELECTED__
   });
 
@@ -41,7 +44,6 @@ async function popupInitialise() {
 
   setPlaceholderText(word, wordText);
   setPlaceholderText(definition, definitionText);
-
 }
 
 document.getElementById('getWord').addEventListener('click', function() {
@@ -63,23 +65,32 @@ document.getElementById('vocabify').addEventListener('click', function() {
 });
 
 document.getElementById('save').addEventListener('click', async function() {
-  
   let items = await getVocabifyData(__VOCABIFY_SAVED_ITEMS__);
 
   items = getValueOrFallback({
-    response: items, 
-    key: __VOCABIFY_SAVED_ITEMS__, 
+    response: items,
+    key: __VOCABIFY_SAVED_ITEMS__,
     fallback: []
   });
 
   let currentWord = await getVocabifyData(__VOCABIFY_WORD__);
   let currentDefinition = await getVocabifyData(__VOCABIFY_DEFINITION__);
 
-  if(isEmptyObject(currentWord) || isEmptyString(currentWord[__VOCABIFY_WORD__])) {
+  if (
+    isEmptyObject(currentWord) ||
+    isEmptyString(currentWord[__VOCABIFY_WORD__]) ||
+    !isFourHundredCharactersOrLess(currentWord[__VOCABIFY_WORD__]) ||
+    !isTwoCharactersOrMore(currentWord[__VOCABIFY_WORD__])
+  ) {
     return;
   }
 
-  if(isEmptyObject(currentWord) || isEmptyString(currentDefinition[__VOCABIFY_DEFINITION__])) {
+  if (
+    isEmptyObject(currentDefinition) ||
+    isEmptyString(currentDefinition[__VOCABIFY_DEFINITION__]) ||
+    !isFourHundredCharactersOrLess(currentDefinition[__VOCABIFY_DEFINITION__]) ||
+    !isTwoCharactersOrMore(currentDefinition[__VOCABIFY_DEFINITION__])
+  ) {
     return;
   }
 
@@ -91,26 +102,34 @@ document.getElementById('save').addEventListener('click', async function() {
   items = addToItems(item, items);
   await saveItem(__VOCABIFY_SAVED_ITEMS__, items, setVocabifyData);
 
-  wordText = '';
-  definitionText = '';
+  wordText = toEmptyString(wordText);
+  definitionText = toEmptyString(definitionText);
 
-  await setVocabifyData(__VOCABIFY_WORD__, wordText);
-  await setVocabifyData(__VOCABIFY_DEFINITION__, definitionText);
-
-  setPlaceholderText(word, __VOCABIFY_NO_WORD_SELECTED__);
-  setPlaceholderText(definition, __VOCABIFY_NO_DEFINITION_SELECTED__);
-
+  await reset(word, definition, setVocabifyData);
+  
 });
 
 word.addEventListener('input', onManualUpdate.setEditState);
 definition.addEventListener('input', onManualUpdate.setEditState);
 
 word.addEventListener('blur', async function() {
-  await onManualUpdate.onBlur(word.textContent, __VOCABIFY_WORD__, word, __VOCABIFY_NO_WORD_SELECTED__, setVocabifyData);
+  await onManualUpdate.onBlur(
+    word.textContent,
+    __VOCABIFY_WORD__,
+    word,
+    __VOCABIFY_NO_WORD_SELECTED__,
+    setVocabifyData
+  );
 });
 
 definition.addEventListener('blur', async function() {
-  await onManualUpdate.onBlur(definition.textContent, __VOCABIFY_DEFINITION__, definition, __VOCABIFY_NO_DEFINITION_SELECTED__, setVocabifyData);
+  await onManualUpdate.onBlur(
+    definition.textContent,
+    __VOCABIFY_DEFINITION__,
+    definition,
+    __VOCABIFY_NO_DEFINITION_SELECTED__,
+    setVocabifyData
+  );
 });
 
 popupInitialise();

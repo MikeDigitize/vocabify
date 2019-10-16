@@ -13,17 +13,13 @@ import {
   onManualUpdate,
   isEmptyObject,
   isEmptyString,
+  isFourHundredCharactersOrLess,
+  isTwoCharactersOrMore,
   addToItems,
-  saveItem
+  saveItem,
+  toEmptyString,
+  reset
 } from '../utils';
-
-/**
- *
- * Save the word and defintion into chrome storage, only if both exist
- *
- * Launch vocabify
- *
- */
 
 describe('getHighlightedText tests - note: JSDOM does not support window.getSelection', function() {
   const MOCKED_GET_SELECTION_RESPONSE = 'Some highlighted text';
@@ -441,7 +437,9 @@ describe(`Save tests - save should only occur if -
     the item in storage is not an empty object (i.e. not used the popup at all)
     the item is not an empty string
     the item is not the default
-    the item is not less than 2 or more than 400 characters`, function() {
+    the item is not less than 2 or more than 400 characters.
+    If successfully saved the word and definition should return to an empty string
+    and the defaults displayed to the user`, function() {
   it(`...isEmptyObject should return true when empty and false when not`, function() {
     let obj = {};
     expect(isEmptyObject(obj)).toBeTruthy();
@@ -465,6 +463,26 @@ describe(`Save tests - save should only occur if -
     expect(addToItems(item, items)).toMatchObject([item]);
   });
 
+  it('...isFourHundredCharactersOrLess should return true if string is less than 400 or false if more', function() {
+    let str = '';
+    for (let i = 0; i < 400; i++) {
+      str += 'a';
+    }
+    expect(isFourHundredCharactersOrLess(str)).toBe(true);
+    str = '';
+    for (let i = 0; i < 401; i++) {
+      str += 'a';
+    }
+    expect(isFourHundredCharactersOrLess(str)).toBe(false);
+  });
+
+  it('...isTwoCharactersOrMore should return true if string is more than 2 or characters or false if less', function() {
+    let str = 'aa'
+    expect(isTwoCharactersOrMore(str)).toBe(true);
+    str = '';
+    expect(isTwoCharactersOrMore(str)).toBe(false);
+  });
+
   it(`...saveItem should add word and definition as an object to the array and save to storage`, async function() {
     let key = __VOCABIFY_SAVED_ITEMS__;
     let items = [
@@ -485,4 +503,33 @@ describe(`Save tests - save should only occur if -
     expect(callback.mock.results[0].value).toMatchObject(response);
     expect(result).toMatchObject(response);
   });
+
+  it('...reset should reset the word and definition, save both and set placeholder text to default', async function() {
+
+    let callback = jest.fn(function(key, value) {
+      return value;
+    });
+
+    let word = 'Word';
+    let definition = 'A single distinct meaningful element of speech or writing';
+
+    let pWord = document.createElement('p');
+    pWord.textContent = word;
+
+    let pDefinition = document.createElement('p');
+    pDefinition.textContent = definition;
+
+    expect(toEmptyString(word)).toBe('');
+    expect(toEmptyString(definition)).toBe('');
+
+    await reset(pWord, pDefinition, callback);
+
+    expect(callback.mock.calls).toHaveLength(2);
+    expect(callback.mock.results[0].value).toBe('');
+    expect(callback.mock.results[1].value).toBe('');
+    expect(pWord.textContent).toBe(__VOCABIFY_NO_WORD_SELECTED__);
+    expect(pDefinition.textContent).toBe(__VOCABIFY_NO_DEFINITION_SELECTED__);
+
+  });
+
 });

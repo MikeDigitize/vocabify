@@ -39,6 +39,21 @@ export function setPlaceholderText(placeholder, text) {
   placeholder.textContent = text;
 }
 
+export function toEmptyString(str) {
+  str = '';
+  return str;
+}
+
+export async function reset(wordElement, definitionElement, callback) {
+
+  await callback(__VOCABIFY_WORD__, '');
+  await callback(__VOCABIFY_DEFINITION__, '');
+
+  setPlaceholderText(wordElement, __VOCABIFY_NO_WORD_SELECTED__);
+  setPlaceholderText(definitionElement, __VOCABIFY_NO_DEFINITION_SELECTED__);
+
+}
+
 export function getSelectedText() {
   return new Promise(function(resolve) {
     chrome.runtime.sendMessage({ action: __VOCABIFY_GET_SELECTED_TEXT__ }, function(response) {
