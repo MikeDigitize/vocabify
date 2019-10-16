@@ -1,11 +1,13 @@
-export const __VOCABIFY_WORD__ = '__VOCABIFY_WORD__';
-export const __VOCABIFY_DEFINITION__ = '__VOCABIFY_DEFINITION__';
-export const __VOCABIFY_SAVED_ITEMS__ = '__VOCABIFY_SAVED_ITEMS__';
-export const __VOCABIFY_NO_WORD_SELECTED__ = 'Choose a word';
-export const __VOCABIFY_NO_DEFINITION_SELECTED__ = 'Find a definiton';
-export const __VOCABIFY_NO_SAVED_ITEMS__ = 'Find a definiton';
-export const __VOCABIFY_SET_SELECTED_TEXT__ = 'SET_SELECTED_TEXT';
-export const __VOCABIFY_GET_SELECTED_TEXT__ = 'GET_SELECTED_TEXT';
+import { 
+  __VOCABIFY_NO_WORD_SELECTED__,
+  __VOCABIFY_WORD__,
+  __VOCABIFY_DEFINITION__,
+  __VOCABIFY_NO_DEFINITION_SELECTED__,
+  __VOCABIFY_SAVED_ITEMS__,
+  __VOCABIFY_NO_SAVED_ITEMS__,
+  __VOCABIFY_SET_SELECTED_TEXT__,
+  __VOCABIFY_GET_SELECTED_TEXT__
+} from './constants';
 
 export function isDefaultText(text) {
   return text === __VOCABIFY_NO_WORD_SELECTED__ || text === __VOCABIFY_NO_DEFINITION_SELECTED__;
@@ -44,24 +46,6 @@ export function toEmptyString(str) {
   return str;
 }
 
-export async function reset(wordElement, definitionElement, callback) {
-
-  await callback(__VOCABIFY_WORD__, '');
-  await callback(__VOCABIFY_DEFINITION__, '');
-
-  setPlaceholderText(wordElement, __VOCABIFY_NO_WORD_SELECTED__);
-  setPlaceholderText(definitionElement, __VOCABIFY_NO_DEFINITION_SELECTED__);
-
-}
-
-export function getSelectedText() {
-  return new Promise(function(resolve) {
-    chrome.runtime.sendMessage({ action: __VOCABIFY_GET_SELECTED_TEXT__ }, function(response) {
-      resolve(response.data);
-    });
-  });
-}
-
 export function setVocabifyData(key, value) {
   return new Promise(function(resolve) {
     let store = {};
@@ -80,7 +64,15 @@ export function getVocabifyData(key) {
   });
 }
 
-export function getHighlightedText() {
+export function getSelectedTextFromBackground() {
+  return new Promise(function(resolve) {
+    chrome.runtime.sendMessage({ action: __VOCABIFY_GET_SELECTED_TEXT__ }, function(response) {
+      resolve(response.data);
+    });
+  });
+}
+
+export function getHighlightedTextFromActiveTab() {
   let highlighted = window.getSelection().toString();
   if (!isFourHundredCharactersOrLess(highlighted) || !isTwoCharactersOrMore(highlighted)) {
     return false;
@@ -88,7 +80,7 @@ export function getHighlightedText() {
   return { action: __VOCABIFY_SET_SELECTED_TEXT__, data: highlighted };
 }
 
-export function getValueOrFallback({response, key, fallback}) {
+export function getValueOrFallbackFromStore({response, key, fallback}) {
   if (!Object.keys(response).length || response[key] === '') {
     response = fallback;
   } else {
@@ -97,7 +89,18 @@ export function getValueOrFallback({response, key, fallback}) {
   return response;
 }
 
-export const background = (function() {
+
+export async function resetPopupAfterSave(wordElement, definitionElement, callback) {
+
+  await callback(__VOCABIFY_WORD__, '');
+  await callback(__VOCABIFY_DEFINITION__, '');
+
+  setPlaceholderText(wordElement, __VOCABIFY_NO_WORD_SELECTED__);
+  setPlaceholderText(definitionElement, __VOCABIFY_NO_DEFINITION_SELECTED__);
+
+}
+
+export const backgroundUtils = (function() {
   let selectedText = '';
   return {
     onNewSelectedText(msg) {
@@ -106,7 +109,7 @@ export const background = (function() {
       }
       return selectedText;
     },
-    onRequestForSelectedText(msg, callback) {
+    onRequestForSelectedText(msg, _ignore, callback) {
       if (msg.action === __VOCABIFY_GET_SELECTED_TEXT__ && selectedText !== '') {
         callback({ data: selectedText });
         selectedText = '';
@@ -116,7 +119,7 @@ export const background = (function() {
   } 
 })();
 
-export const onManualUpdate = (function() {
+export const onPopupManualTextUpdate = (function() {
   let isEditing = false;
   return {
     setEditState(state = true) {

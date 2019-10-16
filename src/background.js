@@ -1,9 +1,8 @@
-import { background } from './utils';
+import { backgroundUtils } from './utils';
+let { onNewSelectedText, onRequestForSelectedText } = backgroundUtils;
 
 chrome.runtime.onConnect.addListener(function(port) {
-  port.onMessage.addListener(background.onNewSelectedText);
+  port.onMessage.addListener(onNewSelectedText);
 });
 
-chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
-  background.onRequestForSelectedText(msg, sendResponse);
-});
+chrome.runtime.onMessage.addListener(onRequestForSelectedText);
