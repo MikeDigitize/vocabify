@@ -80,8 +80,8 @@ export function getHighlightedTextFromActiveTab() {
   return { action: __VOCABIFY_SET_SELECTED_TEXT__, data: highlighted };
 }
 
-export function getValueOrFallbackFromStore({response, key, fallback}) {
-  if (!Object.keys(response).length || response[key] === '') {
+export function getValueFromStoreResponse({response, key, fallback}) {
+  if (isEmptyObject(response) || isEmptyString(response[key])) {
     response = fallback;
   } else {
     response = response[key];
@@ -90,13 +90,13 @@ export function getValueOrFallbackFromStore({response, key, fallback}) {
 }
 
 
-export async function resetPopupAfterSave(wordElement, definitionElement, callback) {
+export async function resetPopupAfterSave(word, definition, callback) {
 
   await callback(__VOCABIFY_WORD__, '');
   await callback(__VOCABIFY_DEFINITION__, '');
 
-  setPlaceholderText(wordElement, __VOCABIFY_NO_WORD_SELECTED__);
-  setPlaceholderText(definitionElement, __VOCABIFY_NO_DEFINITION_SELECTED__);
+  setPlaceholderText(word, __VOCABIFY_NO_WORD_SELECTED__);
+  setPlaceholderText(definition, __VOCABIFY_NO_DEFINITION_SELECTED__);
 
 }
 

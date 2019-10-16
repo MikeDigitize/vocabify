@@ -2,7 +2,7 @@ import {
   getSelectedTextFromBackground,
   setVocabifyData,
   getVocabifyData,
-  getValueOrFallbackFromStore,
+  getValueFromStoreResponse,
   onPopupManualTextUpdate,
   isEmptyObject,
   isEmptyString,
@@ -33,13 +33,13 @@ async function popupInitialise() {
   wordText = await getVocabifyData(__VOCABIFY_WORD__);
   definitionText = await getVocabifyData(__VOCABIFY_DEFINITION__);
 
-  wordText = getValueOrFallbackFromStore({
+  wordText = getValueFromStoreResponse({
     response: wordText,
     key: __VOCABIFY_WORD__,
     fallback: __VOCABIFY_NO_WORD_SELECTED__
   });
 
-  definitionText = getValueOrFallbackFromStore({
+  definitionText = getValueFromStoreResponse({
     response: definitionText,
     key: __VOCABIFY_DEFINITION__,
     fallback: __VOCABIFY_NO_DEFINITION_SELECTED__
@@ -70,7 +70,7 @@ document.getElementById('vocabify').addEventListener('click', function() {
 document.getElementById('save').addEventListener('click', async function() {
   let items = await getVocabifyData(__VOCABIFY_SAVED_ITEMS__);
 
-  items = getValueOrFallbackFromStore({
+  items = getValueFromStoreResponse({
     response: items,
     key: __VOCABIFY_SAVED_ITEMS__,
     fallback: []
