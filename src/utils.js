@@ -37,7 +37,7 @@ export function addToItems({ word, definition, items }) {
   return items.concat(item);
 }
 
-export async function saveItem(key, items, callback) {
+export async function saveItem({ key, items, callback }) {
   return await callback(key, items);
 }
 
@@ -94,7 +94,7 @@ export function getValueFromStoreResponse({response, key, fallback}) {
 }
 
 
-export async function resetPopupAfterSave(word, definition, callback) {
+export async function resetPopupAfterSave({ word, definition, callback }) {
 
   await callback(__VOCABIFY_WORD__, '');
   await callback(__VOCABIFY_DEFINITION__, '');
@@ -113,7 +113,7 @@ export const backgroundUtils = (function() {
       }
       return selectedText;
     },
-    onRequestForSelectedText(msg, _ignore, callback) {
+    onRequestForSelectedText({ msg, _ignore, callback }) {
       if (msg.action === __VOCABIFY_GET_SELECTED_TEXT__ && selectedText !== '') {
         callback({ data: selectedText });
         selectedText = '';
@@ -132,7 +132,7 @@ export const onPopupManualTextUpdate = (function() {
     onFocus() {
       this.setEditState();
     },
-    async onBlur(text, key, element, fallback, callback) {
+    async onBlur({ text, key, element, fallback, callback }) {
       if (isEditing) {
         this.setEditState(false);
         if(!isDefaultText(text) && isTwoCharactersOrMore(text) && isFourHundredCharactersOrLess(text)) {

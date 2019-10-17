@@ -20,8 +20,8 @@ import {
   __VOCABIFY_DEFINITION__,
   __VOCABIFY_SAVED_ITEMS__,
   __VOCABIFY_NO_WORD_SELECTED__,
-  __VOCABIFY_NO_DEFINITION_SELECTED__,
-} from './constants'
+  __VOCABIFY_NO_DEFINITION_SELECTED__
+} from './constants';
 
 const word = document.getElementById('word');
 const definition = document.getElementById('definition');
@@ -97,37 +97,45 @@ document.getElementById('save').addEventListener('click', async function() {
     return;
   }
 
-  let updatedItems = addToItems({ word: currentWord[__VOCABIFY_WORD__], definition: currentDefinition[__VOCABIFY_DEFINITION__], items });
-  await saveItem(__VOCABIFY_SAVED_ITEMS__, updatedItems, setVocabifyData);
+  let updatedItems = addToItems({
+    word: currentWord[__VOCABIFY_WORD__],
+    definition: currentDefinition[__VOCABIFY_DEFINITION__],
+    items
+  });
+
+  await saveItem({
+    key: __VOCABIFY_SAVED_ITEMS__,
+    items: updatedItems,
+    callback: setVocabifyData
+  });
 
   wordText = toEmptyString(wordText);
   definitionText = toEmptyString(definitionText);
 
-  await resetPopupAfterSave(word, definition, setVocabifyData);
-  
+  await resetPopupAfterSave({ word, definition, callback: setVocabifyData });
 });
 
 word.addEventListener('input', onPopupManualTextUpdate.setEditState);
 definition.addEventListener('input', onPopupManualTextUpdate.setEditState);
 
 word.addEventListener('blur', async function() {
-  await onPopupManualTextUpdate.onBlur(
-    word.textContent,
-    __VOCABIFY_WORD__,
-    word,
-    __VOCABIFY_NO_WORD_SELECTED__,
-    setVocabifyData
-  );
+  await onPopupManualTextUpdate.onBlur({
+    text: word.textContent,
+    key: __VOCABIFY_WORD__,
+    element: word,
+    fallback: __VOCABIFY_NO_WORD_SELECTED__,
+    callback: setVocabifyData
+  });
 });
 
 definition.addEventListener('blur', async function() {
-  await onPopupManualTextUpdate.onBlur(
-    definition.textContent,
-    __VOCABIFY_DEFINITION__,
-    definition,
-    __VOCABIFY_NO_DEFINITION_SELECTED__,
-    setVocabifyData
-  );
+  await onPopupManualTextUpdate.onBlur({
+    text: definition.textContent,
+    key: __VOCABIFY_DEFINITION__,
+    element: definition,
+    fallback: __VOCABIFY_NO_DEFINITION_SELECTED__,
+    callback: setVocabifyData
+  });
 });
 
 popupInitialise();

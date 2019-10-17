@@ -22,8 +22,6 @@ import {
   __VOCABIFY_NO_SAVED_ITEMS__
 } from '../constants';
 
-
-
 describe(`Popup tests - 
         getValueFromStoreResponse is called with any word, definition and result values saved in storage (even when no results) 
         to populate the popup with upon opening.
@@ -140,14 +138,20 @@ describe(`onPopupManualTextUpdate tests - handle the manual editing of the word 
       return value;
     });
 
-    let result = await onPopupManualTextUpdate.onBlur(text, key, p, fallback, callback);
+    let result = await onPopupManualTextUpdate.onBlur({
+      text,
+      key,
+      element: p,
+      fallback,
+      callback
+    });
     expect(result).toBe(false);
 
     onPopupManualTextUpdate.onFocus();
-    result = await onPopupManualTextUpdate.onBlur(text, key, p, fallback, callback);
+    result = await onPopupManualTextUpdate.onBlur({ text, key, element: p, fallback, callback });
     expect(result).toBeTruthy();
 
-    result = await onPopupManualTextUpdate.onBlur(text, key, p, fallback, callback);
+    result = await onPopupManualTextUpdate.onBlur({ text, key, element: p, fallback, callback });
     expect(result).toBe(false);
   });
 
@@ -161,7 +165,13 @@ describe(`onPopupManualTextUpdate tests - handle the manual editing of the word 
     let callback = jest.fn(function(key, value) {
       return value;
     });
-    let result = await onPopupManualTextUpdate.onBlur(text, key, p, fallback, callback);
+    let result = await onPopupManualTextUpdate.onBlur({
+      text,
+      key,
+      element: p,
+      fallback,
+      callback
+    });
 
     expect(callback.mock.calls).toHaveLength(1);
     expect(callback.mock.results[0].value).toBe(text);
@@ -179,7 +189,13 @@ describe(`onPopupManualTextUpdate tests - handle the manual editing of the word 
     let callback = jest.fn(function(key, value) {
       return value;
     });
-    let result = await onPopupManualTextUpdate.onBlur(text, key, p, fallback, callback);
+    let result = await onPopupManualTextUpdate.onBlur({
+      text,
+      key,
+      element: p,
+      fallback,
+      callback
+    });
 
     expect(callback.mock.calls).toHaveLength(1);
     expect(callback.mock.results[0].value).toBe('');
@@ -194,7 +210,7 @@ describe(`onPopupManualTextUpdate tests - handle the manual editing of the word 
     fallback = __VOCABIFY_NO_DEFINITION_SELECTED__;
 
     onPopupManualTextUpdate.onFocus();
-    result = await onPopupManualTextUpdate.onBlur(text, key, p, fallback, callback);
+    result = await onPopupManualTextUpdate.onBlur({ text, key, element: p, fallback, callback });
 
     expect(callback.mock.calls).toHaveLength(2);
     expect(callback.mock.results[1].value).toBe('');
@@ -212,7 +228,13 @@ describe(`onPopupManualTextUpdate tests - handle the manual editing of the word 
     let callback = jest.fn(function(key, value) {
       return value;
     });
-    let result = await onPopupManualTextUpdate.onBlur(text, key, p, fallback, callback);
+    let result = await onPopupManualTextUpdate.onBlur({
+      text,
+      key,
+      element: p,
+      fallback,
+      callback
+    });
 
     expect(callback.mock.calls).toHaveLength(1);
     expect(callback.mock.results[0].value).toBe('');
@@ -223,13 +245,13 @@ describe(`onPopupManualTextUpdate tests - handle the manual editing of the word 
     fallback = __VOCABIFY_NO_DEFINITION_SELECTED__;
 
     onPopupManualTextUpdate.onFocus();
-    result = await onPopupManualTextUpdate.onBlur(
+    result = await onPopupManualTextUpdate.onBlur({
       text,
       key,
-      p,
-      __VOCABIFY_NO_DEFINITION_SELECTED__,
+      element: p,
+      fallback: __VOCABIFY_NO_DEFINITION_SELECTED__,
       callback
-    );
+    });
 
     expect(callback.mock.calls).toHaveLength(2);
     expect(callback.mock.results[1].value).toBe('');
@@ -263,7 +285,7 @@ describe(`Save tests - save should only occur if -
     let word = 'Word';
     let definition = 'A single distinct meaningful element of speech or writing';
     let items = [];
-    let result = addToItems({ word, definition, items});
+    let result = addToItems({ word, definition, items });
     expect(result).toHaveLength(1);
     expect(result[0]).toHaveProperty('word', word);
     expect(result[0]).toHaveProperty('definition', definition);
@@ -283,7 +305,7 @@ describe(`Save tests - save should only occur if -
   });
 
   it('...isTwoCharactersOrMore should return true if string is more than 2 or characters or false if less', function() {
-    let str = 'aa'
+    let str = 'aa';
     expect(isTwoCharactersOrMore(str)).toBe(true);
     str = '';
     expect(isTwoCharactersOrMore(str)).toBe(false);
@@ -301,7 +323,7 @@ describe(`Save tests - save should only occur if -
       obj[key] = value;
       return obj;
     });
-    let result = await saveItem(key, items, callback);
+    let result = await saveItem({ key, items, callback });
 
     expect(callback.mock.calls).toHaveLength(1);
     expect(callback.mock.calls[0][0]).toBe(key);
@@ -311,7 +333,6 @@ describe(`Save tests - save should only occur if -
   });
 
   it('...resetPopupAfterSave should resetPopupAfterSave the word and definition, save both and set placeholder text to default', async function() {
-
     let callback = jest.fn(function(key, value) {
       return value;
     });
@@ -328,14 +349,12 @@ describe(`Save tests - save should only occur if -
     expect(toEmptyString(word)).toBe('');
     expect(toEmptyString(definition)).toBe('');
 
-    await resetPopupAfterSave(pWord, pDefinition, callback);
+    await resetPopupAfterSave({ word: pWord, definition: pDefinition, callback });
 
     expect(callback.mock.calls).toHaveLength(2);
     expect(callback.mock.results[0].value).toBe('');
     expect(callback.mock.results[1].value).toBe('');
     expect(pWord.textContent).toBe(__VOCABIFY_NO_WORD_SELECTED__);
     expect(pDefinition.textContent).toBe(__VOCABIFY_NO_DEFINITION_SELECTED__);
-
   });
-
 });
