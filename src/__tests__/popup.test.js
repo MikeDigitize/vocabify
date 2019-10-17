@@ -260,12 +260,13 @@ describe(`Save tests - save should only occur if -
   });
 
   it('...addToItems should add an item to the array and return it', function() {
-    let item = {
-      word: 'Word',
-      definition: 'A single distinct meaningful element of speech or writing'
-    };
+    let word = 'Word';
+    let definition = 'A single distinct meaningful element of speech or writing';
     let items = [];
-    expect(addToItems(item, items)).toMatchObject([item]);
+    let result = addToItems({ word, definition, items});
+    expect(result).toHaveLength(1);
+    expect(result[0]).toHaveProperty('word', word);
+    expect(result[0]).toHaveProperty('definition', definition);
   });
 
   it('...isFourHundredCharactersOrLess should return true if string is less than 400 or false if more', function() {

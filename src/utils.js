@@ -29,7 +29,11 @@ export function isEmptyString(str) {
   return str.length === 0;
 }
 
-export function addToItems(item, items) {
+export function addToItems({ word, definition, items }) {
+  let item = {
+    word,
+    definition
+  };
   return items.concat(item);
 }
 

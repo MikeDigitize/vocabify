@@ -68,10 +68,10 @@ document.getElementById('vocabify').addEventListener('click', function() {
 });
 
 document.getElementById('save').addEventListener('click', async function() {
-  let items = await getVocabifyData(__VOCABIFY_SAVED_ITEMS__);
+  let savedItems = await getVocabifyData(__VOCABIFY_SAVED_ITEMS__);
 
-  items = getValueFromStoreResponse({
-    response: items,
+  let items = getValueFromStoreResponse({
+    response: savedItems,
     key: __VOCABIFY_SAVED_ITEMS__,
     fallback: []
   });
@@ -97,13 +97,8 @@ document.getElementById('save').addEventListener('click', async function() {
     return;
   }
 
-  let item = {
-    word: currentWord[__VOCABIFY_WORD__],
-    definition: currentDefinition[__VOCABIFY_DEFINITION__]
-  };
-
-  items = addToItems(item, items);
-  await saveItem(__VOCABIFY_SAVED_ITEMS__, items, setVocabifyData);
+  let updatedItems = addToItems({ word: currentWord[__VOCABIFY_WORD__], definition: currentDefinition[__VOCABIFY_DEFINITION__], items });
+  await saveItem(__VOCABIFY_SAVED_ITEMS__, updatedItems, setVocabifyData);
 
   wordText = toEmptyString(wordText);
   definitionText = toEmptyString(definitionText);
