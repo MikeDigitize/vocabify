@@ -80,7 +80,7 @@ describe(
 
     // callback mock signature is msg, sender, sendResponse - sender is unused
     let sender;
-    let result = onRequestForSelectedText({ msg, ignore: sender, callback });
+    let result = onRequestForSelectedText(msg, callback);
 
     expect(callback.mock.calls).toHaveLength(1);
     expect(callback.mock.results[0].value.data).toBe(highlighted);
@@ -94,7 +94,7 @@ describe(
 
     let callback = jest.fn();
     let sender;
-    let result = onRequestForSelectedText({ msg, ignore: sender, callback });
+    let result = onRequestForSelectedText(msg, callback);
 
     expect(callback.mock.calls).toHaveLength(0);
     expect(result).toBe('');
@@ -107,7 +107,7 @@ describe(
 
     let callback = jest.fn();
     let sender;
-    let result = onRequestForSelectedText({ msg, ignore: sender, callback });
+    let result = onRequestForSelectedText(msg, callback);
 
     expect(callback.mock.calls).toHaveLength(0);
     expect(result).toBe('');

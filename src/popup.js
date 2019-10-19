@@ -25,6 +25,8 @@ import {
 
 const word = document.getElementById('word');
 const definition = document.getElementById('definition');
+const wordMessage = document.getElementById('wordMessage');
+const definitionMessage = document.getElementById('definitionMessage');
 
 let wordText;
 let definitionText;
@@ -68,13 +70,6 @@ document.getElementById('vocabify').addEventListener('click', function() {
 });
 
 document.getElementById('save').addEventListener('click', async function() {
-  let savedItems = await getVocabifyData(__VOCABIFY_SAVED_ITEMS__);
-
-  let items = getValueFromStoreResponse({
-    response: savedItems,
-    key: __VOCABIFY_SAVED_ITEMS__,
-    fallback: []
-  });
 
   let currentWord = await getVocabifyData(__VOCABIFY_WORD__);
   let currentDefinition = await getVocabifyData(__VOCABIFY_DEFINITION__);
@@ -85,6 +80,16 @@ document.getElementById('save').addEventListener('click', async function() {
     !isFourHundredCharactersOrLess(currentWord[__VOCABIFY_WORD__]) ||
     !isTwoCharactersOrMore(currentWord[__VOCABIFY_WORD__])
   ) {
+    if (!definitionMessage.classList.contains('animated')) {
+      setPlaceholderText(wordMessage, 'Be sure to choose a word first before saving');
+      wordMessage.classList.add('animated', 'pulse');
+
+      setTimeout(function() {
+        setPlaceholderText(wordMessage, __VOCABIFY_NO_WORD_SELECTED__);
+        wordMessage.classList.remove('animated', 'pulse');
+      }, 2500);
+    }
+
     return;
   }
 
@@ -94,8 +99,26 @@ document.getElementById('save').addEventListener('click', async function() {
     !isFourHundredCharactersOrLess(currentDefinition[__VOCABIFY_DEFINITION__]) ||
     !isTwoCharactersOrMore(currentDefinition[__VOCABIFY_DEFINITION__])
   ) {
+    if (!definitionMessage.classList.contains('animated')) {
+      setPlaceholderText(definitionMessage, 'Be sure to choose a definition first before saving');
+      definitionMessage.classList.add('animated', 'pulse');
+
+      setTimeout(function() {
+        setPlaceholderText(definitionMessage, __VOCABIFY_NO_DEFINITION_SELECTED__);
+        definitionMessage.classList.remove('animated', 'pulse');        
+      }, 2500);
+    }
+
     return;
   }
+
+  let savedItems = await getVocabifyData(__VOCABIFY_SAVED_ITEMS__);
+
+  let items = getValueFromStoreResponse({
+    response: savedItems,
+    key: __VOCABIFY_SAVED_ITEMS__,
+    fallback: []
+  });
 
   let updatedItems = addToItems({
     word: currentWord[__VOCABIFY_WORD__],

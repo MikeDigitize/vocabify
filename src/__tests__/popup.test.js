@@ -8,7 +8,8 @@ import {
   addToItems,
   saveItem,
   toEmptyString,
-  resetPopupAfterSave
+  resetPopupAfterSave,
+  setPlaceholderText
 } from '../utils';
 
 import {

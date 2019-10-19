@@ -113,7 +113,7 @@ export const backgroundUtils = (function() {
       }
       return selectedText;
     },
-    onRequestForSelectedText({ msg, _ignore, callback }) {
+    onRequestForSelectedText( msg, callback ) {
       if (msg.action === __VOCABIFY_GET_SELECTED_TEXT__ && selectedText !== '') {
         callback({ data: selectedText });
         selectedText = '';

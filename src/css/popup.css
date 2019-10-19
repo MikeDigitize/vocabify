@@ -9,6 +9,7 @@ h1 {
 
 h2 {
     font-size: 15px;
+    transition: color 0.5s ease-in-out;
 }
 
 .emphasise {
@@ -65,4 +66,8 @@ i:hover {
 
 #getDefinition {
     font-weight: normal;
+}
+
+.crimson {
+    color: crimson;
 }
