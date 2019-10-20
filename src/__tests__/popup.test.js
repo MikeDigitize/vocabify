@@ -1,16 +1,8 @@
 import {
   getValueFromStoreResponse,
   onPopupManualTextUpdate,
-  isEmptyObject,
-  isEmptyString,
-  isFourHundredCharactersOrLess,
-  isTwoCharactersOrMore,
-  isDefaultText,
-  addToItems,
   saveItem,
-  toEmptyString,
-  resetPopupAfterSave,
-  setPlaceholderText
+  resetPopupAfterSave
 } from '../utils';
 
 import {
@@ -290,65 +282,8 @@ describe(
 });
 
 describe(
-  `The popup lets you save the word and definition.
-    Save should only occur if -
-    the item in storage is not an empty object (i.e. not used the popup at all)
-    the item is not an empty string
-    the item is not the default
-    the item is not less than 2 or more than 400 characters.
-    If successfully saved the word and definition should return to an empty string
-    and the defaults displayed to the user`, function() {
-
-  test(`...isEmptyObject should return true when empty and false when not`, function() {
-    let obj = {};
-    expect(isEmptyObject(obj)).toBeTruthy();
-    obj.items = [];
-    expect(isEmptyObject(obj)).toBeFalsy();
-  });
-
-  test(`...isEmptyString should return true when empty and false when not`, function() {
-    let str = '';
-    expect(isEmptyString(str)).toBeTruthy();
-    str = 'Not empty';
-    expect(isEmptyString(str)).toBeFalsy();
-  });
-
-  test(`...isDefaultText should return true if a string passed matches one of the defaults`, function() {
-    expect(isDefaultText(__VOCABIFY_NO_WORD_SELECTED__)).toBe(true);
-    expect(isDefaultText(__VOCABIFY_NO_DEFINITION_SELECTED__)).toBe(true);
-    expect(isDefaultText(__VOCABIFY_WORD__)).toBe(false);
-    expect(isDefaultText(__VOCABIFY_DEFINITION__)).toBe(false);
-  });
-
-  test('...isFourHundredCharactersOrLess should return true if string is less than 400 or false if more', function() {
-    let str = '';
-    for (let i = 0; i < 400; i++) {
-      str += 'a';
-    }
-    expect(isFourHundredCharactersOrLess(str)).toBe(true);
-    str = '';
-    for (let i = 0; i < 401; i++) {
-      str += 'a';
-    }
-    expect(isFourHundredCharactersOrLess(str)).toBe(false);
-  });
-
-  test('...isTwoCharactersOrMore should return true if string is more than 2 or characters or false if less', function() {
-    let str = 'aa';
-    expect(isTwoCharactersOrMore(str)).toBe(true);
-    str = '';
-    expect(isTwoCharactersOrMore(str)).toBe(false);
-  });
-
-  test('...addToItems should add an item to the array and return it', function() {
-    let word = 'Word';
-    let definition = 'A single distinct meaningful element of speech or writing';
-    let items = [];
-    let result = addToItems({ word, definition, items });
-    expect(result).toHaveLength(1);
-    expect(result[0]).toHaveProperty('word', word);
-    expect(result[0]).toHaveProperty('definition', definition);
-  });
+  `The popup saves the word and definition if both meet the requirements for save.
+    If successfully saved the word and definition should return to an empty string and the defaults displayed to the user`, function() {
 
   test(`...saveItem should add word and definition as an object to the array and save to storage`, async function() {
 
@@ -365,7 +300,7 @@ describe(
       obj[key] = value;
       return obj;
     });
-    
+
     let result = await saveItem({ key, items, callback });
 
     expect(callback.mock.calls).toHaveLength(1);

@@ -23,7 +23,8 @@ describe(
             onNewSelectedText(msg);
         });
 
-  it(`...onNewSelectedText updates the highlighted text upon receipt of { action: ${__VOCABIFY_SET_SELECTED_TEXT__} and data: highlighted text }`, function() {
+  test(`...onNewSelectedText updates the highlighted text upon receipt of { action: ${__VOCABIFY_SET_SELECTED_TEXT__} and data: highlighted text }`, function() {
+    
     let highlighted = 'Some text';
 
     let msg = {
@@ -34,9 +35,11 @@ describe(
     let result = onNewSelectedText(msg);
 
     expect(result).toEqual(highlighted);
+
   });
 
-  it(`...onNewSelectedText does not store the text if it doesn't receive the action ${__VOCABIFY_SET_SELECTED_TEXT__}`, function() {
+  test(`...onNewSelectedText does not store the text if it doesn't receive the action ${__VOCABIFY_SET_SELECTED_TEXT__}`, function() {
+    
     let highlighted = 'Some text';
 
     let msg = {
@@ -56,9 +59,11 @@ describe(
 
     expect(result).not.toEqual(nextHighlighted);
     expect(result).toEqual(highlighted);
+
   });
 
-  it('...onRequestForSelectedText posts the highlighted text to popup.js upon request and then resets it to an empty string', function() {
+  test('...onRequestForSelectedText posts the highlighted text to popup.js upon request and then resets it to an empty string', function() {
+    
     let highlighted = 'Some text';
 
     let msg = {
@@ -78,16 +83,16 @@ describe(
       };
     });
 
-    // callback mock signature is msg, sender, sendResponse - sender is unused
-    let sender;
     let result = onRequestForSelectedText(msg, callback);
 
     expect(callback.mock.calls).toHaveLength(1);
     expect(callback.mock.results[0].value.data).toBe(highlighted);
     expect(result).toBe('');
+
   });
 
-  it(`...onRequestForSelectedText doesn't post the highlighted text if it doesn't receive the ${__VOCABIFY_GET_SELECTED_TEXT__} action`, function() {
+  test(`...onRequestForSelectedText doesn't post the highlighted text if it doesn't receive the ${__VOCABIFY_GET_SELECTED_TEXT__} action`, function() {
+    
     let msg = {
       action: __VOCABIFY_SET_SELECTED_TEXT__
     };
@@ -98,9 +103,11 @@ describe(
 
     expect(callback.mock.calls).toHaveLength(0);
     expect(result).toBe('');
+
   });
 
-  it(`...onRequestForSelectedText doesn't fire the callback if the highlighted text is an empty string`, function() {
+  test(`...onRequestForSelectedText doesn't fire the callback if the highlighted text is an empty string`, function() {
+    
     let msg = {
       action: __VOCABIFY_GET_SELECTED_TEXT__
     };
@@ -111,5 +118,7 @@ describe(
 
     expect(callback.mock.calls).toHaveLength(0);
     expect(result).toBe('');
+
   });
+
 });

@@ -18,7 +18,7 @@ describe(`
       jest.clearAllMocks();
     });
 
-    it('...getChromePort should open up a Chrome port to pass data between DOM and extension and return the connection object', function() {
+    test('...getChromePort should open up a Chrome port to pass data between DOM and extension and return the connection object', function() {
 
       window.chrome = {
         runtime: {
@@ -32,7 +32,7 @@ describe(`
      
     });
   
-    it('...listenForHighlightedText should send the highlighted text over the Chrome port when the text is of correct length', function() {
+    test('...listenForHighlightedText should send the highlighted text over the Chrome port when the text is of correct length', function() {
   
       window.chrome = {
         runtime: {
@@ -67,7 +67,8 @@ describe(`
   
     });
   
-    it('...getHighlightedTextFromActiveTab should return an object with an action and data property when a string is captured between 2-400 characters', function() {
+    test('...getHighlightedTextFromActiveTab should return an object with an action and data property when a string is captured between 2-400 characters', function() {
+      
       window.getSelection = jest.fn().mockImplementation(function() {
         return {
           toString: jest.fn(function() {
@@ -80,9 +81,11 @@ describe(`
       expect(window.getSelection.mock.calls).toHaveLength(1);
       expect(result.data).toBe(MOCKED_GET_SELECTION_RESPONSE);
       expect(result.action).toBe(__VOCABIFY_SET_SELECTED_TEXT__);
+
     });
   
-    it('...getHighlightedTextFromActiveTab should return false if the highlighted text is less than 2 characters', function() {
+    test('...getHighlightedTextFromActiveTab should return false if the highlighted text is less than 2 characters', function() {
+      
       window.getSelection = jest.fn().mockImplementation(function() {
         return {
           toString: jest.fn(function() {
@@ -118,9 +121,11 @@ describe(`
       result = getHighlightedTextFromActiveTab();
       expect(window.getSelection.mock.calls).toHaveLength(1);
       expect(result.data).toBe('aa');
+
     });
   
-    it('...getHighlightedTextFromActiveTab should return false if the highlighted text is over 400 characters', function() {
+    test('...getHighlightedTextFromActiveTab should return false if the highlighted text is over 400 characters', function() {
+      
       let highlighted = '';
       for (let i = 0; i < 401; i++) {
         highlighted += 'a';
@@ -154,5 +159,7 @@ describe(`
       result = getHighlightedTextFromActiveTab();
       expect(window.getSelection.mock.calls).toHaveLength(1);
       expect(result.data).toBe(highlighted);
+
     });
+    
   });
