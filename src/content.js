@@ -14,7 +14,5 @@ export function listenForHighlightedText(port) {
   });
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-  const port = getChromePort();
-  listenForHighlightedText(port);
-});
+const port = getChromePort();
+listenForHighlightedText(port);
