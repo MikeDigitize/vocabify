@@ -68,6 +68,20 @@ export function getVocabifyData(key) {
   });
 }
 
+export function getChromePort() {
+  const port = chrome.runtime.connect({ name: 'vocabify' });
+  return port;
+}
+
+export function listenForHighlightedText(port) {
+  document.addEventListener('click', function() {
+    let result = getHighlightedTextFromActiveTab();
+    if(result) {
+      port.postMessage(result);
+    }
+  });
+}
+
 export function getSelectedTextFromBackground() {
   return new Promise(function(resolve) {
     chrome.runtime.sendMessage({ action: __VOCABIFY_GET_SELECTED_TEXT__ }, function(response) {

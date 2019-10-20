@@ -1,6 +1,9 @@
-import { getHighlightedTextFromActiveTab } from '../utils';
+import { 
+  getHighlightedTextFromActiveTab,
+  listenForHighlightedText, 
+  getChromePort 
+} from '../utils';
 import { __VOCABIFY_SET_SELECTED_TEXT__ } from '../constants';
-import { listenForHighlightedText, getChromePort } from '../content';
 
 describe(`
     content.js -

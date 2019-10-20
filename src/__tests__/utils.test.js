@@ -6,12 +6,16 @@ import {
     isDefaultText,
     addToItems,
     toEmptyString,
-    setPlaceholderText
+    setPlaceholderText,
+    setVocabifyData,
+    getVocabifyData
   } from '../utils';
 
   import {
     __VOCABIFY_NO_WORD_SELECTED__,
-    __VOCABIFY_NO_DEFINITION_SELECTED__
+    __VOCABIFY_NO_DEFINITION_SELECTED__,
+    __VOCABIFY_WORD__,
+    __VOCABIFY_DEFINITION__
   } from '../constants';
 
   describe(`The popup copies a word and definition from the active tab and updates the appropriate placeholder text`, function() {
@@ -94,3 +98,43 @@ import {
     });
   
   });
+
+  // describe(`The popup writes to and reads from Chrome's storage`, function() {
+
+  //   test(`...getVocabifyData takes a key and returns any value saved under that key from Chrome's storage`, async function() {
+
+  //     const storage = {};
+  //     storage[__VOCABIFY_WORD__] = 'Vocabify';
+  //     storage[__VOCABIFY_DEFINITION__] = '';
+
+  //     window.chrome = {
+  //       storage: {
+  //         sync: {
+  //           get: jest.fn(function(key) {
+  //             if(storage.hasOwnProperty(key)) {
+  //               return storage[key];
+  //             }
+  //             return {};
+  //           })
+  //         }
+  //       }
+  //     };
+
+  //     let result = await getVocabifyData(__VOCABIFY_WORD__);
+  //     expect(window.chrome.storage.sync.get.mock.calls).toHaveLength(1);
+  //     expect(window.chrome.storage.sync.get.mock.calls[0][0]).toHaveProperty(__VOCABIFY_WORD__);
+  //     expect(result).toBe(storage[__VOCABIFY_WORD__]);
+
+  //     result = await getVocabifyData(__VOCABIFY_DEFINITION__);
+  //     expect(window.chrome.storage.sync.get.mock.calls).toHaveLength(2);
+  //     expect(window.chrome.storage.sync.get.mock.calls[1][0]).toHaveProperty(__VOCABIFY_DEFINITION__);
+  //     expect(result).toBe('');
+
+  //     result = await getVocabifyData('random-key');
+  //     expect(window.chrome.storage.sync.get.mock.calls).toHaveLength(3);
+  //     expect(window.chrome.storage.sync.get.mock.calls[2][0]).toHaveProperty('random-key');
+  //     expect(result).toMatchObject({});
+
+  //   });
+
+  // });
