@@ -9,14 +9,14 @@ import {
     setPlaceholderText,
     setVocabifyData,
     getVocabifyData
-  } from '../utils';
+  } from '../utils/general-utils';
 
   import {
     __VOCABIFY_NO_WORD_SELECTED__,
     __VOCABIFY_NO_DEFINITION_SELECTED__,
     __VOCABIFY_WORD__,
     __VOCABIFY_DEFINITION__
-  } from '../constants';
+  } from '../utils/constants';
 
   describe(`The popup copies a word and definition from the active tab and updates the appropriate placeholder text`, function() {
 

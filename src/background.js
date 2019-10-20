@@ -1,4 +1,4 @@
-import { backgroundUtils } from './utils';
+import { backgroundUtils } from './utils/background-utils';
 let { onNewSelectedText, onRequestForSelectedText } = backgroundUtils;
 
 chrome.runtime.onConnect.addListener(function(port) {

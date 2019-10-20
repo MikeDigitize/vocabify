@@ -1,8 +1,8 @@
-import { backgroundUtils } from '../utils';
+import { backgroundUtils } from '../utils/background-utils';
 import {
     __VOCABIFY_SET_SELECTED_TEXT__, 
     __VOCABIFY_GET_SELECTED_TEXT__
-} from '../constants';
+} from '../utils/constants';
 
 let { onNewSelectedText, onRequestForSelectedText } = backgroundUtils;
 

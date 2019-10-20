@@ -1,9 +1,6 @@
 import {
-  getSelectedTextFromBackground,
   setVocabifyData,
   getVocabifyData,
-  getValueFromStoreResponse,
-  onPopupManualTextUpdate,
   isEmptyObject,
   isEmptyString,
   isFourHundredCharactersOrLess,
@@ -11,9 +8,15 @@ import {
   addToItems,
   saveItem,
   setPlaceholderText,
-  toEmptyString,
+  toEmptyString
+} from './utils/general-utils';
+
+import {
+  getSelectedTextFromBackground,
+  getValueFromStoreResponse,
+  manualEditHandler,
   resetPopupAfterSave
-} from './utils';
+} from './utils/popup-utils';
 
 import {
   __VOCABIFY_WORD__,
@@ -21,7 +24,7 @@ import {
   __VOCABIFY_SAVED_ITEMS__,
   __VOCABIFY_NO_WORD_SELECTED__,
   __VOCABIFY_NO_DEFINITION_SELECTED__
-} from './constants';
+} from './utils/constants';
 
 const word = document.getElementById('word');
 const definition = document.getElementById('definition');
@@ -138,11 +141,11 @@ document.getElementById('save').addEventListener('click', async function() {
   await resetPopupAfterSave({ word, definition, callback: setVocabifyData });
 });
 
-word.addEventListener('input', onPopupManualTextUpdate.setEditState);
-definition.addEventListener('input', onPopupManualTextUpdate.setEditState);
+word.addEventListener('input', manualEditHandler.setEditState);
+definition.addEventListener('input', manualEditHandler.setEditState);
 
 word.addEventListener('blur', async function() {
-  await onPopupManualTextUpdate.onBlur({
+  await manualEditHandler.onBlur({
     text: word.textContent,
     key: __VOCABIFY_WORD__,
     element: word,
@@ -152,7 +155,7 @@ word.addEventListener('blur', async function() {
 });
 
 definition.addEventListener('blur', async function() {
-  await onPopupManualTextUpdate.onBlur({
+  await manualEditHandler.onBlur({
     text: definition.textContent,
     key: __VOCABIFY_DEFINITION__,
     element: definition,

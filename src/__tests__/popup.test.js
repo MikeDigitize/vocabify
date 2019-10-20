@@ -1,9 +1,10 @@
 import {
   getValueFromStoreResponse,
-  onPopupManualTextUpdate,
-  saveItem,
+  manualEditHandler,
   resetPopupAfterSave
-} from '../utils';
+} from '../utils/popup-utils';
+
+import { saveItem } from '../utils/general-utils';
 
 import {
   __VOCABIFY_SET_SELECTED_TEXT__,
@@ -14,7 +15,7 @@ import {
   __VOCABIFY_NO_DEFINITION_SELECTED__,
   __VOCABIFY_SAVED_ITEMS__,
   __VOCABIFY_NO_SAVED_ITEMS__
-} from '../constants';
+} from '../utils/constants';
 
 describe(
   `When the popup loads, it will check storage for a word or defintion to populate the popup.
@@ -136,9 +137,9 @@ describe(
 
 describe(
   `The popup allows you to manually edit the word or definition.
-    onPopupManualTextUpdate handles the manual editing of the word and definition text.`, function() {
+    manualEditHandler handles the manual editing of the word and definition text.`, function() {
 
-  test(`...onPopupManualTextUpdate should not update if the element has not had focus, and update if it has`, async function() {
+  test(`...manualEditHandler should not update if the element has not had focus, and update if it has`, async function() {
 
     let text = 'Word';
     let key = __VOCABIFY_WORD__;
@@ -149,7 +150,7 @@ describe(
     });
 
     // no focus has been set
-    let result = await onPopupManualTextUpdate.onBlur({
+    let result = await manualEditHandler.onBlur({
       text,
       key,
       element: p,
@@ -160,19 +161,19 @@ describe(
     expect(result).toBe(false);
 
     // set focus
-    onPopupManualTextUpdate.onFocus();
+    manualEditHandler.onFocus();
 
-    result = await onPopupManualTextUpdate.onBlur({ text, key, element: p, fallback, callback });
+    result = await manualEditHandler.onBlur({ text, key, element: p, fallback, callback });
     expect(result).toBeTruthy();
 
     // focus has not been set after updating
-    result = await onPopupManualTextUpdate.onBlur({ text, key, element: p, fallback, callback });
+    result = await manualEditHandler.onBlur({ text, key, element: p, fallback, callback });
     expect(result).toBe(false);
   });
 
   test('...should update if a word between 2 and 400 characters is in the text field', async function() {
 
-    onPopupManualTextUpdate.onFocus();
+    manualEditHandler.onFocus();
 
     let text = 'Word';
     let key = __VOCABIFY_WORD__;
@@ -181,7 +182,7 @@ describe(
     let callback = jest.fn(function(key, value) {
       return value;
     });
-    let result = await onPopupManualTextUpdate.onBlur({
+    let result = await manualEditHandler.onBlur({
       text,
       key,
       element: p,
@@ -198,7 +199,7 @@ describe(
 
   test('...should update with an empty string if a word less than 2 or more than 400 characters is in the text field', async function() {
 
-    onPopupManualTextUpdate.onFocus();
+    manualEditHandler.onFocus();
 
     let text = '';
     let key = __VOCABIFY_WORD__;
@@ -207,7 +208,7 @@ describe(
     let callback = jest.fn(function(key, value) {
       return value;
     });
-    let result = await onPopupManualTextUpdate.onBlur({
+    let result = await manualEditHandler.onBlur({
       text,
       key,
       element: p,
@@ -227,8 +228,8 @@ describe(
 
     fallback = __VOCABIFY_NO_DEFINITION_SELECTED__;
 
-    onPopupManualTextUpdate.onFocus();
-    result = await onPopupManualTextUpdate.onBlur({ text, key, element: p, fallback, callback });
+    manualEditHandler.onFocus();
+    result = await manualEditHandler.onBlur({ text, key, element: p, fallback, callback });
 
     expect(callback.mock.calls).toHaveLength(2);
     expect(callback.mock.results[1].value).toBe('');
@@ -239,7 +240,7 @@ describe(
 
   test('...should update with an empty string if a default word is in the text field', async function() {
 
-    onPopupManualTextUpdate.onFocus();
+    manualEditHandler.onFocus();
 
     let text = __VOCABIFY_NO_WORD_SELECTED__;
     let key = __VOCABIFY_WORD__;
@@ -248,7 +249,7 @@ describe(
     let callback = jest.fn(function(key, value) {
       return value;
     });
-    let result = await onPopupManualTextUpdate.onBlur({
+    let result = await manualEditHandler.onBlur({
       text,
       key,
       element: p,
@@ -264,8 +265,8 @@ describe(
     text = __VOCABIFY_NO_DEFINITION_SELECTED__;
     fallback = __VOCABIFY_NO_DEFINITION_SELECTED__;
 
-    onPopupManualTextUpdate.onFocus();
-    result = await onPopupManualTextUpdate.onBlur({
+    manualEditHandler.onFocus();
+    result = await manualEditHandler.onBlur({
       text,
       key,
       element: p,
