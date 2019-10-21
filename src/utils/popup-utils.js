@@ -25,7 +25,7 @@ export function getSelectedTextFromBackground() {
   });
 }
 
-export function getValueFromStoreResponse({ response, key, fallback }) {
+export function setValueFromStoreResponse({ response, key, fallback }) {
   if (isEmptyObject(response) || isEmptyString(response[key])) {
     response = fallback;
   } else {

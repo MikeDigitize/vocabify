@@ -1,5 +1,5 @@
 import {
-  getValueFromStoreResponse,
+  setValueFromStoreResponse,
   manualEditHandler,
   resetPopupAfterSave
 } from '../utils/popup-utils';
@@ -21,16 +21,16 @@ describe(
   `When the popup loads, it will check storage for a word or defintion to populate the popup.
     Chrome extension popups do not persist state in HTML - which is why state needs storing 
     and why the check needs to be done every time it's opened.
-    Responses from the store are passed to getValueFromStoreResponse to handle all possible responses -
+    Responses from the store are passed to setValueFromStoreResponse to handle all possible responses -
     Nothing has been saved.
     An empty string is saved.
     A string which meets the acceptance criteria is saved.`, function() {
 
-  test(`...getValueFromStoreResponse should fallback to the default if an empty object is returned back from storage`, function() {
+  test(`...setValueFromStoreResponse should fallback to the default if an empty object is returned back from storage`, function() {
     
     // word
     let response = {};
-    let wordText = getValueFromStoreResponse({
+    let wordText = setValueFromStoreResponse({
       response,
       key: __VOCABIFY_WORD__,
       fallback: __VOCABIFY_NO_WORD_SELECTED__
@@ -40,7 +40,7 @@ describe(
 
     // definition
     response = {};
-    let definitionText = getValueFromStoreResponse({
+    let definitionText = setValueFromStoreResponse({
       response,
       key: __VOCABIFY_DEFINITION__,
       fallback: __VOCABIFY_NO_DEFINITION_SELECTED__
@@ -50,7 +50,7 @@ describe(
 
     // saved items
     response = {};
-    let savedItems = getValueFromStoreResponse({
+    let savedItems = setValueFromStoreResponse({
       response,
       key: __VOCABIFY_SAVED_ITEMS__,
       fallback: __VOCABIFY_NO_SAVED_ITEMS__
@@ -59,12 +59,12 @@ describe(
     expect(savedItems).toEqual(__VOCABIFY_NO_SAVED_ITEMS__);
   });
 
-  test(`...getValueFromStoreResponse for the word should fallback to the default message if an empty string is returned back from storage`, function() {
+  test(`...setValueFromStoreResponse for the word should fallback to the default message if an empty string is returned back from storage`, function() {
     
     // word
     let response = {};
     response[__VOCABIFY_WORD__] = '';
-    let wordText = getValueFromStoreResponse({
+    let wordText = setValueFromStoreResponse({
       response,
       key: __VOCABIFY_WORD__,
       fallback: __VOCABIFY_NO_WORD_SELECTED__
@@ -75,7 +75,7 @@ describe(
     // definition
     response = {};
     response[__VOCABIFY_DEFINITION__] = '';
-    let definitionText = getValueFromStoreResponse({
+    let definitionText = setValueFromStoreResponse({
       response,
       key: __VOCABIFY_DEFINITION__,
       fallback: __VOCABIFY_NO_DEFINITION_SELECTED__
@@ -86,7 +86,7 @@ describe(
     // saved items 
     response = {};
     response[__VOCABIFY_SAVED_ITEMS__] = '';
-    let savedItems = getValueFromStoreResponse({
+    let savedItems = setValueFromStoreResponse({
       response,
       key: __VOCABIFY_SAVED_ITEMS__,
       fallback: __VOCABIFY_NO_SAVED_ITEMS__
@@ -95,13 +95,13 @@ describe(
     expect(savedItems).toEqual(__VOCABIFY_NO_SAVED_ITEMS__);
   });
 
-  test(`...getValueFromStoreResponse should return the saved word, defintion or results if returned back from storage`, function() {
+  test(`...setValueFromStoreResponse should return the saved word, defintion or results if returned back from storage`, function() {
 
     // word
     let response = {};
     let word = 'Some word';
     response[__VOCABIFY_WORD__] = word;
-    let wordText = getValueFromStoreResponse({
+    let wordText = setValueFromStoreResponse({
       response,
       key: __VOCABIFY_WORD__,
       fallback: __VOCABIFY_NO_WORD_SELECTED__
@@ -113,7 +113,7 @@ describe(
     response = {};
     let definition = 'Some definition';
     response[__VOCABIFY_DEFINITION__] = definition;
-    let definitionText = getValueFromStoreResponse({
+    let definitionText = setValueFromStoreResponse({
       response,
       key: __VOCABIFY_DEFINITION__,
       fallback: __VOCABIFY_NO_DEFINITION_SELECTED__
@@ -125,7 +125,7 @@ describe(
     response = {};
     let items = [{ word: 'Some word', definition: 'Some definition' }];
     response[__VOCABIFY_SAVED_ITEMS__] = items;
-    let savedItems = getValueFromStoreResponse({
+    let savedItems = setValueFromStoreResponse({
       response,
       key: __VOCABIFY_SAVED_ITEMS__,
       fallback: __VOCABIFY_NO_SAVED_ITEMS__

@@ -13,7 +13,7 @@ import {
 
 import {
   getSelectedTextFromBackground,
-  getValueFromStoreResponse,
+  setValueFromStoreResponse,
   manualEditHandler,
   resetPopupAfterSave
 } from './utils/popup-utils';
@@ -31,27 +31,24 @@ const definition = document.getElementById('definition');
 const wordMessage = document.getElementById('wordMessage');
 const definitionMessage = document.getElementById('definitionMessage');
 
-let wordText;
-let definitionText;
-
 async function popupInitialise() {
-  wordText = await getVocabifyData(__VOCABIFY_WORD__);
-  definitionText = await getVocabifyData(__VOCABIFY_DEFINITION__);
+  let savedWord = await getVocabifyData(__VOCABIFY_WORD__);
+  let savedDefinition = await getVocabifyData(__VOCABIFY_DEFINITION__);
 
-  wordText = getValueFromStoreResponse({
-    response: wordText,
+  let currentWord = setValueFromStoreResponse({
+    response: savedWord,
     key: __VOCABIFY_WORD__,
     fallback: __VOCABIFY_NO_WORD_SELECTED__
   });
 
-  definitionText = getValueFromStoreResponse({
-    response: definitionText,
+  let currentDefinition = setValueFromStoreResponse({
+    response: savedDefinition,
     key: __VOCABIFY_DEFINITION__,
     fallback: __VOCABIFY_NO_DEFINITION_SELECTED__
   });
 
-  setPlaceholderText(word, wordText);
-  setPlaceholderText(definition, definitionText);
+  setPlaceholderText(word, currentWord);
+  setPlaceholderText(definition, currentDefinition);
 }
 
 document.getElementById('getWord').addEventListener('click', function() {
@@ -117,7 +114,7 @@ document.getElementById('save').addEventListener('click', async function() {
 
   let savedItems = await getVocabifyData(__VOCABIFY_SAVED_ITEMS__);
 
-  let items = getValueFromStoreResponse({
+  let items = setValueFromStoreResponse({
     response: savedItems,
     key: __VOCABIFY_SAVED_ITEMS__,
     fallback: []
@@ -134,9 +131,6 @@ document.getElementById('save').addEventListener('click', async function() {
     items: updatedItems,
     callback: setVocabifyData
   });
-
-  wordText = toEmptyString(wordText);
-  definitionText = toEmptyString(definitionText);
 
   await resetPopupAfterSave({ word, definition, callback: setVocabifyData });
 });
