@@ -18,6 +18,6 @@
   },
   "scripts": {
     "start": "webpack",
-    "test": "jest --watchAll --verbose"
+    "test": "jest --watchAll --verbose --coverage"
   }
 }
