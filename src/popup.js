@@ -7,8 +7,7 @@ import {
   isTwoCharactersOrMore,
   addToItems,
   saveItem,
-  setPlaceholderText,
-  toEmptyString
+  setPlaceholderText
 } from './utils/general-utils';
 
 import {
