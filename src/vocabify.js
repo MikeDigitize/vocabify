@@ -1,10 +1,11 @@
-import { __VOCABIFY_SAVED_ITEMS__ } from '../src/utils/constants';
-import { getVocabifyData } from '../src/utils/general-utils'; 
-import backupData from '../data';
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
+import { __VOCABIFY_SAVED_ITEMS__ } from './utils/constants';
+import { getVocabifyData } from './utils/general-utils'; 
+import backupData from '../data';
+import List from './components/list';
 
-function App() {
+export default function App() {
 
   document.addEventListener(
     'visibilitychange',
@@ -21,7 +22,7 @@ function App() {
   useEffect(function() {
     async function getData() {
       let items;
-      if(typeof chrome.storage !== 'undefined') {
+      if(typeof window.chrome !== 'undefined' && typeof window.chrome.storage !== 'undefined') {
         items = await getVocabifyData(__VOCABIFY_SAVED_ITEMS__);
       }
       items = items && Object.keys(items).length ? items[__VOCABIFY_SAVED_ITEMS__] : backupData;
@@ -30,29 +31,11 @@ function App() {
     getData();
   }, []);
 
-  function createList() {
-    return items.map(function(item, index) {
-      return (
-        <article className="vocabify-item" key={`${item.word}${index}`}>
-          <h2>{ item.word }</h2>
-          <p>{ item.definition }</p>
-        </article>
-      )
-    });
-  }
-
-  let list = createList();
-
-  if(list.length) {
-    return (
-      <Fragment>
-        { list }
-      </Fragment>
-    );
-  }
-  else {
-    return null;
-  }    
+  return (
+    <Fragment>
+      <List items={ items } />
+    </Fragment>
+  )
   
 }
 
