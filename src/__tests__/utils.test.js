@@ -7,6 +7,8 @@ import {
     addToItems,
     toEmptyString,
     setPlaceholderText,
+    capitaliseFirstLetter,
+    addFullStop,
     setVocabifyData,
     getVocabifyData
   } from '../utils/general-utils';
@@ -98,6 +100,25 @@ import {
     });
   
   });
+
+  describe(`
+    The popup should capitalise the first letter of the word and description, 
+    and add a full stop to the end of the description`, function() {
+
+      test('...capitaliseFirstLetter should capitalise the first letter of a string', function() {
+        expect(capitaliseFirstLetter('word')).toBe('Word');
+        expect(capitaliseFirstLetter('')).toBe(false);
+        expect(capitaliseFirstLetter('some text')).toBe('Some text');
+      });
+
+      test('...addFullStop should add a full stop at the end of the sentence', function() {
+        expect(addFullStop('to this')).toBe('to this.');
+        expect(addFullStop('to this.')).toBe('to this.');
+        expect(addFullStop('')).toBe(false);
+        expect(addFullStop('a')).toBe('a.');
+      });
+
+  })
 
   // describe(`The popup writes to and reads from Chrome's storage`, function() {
 

@@ -286,6 +286,32 @@ describe(
   `The popup saves the word and definition if both meet the requirements for save.
     If successfully saved the word and definition should return to an empty string and the defaults displayed to the user`, function() {
 
+  test(`...saveItem should capitalise the first letter in the word and definition and add a full stop to the end`, async function() {
+
+    let key = __VOCABIFY_SAVED_ITEMS__;
+    let items = [
+      { word: 'Word', definition: 'A single distinct meaningful element of speech or writing' }
+    ];
+
+    let response = {};
+    response[key] = items;
+
+    let callback = jest.fn(function(key, value) {
+      let obj = {};
+      obj[key] = value;
+      return obj;
+    });
+
+    let result = await saveItem({ key, items, callback });
+
+    expect(callback.mock.calls).toHaveLength(1);
+    expect(callback.mock.calls[0][0]).toBe(key);
+    expect(callback.mock.calls[0][1]).toBe(items);
+    expect(callback.mock.results[0].value).toMatchObject(response);
+    expect(result).toMatchObject(response);
+
+  });
+
   test(`...saveItem should add word and definition as an object to the array and save to storage`, async function() {
 
     let key = __VOCABIFY_SAVED_ITEMS__;

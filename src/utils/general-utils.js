@@ -62,3 +62,22 @@ export function toEmptyString(str) {
   str = '';
   return str;
 }
+
+export function capitaliseFirstLetter(str) {
+  if(!str.length) {
+    return false;
+  }
+  const firstLetter = str[0];
+  return `${firstLetter.toUpperCase()}${str.substring(1, str.length)}`;
+}
+
+export function addFullStop(str) {
+  if(!str.length) {
+    return false;
+  }
+  const lastChar = str.charAt(str.length - 1);
+  if(lastChar === '.') {
+    return str;
+  }
+  return `${str}.`;
+}
