@@ -2,7 +2,7 @@ const CopyPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  mode: 'development',
+  mode: 'production',
   entry: {
     background: './src/background.js',
     content: './src/content.js',
@@ -12,6 +12,7 @@ module.exports = {
   optimization: {
     minimize: true
   },
+  devtool: false,
   output: {
     filename: '[name].js',
     path: `${__dirname}/dist`
