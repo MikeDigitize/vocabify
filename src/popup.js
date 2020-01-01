@@ -7,7 +7,9 @@ import {
   isTwoCharactersOrMore,
   addToItems,
   saveItem,
-  setPlaceholderText
+  setPlaceholderText,
+  capitaliseFirstLetter,
+  addFullStop
 } from './utils/general-utils';
 
 import {
@@ -53,14 +55,14 @@ async function popupInitialise() {
 document.getElementById('getWord').addEventListener('click', function() {
   getSelectedTextFromBackground().then(async function(data) {
     await setVocabifyData(__VOCABIFY_WORD__, data);
-    setPlaceholderText(word, data);
+    setPlaceholderText(word, capitaliseFirstLetter(data));
   });
 });
 
 document.getElementById('getDefinition').addEventListener('click', function() {
   getSelectedTextFromBackground().then(async function(data) {
     await setVocabifyData(__VOCABIFY_DEFINITION__, data);
-    setPlaceholderText(definition, data);
+    setPlaceholderText(definition, addFullStop(capitaliseFirstLetter(data)));
   });
 });
 
@@ -120,8 +122,8 @@ document.getElementById('save').addEventListener('click', async function() {
   });
 
   let updatedItems = addToItems({
-    word: currentWord[__VOCABIFY_WORD__],
-    definition: currentDefinition[__VOCABIFY_DEFINITION__],
+    word: capitaliseFirstLetter(currentWord[__VOCABIFY_WORD__]),
+    definition: addFullStop(capitaliseFirstLetter(currentDefinition[__VOCABIFY_DEFINITION__])),
     items
   });
 

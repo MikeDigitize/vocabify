@@ -8,9 +8,7 @@ import {
     toEmptyString,
     setPlaceholderText,
     capitaliseFirstLetter,
-    addFullStop,
-    setVocabifyData,
-    getVocabifyData
+    addFullStop
   } from '../utils/general-utils';
 
   import {
@@ -101,7 +99,7 @@ import {
   
   });
 
-  describe(`
+describe(`
     The popup should capitalise the first letter of the word and description, 
     and add a full stop to the end of the description`, function() {
 
@@ -118,44 +116,4 @@ import {
         expect(addFullStop('a')).toBe('a.');
       });
 
-  })
-
-  // describe(`The popup writes to and reads from Chrome's storage`, function() {
-
-  //   test(`...getVocabifyData takes a key and returns any value saved under that key from Chrome's storage`, async function() {
-
-  //     const storage = {};
-  //     storage[__VOCABIFY_WORD__] = 'Vocabify';
-  //     storage[__VOCABIFY_DEFINITION__] = '';
-
-  //     window.chrome = {
-  //       storage: {
-  //         sync: {
-  //           get: jest.fn(function(key) {
-  //             if(storage.hasOwnProperty(key)) {
-  //               return storage[key];
-  //             }
-  //             return {};
-  //           })
-  //         }
-  //       }
-  //     };
-
-  //     let result = await getVocabifyData(__VOCABIFY_WORD__);
-  //     expect(window.chrome.storage.sync.get.mock.calls).toHaveLength(1);
-  //     expect(window.chrome.storage.sync.get.mock.calls[0][0]).toHaveProperty(__VOCABIFY_WORD__);
-  //     expect(result).toBe(storage[__VOCABIFY_WORD__]);
-
-  //     result = await getVocabifyData(__VOCABIFY_DEFINITION__);
-  //     expect(window.chrome.storage.sync.get.mock.calls).toHaveLength(2);
-  //     expect(window.chrome.storage.sync.get.mock.calls[1][0]).toHaveProperty(__VOCABIFY_DEFINITION__);
-  //     expect(result).toBe('');
-
-  //     result = await getVocabifyData('random-key');
-  //     expect(window.chrome.storage.sync.get.mock.calls).toHaveLength(3);
-  //     expect(window.chrome.storage.sync.get.mock.calls[2][0]).toHaveProperty('random-key');
-  //     expect(result).toMatchObject({});
-
-  //   });
-
-  // });
+});
