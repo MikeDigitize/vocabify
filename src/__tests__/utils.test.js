@@ -8,7 +8,8 @@ import {
     toEmptyString,
     setPlaceholderText,
     capitaliseFirstLetter,
-    addFullStop
+    addFullStop,
+    isDuplicateWord
   } from '../utils/general-utils';
 
   import {
@@ -17,6 +18,8 @@ import {
     __VOCABIFY_WORD__,
     __VOCABIFY_DEFINITION__
   } from '../utils/constants';
+
+  import testData from '../test-data';
 
   describe(`The popup copies a word and definition from the active tab and updates the appropriate placeholder text`, function() {
 
@@ -115,5 +118,27 @@ describe(`
         expect(addFullStop('')).toBe(false);
         expect(addFullStop('a')).toBe('a.');
       });
+
+});
+
+describe(`The popup should prevent duplicate words being stored`, function() {
+
+  test('...isDuplicateWord should return true if the word is already present in storage', function() {
+
+    let storage = [{
+      word: 'Testing',
+      definition: 'The act of testing'
+    }, {
+      word: 'Test',
+      definition: 'A test word'
+    }];
+
+    expect(isDuplicateWord(storage, 'Test')).toBe(true);
+
+  });
+
+  test('...isDuplicateWord should return false if the word is not present in storage', function() {
+    expect(isDuplicateWord(testData, 'Test')).toBe(false);
+  });
 
 });

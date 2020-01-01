@@ -26,7 +26,7 @@
   },
   "scripts": {
     "start": "webpack --watch --mode=development",
-    "build": "webpack --mode=production",
+    "dist": "webpack --mode=production",
     "test": "jest --watchAll --verbose"
   }
 }

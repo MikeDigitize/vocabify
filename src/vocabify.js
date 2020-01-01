@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { __VOCABIFY_SAVED_ITEMS__ } from './utils/constants';
 import { getVocabifyData } from './utils/general-utils'; 
-import backupData from '../data';
+import testData from './test-data';
 import List from './components/list';
 
 export default function App() {
@@ -25,7 +25,7 @@ export default function App() {
       if(typeof window.chrome !== 'undefined' && typeof window.chrome.storage !== 'undefined') {
         items = await getVocabifyData(__VOCABIFY_SAVED_ITEMS__);
       }
-      items = items && Object.keys(items).length ? items[__VOCABIFY_SAVED_ITEMS__] : backupData;
+      items = items && Object.keys(items).length ? items[__VOCABIFY_SAVED_ITEMS__] : testData;
       setItems(items);
     }
     getData();
@@ -40,3 +40,11 @@ export default function App() {
 }
 
 ReactDOM.render(<App />, document.getElementById('vocab'));
+
+// fetch('https://words.bighugelabs.com/api/2/572698ba07a9e0baa4543f8df1889d3b/advocate/json').then(function(response) { 
+// 	// Convert to JSON
+// 	return response.json();
+// }).then(function(j) {
+// 	// Yay, `j` is a JavaScript object
+// 	console.log(j); 
+// });

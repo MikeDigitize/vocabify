@@ -81,3 +81,10 @@ export function addFullStop(str) {
   }
   return `${str}.`;
 }
+
+export function isDuplicateWord(savedItems, word) {
+  let isPresent = savedItems.some(function(item) {
+    return item.word.toUpperCase() === word.toUpperCase();
+  });
+  return isPresent;
+}

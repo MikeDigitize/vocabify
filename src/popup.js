@@ -9,7 +9,8 @@ import {
   saveItem,
   setPlaceholderText,
   capitaliseFirstLetter,
-  addFullStop
+  addFullStop,
+  isDuplicateWord
 } from './utils/general-utils';
 
 import {
@@ -120,6 +121,11 @@ document.getElementById('save').addEventListener('click', async function() {
     key: __VOCABIFY_SAVED_ITEMS__,
     fallback: []
   });
+
+  if(isDuplicateWord(items, currentWord[__VOCABIFY_WORD__])) {
+    console.log('Already present!');
+    return false;
+  }
 
   let updatedItems = addToItems({
     word: capitaliseFirstLetter(currentWord[__VOCABIFY_WORD__]),
