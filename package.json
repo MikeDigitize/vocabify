@@ -21,6 +21,7 @@
     "webpack-cli": "^3.3.9"
   },
   "dependencies": {
+    "@material/snackbar": "^4.0.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0"
   },

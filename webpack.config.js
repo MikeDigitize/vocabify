@@ -8,9 +8,6 @@ module.exports = {
     popup: './src/popup.js',
     vocabify: './src/vocabify.js'
   },
-  optimization: {
-    minimize: true
-  },
   devtool: false,
   output: {
     filename: '[name].js',

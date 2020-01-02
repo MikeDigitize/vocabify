@@ -28,13 +28,19 @@ import {
   __VOCABIFY_NO_DEFINITION_SELECTED__
 } from './utils/constants';
 
+import { MDCSnackbar } from '@material/snackbar';
+
+
 /**
  * The HTML Elements in the popup  
  */
 const word = document.getElementById('word'); // the word the user will select
 const definition = document.getElementById('definition'); // the definition
-const wordMessage = document.getElementById('wordMessage'); // the message that sits above the word and used to instruct / inform of errors
-const definitionMessage = document.getElementById('definitionMessage'); // the message above the defintion used to instruct / inform of errors
+
+const msgPopup = new MDCSnackbar(document.querySelector('.mdc-snackbar'));
+const msgPopupCloseBtn = document.querySelector('.mdc-snackbar__action');
+const msgPopupText = document.querySelector('.mdc-snackbar__label');
+msgPopupCloseBtn.addEventListener('click', msgPopup.close);
 
 /**
  * Kick things off...
@@ -118,15 +124,8 @@ document.getElementById('save').addEventListener('click', async function() {
     !isFourHundredCharactersOrLess(currentWord[__VOCABIFY_WORD__]) ||
     !isTwoCharactersOrMore(currentWord[__VOCABIFY_WORD__])
   ) {
-    if (!definitionMessage.classList.contains('animated')) {
-      setPlaceholderText(wordMessage, 'Be sure to choose a word first before saving');
-      wordMessage.classList.add('animated', 'pulse');
-
-      setTimeout(function() {
-        setPlaceholderText(wordMessage, __VOCABIFY_NO_WORD_SELECTED__);
-        wordMessage.classList.remove('animated', 'pulse');
-      }, 2500);
-    }
+    msgPopupText.textContent = 'Be sure to choose a word first before saving';
+    msgPopup.open();
 
     return;
   }
@@ -138,15 +137,8 @@ document.getElementById('save').addEventListener('click', async function() {
     !isFourHundredCharactersOrLess(currentDefinition[__VOCABIFY_DEFINITION__]) ||
     !isTwoCharactersOrMore(currentDefinition[__VOCABIFY_DEFINITION__])
   ) {
-    if (!definitionMessage.classList.contains('animated')) {
-      setPlaceholderText(definitionMessage, 'Be sure to choose a definition first before saving');
-      definitionMessage.classList.add('animated', 'pulse');
-
-      setTimeout(function() {
-        setPlaceholderText(definitionMessage, __VOCABIFY_NO_DEFINITION_SELECTED__);
-        definitionMessage.classList.remove('animated', 'pulse');        
-      }, 2500);
-    }
+    msgPopupText.textContent = 'Be sure to choose a definition first before saving';
+    msgPopup.open();
 
     return;
   }
