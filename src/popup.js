@@ -40,7 +40,7 @@ const definition = document.getElementById('definition'); // the definition
 const msgPopup = new MDCSnackbar(document.querySelector('.mdc-snackbar'));
 const msgPopupCloseBtn = document.querySelector('.mdc-snackbar__action');
 const msgPopupText = document.querySelector('.mdc-snackbar__label');
-msgPopupCloseBtn.addEventListener('click', msgPopup.close);
+msgPopupCloseBtn.addEventListener('click', e => msgPopup.close());
 
 /**
  * Kick things off...
@@ -124,7 +124,7 @@ document.getElementById('save').addEventListener('click', async function() {
     !isFourHundredCharactersOrLess(currentWord[__VOCABIFY_WORD__]) ||
     !isTwoCharactersOrMore(currentWord[__VOCABIFY_WORD__])
   ) {
-    msgPopupText.textContent = 'Be sure to choose a word first before saving';
+    msgPopupText.textContent = 'Be sure to choose a word first before saving!';
     msgPopup.open();
 
     return;
@@ -137,7 +137,7 @@ document.getElementById('save').addEventListener('click', async function() {
     !isFourHundredCharactersOrLess(currentDefinition[__VOCABIFY_DEFINITION__]) ||
     !isTwoCharactersOrMore(currentDefinition[__VOCABIFY_DEFINITION__])
   ) {
-    msgPopupText.textContent = 'Be sure to choose a definition first before saving';
+    msgPopupText.textContent = 'Be sure to choose a definition first before saving!';
     msgPopup.open();
 
     return;
@@ -155,6 +155,8 @@ document.getElementById('save').addEventListener('click', async function() {
 
   // if the word is already present in saved items inform the user and exit
   if(isDuplicateWord(items, currentWord[__VOCABIFY_WORD__])) {
+    msgPopupText.textContent = `${currentWord[__VOCABIFY_WORD__]} already exists in Vocabify, save cancelled!`;
+    msgPopup.open();
     return false;
   }
 
@@ -171,6 +173,9 @@ document.getElementById('save').addEventListener('click', async function() {
     items: updatedItems,
     callback: setVocabifyData
   });
+
+  msgPopupText.textContent = `${currentWord[__VOCABIFY_WORD__]} successfully saved to Vocabify!`;
+  msgPopup.open();
 
   // reset the popup to default state upon successful save
   await resetPopupAfterSave({ word, definition, callback: setVocabifyData });
