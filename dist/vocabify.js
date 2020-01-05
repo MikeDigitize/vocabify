@@ -31958,134 +31958,173 @@ function List({
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 const testData = [{
-  "definition": "Defenestration is the act of throwing someone or something out of a window.",
-  "word": "Defenestration"
+  "word": "Defenestration",
+  "definition": "Defenestration is the act of throwing someone or something out of a window."
 }, {
-  "definition": "To influence or entice by soft words or flattery",
-  "word": "Wheedle "
+  "word": "Wheedle ",
+  "definition": "To influence or entice by soft words or flattery."
 }, {
-  "definition": "Undying",
-  "word": "Amaranthine "
+  "word": "Amaranthine ",
+  "definition": "Undying."
 }, {
-  "definition": " To coax with flattery",
-  "word": "Blandish"
+  "word": "Blandish",
+  "definition": "To coax with flattery."
 }, {
-  "definition": "Marked by incisive sarcasm",
-  "word": "Caustic"
+  "word": "Caustic",
+  "definition": "Marked by incisive sarcasm."
 }, {
-  "definition": "Proud because of one's wealth especially in the absence of other distinctions.",
-  "word": "Pursy"
+  "word": "Pursy",
+  "definition": "Proud because of one's wealth especially in the absence of other distinctions."
 }, {
-  "definition": "Difficult to understand or obscure.",
-  "word": "Abstruse "
+  "word": "Abstruse ",
+  "definition": "Difficult to understand or obscure."
 }, {
-  "definition": "Imperturbable self-possession, poise, or assurance.",
-  "word": "Aplomb"
+  "word": "Aplomb",
+  "definition": "Imperturbable self-possession, poise, or assurance."
 }, {
-  "definition": "",
-  "word": "Doleful"
+  "word": "Doleful",
+  "definition": "Expressing sorrow; mournful."
 }, {
-  "definition": "Expressing sorrow; mournful.",
-  "word": "Doleful"
+  "word": "Felicitate",
+  "definition": "To compliment upon a happy event; congratulate."
 }, {
-  "definition": "To compliment upon a happy event; congratulate.",
-  "word": "Felicitate"
+  "word": "Sardonic",
+  "definition": "Grimly mocking or cynical."
 }, {
-  "definition": "Grimly mocking or cynical.",
-  "word": "Sardonic"
+  "word": "Pejorative",
+  "definition": "Expressing contempt or disapproval."
 }, {
-  "definition": "Expressing contempt or disapproval.",
-  "word": "Pejorative"
+  "word": "Predacious",
+  "definition": "Predatory; Given to victimizing, plundering, or destroying for one’s own gain."
 }, {
-  "definition": "Predatory; Given to victimizing, plundering, or destroying for one’s own gain.",
-  "word": "Predacious"
+  "word": "Capacious",
+  "definition": "Having a lot of space inside; roomy. “A capacious closet.”."
 }, {
-  "definition": "Having a lot of space inside; roomy. “A capacious closet.”",
-  "word": "Capacious"
+  "word": "Abysmal",
+  "definition": "Extremely bad; appalling."
 }, {
-  "definition": "Extremely bad; appalling.",
-  "word": "Abysmal"
+  "word": "Masticate",
+  "definition": "To reduce to pulp by crushing, grinding or kneading."
 }, {
-  "definition": "To reduce to pulp by crushing, grinding or kneading.",
-  "word": "Masticate"
+  "word": "Exoteric",
+  "definition": "Suitable to be imparted to the public."
 }, {
-  "definition": "Suitable to be imparted to the public",
-  "word": "Exoteric"
+  "word": "Aplomb",
+  "definition": "Imperturbable self-possession, poise, or assurance."
 }, {
-  "definition": "Imperturbable self-possession, poise, or assurance.",
-  "word": "Aplomb"
+  "word": "Pointillism",
+  "definition": "The technique of painting elaborated from impressionism."
 }, {
-  "definition": "The technique of painting elaborated from impressionism",
-  "word": "Pointillism"
+  "word": "Ad hominem",
+  "definition": "A fallacious argumentative strategy whereby genuine discussion of the topic at hand is avoided by instead attacking the character."
 }, {
-  "definition": " A fallacious argumentative strategy whereby genuine discussion of the topic at hand is avoided by instead attacking the character",
-  "word": "Ad hominem"
+  "word": "Exigency",
+  "definition": "An urgent need or demand."
 }, {
-  "definition": "An urgent need or demand.",
-  "word": "Exigency"
+  "word": "Neophyte",
+  "definition": "Any new participant in some activity."
 }, {
-  "definition": "Any new participant in some activity.",
-  "word": "neophyte"
+  "word": "Genial ",
+  "definition": "Marked by or freely expressing sympathy or friendliness."
 }, {
-  "definition": "Marked by or freely expressing sympathy or friendliness.",
-  "word": "Genial "
+  "word": "Wordie",
+  "definition": "A person with an enthusiastic interest in words and language."
 }, {
-  "definition": "A person with an enthusiastic interest in words and language.",
-  "word": "Wordie"
+  "word": "Ad hominem",
+  "definition": "Appealing to personal considerations (rather than to fact or reason)."
 }, {
-  "definition": "Sucks",
-  "word": "Yo mama"
+  "word": "Maunder ",
+  "definition": "To wander slowly and idly."
 }, {
-  "definition": "Appealing to personal considerations (rather than to fact or reason).",
-  "word": "Ad hominem"
+  "word": "Triskaidekaphobia",
+  "definition": "Fear of the number 13."
 }, {
-  "definition": "To wander slowly and idly.",
-  "word": "Maunder "
+  "word": "Deke ",
+  "definition": "To fake an opponent out of position."
 }, {
-  "definition": "Fear of the number 13.",
-  "word": "Triskaidekaphobia"
+  "word": "Belfry ",
+  "definition": "The seat of the intellect."
 }, {
-  "definition": "To fake an opponent out of position.",
-  "word": "Deke "
+  "word": "Onerous",
+  "definition": "Involving heavy obligations."
 }, {
-  "definition": "The seat of the intellect",
-  "word": "Belfry "
+  "word": "Provenance",
+  "definition": "The beginning of something’s existence; something’s origin."
 }, {
-  "definition": "Involving heavy obligations.",
-  "word": "Onerous"
+  "word": "Incorrigible",
+  "definition": "Not able to be corrected, improved, or reformed. ."
 }, {
-  "definition": "The beginning of something’s existence; something’s origin.",
-  "word": "Provenance"
+  "word": "Onerous",
+  "definition": "Involving heavy obligations."
 }, {
-  "definition": "Not able to be corrected, improved, or reformed. ",
-  "word": "Incorrigible"
+  "word": "Dismal",
+  "definition": "Gloomy. Depressing; dreary."
 }, {
-  "definition": "Involving heavy obligations.",
-  "word": "Onerous"
+  "word": "Extemporize ",
+  "definition": "To say or do something on the spur of the moment."
 }, {
-  "definition": "Gloomy. Depressing; dreary.",
-  "word": "Dismal"
+  "word": "Fecund ",
+  "definition": "Intellectually productive or inventive to a marked degree."
 }, {
-  "definition": "To say or do something on the spur of the moment.",
-  "word": "Extemporize "
+  "word": "Ordinal",
+  "definition": "Of or relating to an order, as of animals or plants."
 }, {
-  "definition": "Intellectually productive or inventive to a marked degree.",
-  "word": "Fecund "
+  "word": "Astigmatism ",
+  "definition": "An imperfection in the curvature of your eye's cornea that hinders your eye's ability to focus light onto your retina, resulting in blurred and distorted vision."
 }, {
-  "definition": "Of or relating to an order, as of animals or plants.",
-  "word": "Ordinal"
+  "word": "Polemicist",
+  "definition": "A person who engages in controversial debate."
 }, {
-  "definition": "An imperfection in the curvature of your eye's cornea that hinders your eye's ability to focus light onto your retina, resulting in blurred and distorted vision.",
-  "word": "Astigmatism "
+  "word": "Verisimilitude",
+  "definition": "The appearance of being true or real."
 }, {
-  "definition": "A person who engages in controversial debate.",
-  "word": "Polemicist"
+  "word": "Perfidious",
+  "definition": "Of, pertaining to, or representing perfidy; disloyal to what should command one's fidelity or allegiance."
 }, {
-  "definition": "The appearance of being true or real.",
-  "word": "Verisimilitude"
+  "word": "Auspicious",
+  "definition": "Conducive to success; favourable."
 }, {
-  "definition": "Of, pertaining to, or representing perfidy; disloyal to what should command one's fidelity or allegiance.",
-  "word": "Perfidious"
+  "word": "Atrophy",
+  "definition": "Gradually decline in effectiveness or vigour due to underuse or neglect."
+}, {
+  "word": "Conglomerate",
+  "definition": "A thing consisting of a number of different and distinct parts or items that are grouped together."
+}, {
+  "word": "Redux ",
+  "definition": "Brought back; revived."
+}, {
+  "word": "Shindig ",
+  "definition": "A social gathering with dancing."
+}, {
+  "word": "Penultimate ",
+  "definition": "Next to the last."
+}, {
+  "word": "Impervious",
+  "definition": "Not capable of being damaged or harmed."
+}, {
+  "word": "Ingress",
+  "definition": "The action or fact of going in or entering; the capacity or right of entrance."
+}, {
+  "word": "Cosmeticize ",
+  "definition": "To make (something unpleasant or ugly) superficially attractive."
+}, {
+  "word": "Obdurate ",
+  "definition": "Stubbornly refusing to change one’s opinion or course of action."
+}, {
+  "word": "Profligate ",
+  "definition": "Recklessly extravagant or wasteful in the use of resources."
+}, {
+  "word": "Malodorous ",
+  "definition": "Smelling very unpleasant; an offensive odor."
+}, {
+  "word": "Corollary",
+  "definition": "A direct or natural consequence or result."
+}, {
+  "word": "Gestalt",
+  "definition": "An organized whole that is perceived as more than the sum of its parts."
+}, {
+  "word": "Bellicose",
+  "definition": "Demonstrating aggression and willingness to fight."
 }];
 /* harmony default export */ __webpack_exports__["default"] = (testData);
 
