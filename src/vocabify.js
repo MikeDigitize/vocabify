@@ -1,9 +1,6 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
-import { __VOCABIFY_SAVED_ITEMS__ } from './utils/constants';
-import { getVocabifyData } from './utils/general-utils'; 
-import testData from './test-data';
-import List from './components/list';
+import Container from './components/container';
 
 export default function App() {
 
@@ -17,29 +14,13 @@ export default function App() {
     false
   );
 
-  const [items, setItems] = useState([]);
-  
-  useEffect(function() {
-    async function getData() {
-      let items;
-      if(typeof window.chrome !== 'undefined' && typeof window.chrome.storage !== 'undefined') {
-        items = await getVocabifyData(__VOCABIFY_SAVED_ITEMS__);
-      }
-      items = items && Object.keys(items).length ? items[__VOCABIFY_SAVED_ITEMS__] : testData;
-      setItems(items);
-    }
-    getData();
-  }, []);
-
   return (
-    <Fragment>
-      <List items={ items } />
-    </Fragment>
+    <Container />
   )
   
 }
 
-ReactDOM.render(<App />, document.getElementById('vocab'));
+ReactDOM.render(<App />, document.getElementById('vocabify'));
 
 // fetch('https://words.bighugelabs.com/api/2/572698ba07a9e0baa4543f8df1889d3b/advocate/json').then(function(response) { 
 // 	// Convert to JSON
