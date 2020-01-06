@@ -3,6 +3,7 @@ import { __VOCABIFY_SAVED_ITEMS__ } from '../utils/constants';
 import { getVocabifyData } from '../utils/general-utils';
 import testData from '../test-data';
 import List from './list';
+import Search from './search';
 
 export default function Container() {
 
@@ -26,6 +27,7 @@ export default function Container() {
         <div className="col">
           <h1>Vocabify</h1>
           <p className="subtitle">Your vocabulary development tool</p>
+          <Search />
           <hr />
         </div>
       </header>

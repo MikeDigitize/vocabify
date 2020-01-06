@@ -1,5 +1,6 @@
 const CopyPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path');
 
 module.exports = {
   entry: {
@@ -9,6 +10,11 @@ module.exports = {
     vocabify: './src/vocabify.js'
   },
   devtool: false,
+  devServer: {
+    contentBase: path.join(__dirname, 'dist'),
+    compress: true,
+    port: 9000
+  },
   output: {
     filename: '[name].js',
     path: `${__dirname}/dist`
