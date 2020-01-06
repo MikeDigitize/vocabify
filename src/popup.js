@@ -82,7 +82,7 @@ async function popupInitialise() {
  */
 document.getElementById('getWord').addEventListener('click', function() {
   getSelectedTextFromBackground().then(async function(data) {
-    let response = capitaliseFirstLetter(data);
+    let response = capitaliseFirstLetter(data.trim());
     await setVocabifyData(__VOCABIFY_WORD__, response);
     setPlaceholderText(word, response);
   });
@@ -96,7 +96,7 @@ document.getElementById('getWord').addEventListener('click', function() {
  */
 document.getElementById('getDefinition').addEventListener('click', function() {
   getSelectedTextFromBackground().then(async function(data) {
-    let response = addFullStop(capitaliseFirstLetter(data));
+    let response = addFullStop(capitaliseFirstLetter(data.trim()));
     await setVocabifyData(__VOCABIFY_DEFINITION__, response);
     setPlaceholderText(definition, response);
   });
@@ -124,7 +124,7 @@ document.getElementById('save').addEventListener('click', async function() {
     !isFourHundredCharactersOrLess(currentWord[__VOCABIFY_WORD__]) ||
     !isTwoCharactersOrMore(currentWord[__VOCABIFY_WORD__])
   ) {
-    msgPopupText.textContent = 'Be sure to choose a word first before saving!';
+    setPlaceholderText(msgPopupText, 'Be sure to choose a word first before saving!');
     msgPopup.open();
 
     return;
@@ -137,7 +137,7 @@ document.getElementById('save').addEventListener('click', async function() {
     !isFourHundredCharactersOrLess(currentDefinition[__VOCABIFY_DEFINITION__]) ||
     !isTwoCharactersOrMore(currentDefinition[__VOCABIFY_DEFINITION__])
   ) {
-    msgPopupText.textContent = 'Be sure to choose a definition first before saving!';
+    setPlaceholderText(msgPopupText, 'Be sure to choose a definition first before saving!');
     msgPopup.open();
 
     return;
@@ -155,9 +155,9 @@ document.getElementById('save').addEventListener('click', async function() {
 
   // if the word is already present in saved items inform the user and exit
   if(isDuplicateWord(items, currentWord[__VOCABIFY_WORD__])) {
-    msgPopupText.textContent = `${currentWord[__VOCABIFY_WORD__]} already exists in Vocabify, save cancelled!`;
+    setPlaceholderText(msgPopupText, `${currentWord[__VOCABIFY_WORD__]} already exists in Vocabify, save cancelled!`);
     msgPopup.open();
-    return false;
+    return;
   }
 
   // if the word is not present, add it to the saved items
@@ -174,7 +174,7 @@ document.getElementById('save').addEventListener('click', async function() {
     callback: setVocabifyData
   });
 
-  msgPopupText.textContent = `${currentWord[__VOCABIFY_WORD__]} successfully saved to Vocabify!`;
+  setPlaceholderText(msgPopupText, `${currentWord[__VOCABIFY_WORD__]} successfully saved to Vocabify!`);
   msgPopup.open();
 
   // reset the popup to default state upon successful save
