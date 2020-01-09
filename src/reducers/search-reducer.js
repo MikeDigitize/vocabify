@@ -8,17 +8,15 @@ export const initialSearchState = {
 export function searchReducer(state, action) {
   switch (action.type) {
     case 'on-loaded-items':
+        console.log('on-search', action.state, state);
         return { 
-            items: action.state.items, 
-            currentItems: state.currentItems, 
-            searchFocused: !state.searchFocused,
-            searchTerm: state.searchTerm 
+            ...state,
+            items: action.state.items
         };
     case 'on-search':
-        console.log('on-search', action.state);
+        console.log('on-search', action.state, state);
         return { 
-            items: state.items, 
-            currentItems: state.currentItems, 
+            ...state,
             searchFocused: true,
             searchTerm: action.state.searchTerm 
         };

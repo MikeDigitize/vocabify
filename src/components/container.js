@@ -29,7 +29,7 @@ export default function Container() {
         <div className="col">
           <h1>Vocabify</h1>
           <p className="subtitle">Your vocabulary development tool</p>
-          <Search />
+          <Search dispatcher={ dispatch } />
           <hr />
         </div>
       </header>
