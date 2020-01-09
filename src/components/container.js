@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useReducer } from 'react';
 import { __VOCABIFY_SAVED_ITEMS__ } from '../utils/constants';
 import { getVocabifyData } from '../utils/general-utils';
 import testData from '../test-data';
 import List from './list';
 import Search from './search';
+import { searchReducer, initialSearchState } from '../reducers/search-reducer'; 
 
 export default function Container() {
 
-  const [items, setItems] = useState([]);
+  const [state, dispatch] = useReducer(searchReducer, initialSearchState);
 
   useEffect(function() {
     async function getData() {
@@ -16,7 +17,8 @@ export default function Container() {
         items = await getVocabifyData(__VOCABIFY_SAVED_ITEMS__);
       }
       items = items && Object.keys(items).length ? items[__VOCABIFY_SAVED_ITEMS__] : testData;
-      setItems(items);
+      let updatedState = { ...state, items };
+      dispatch({ type: 'on-loaded-items', state: updatedState });
     }
     getData();
   }, []);
@@ -33,7 +35,7 @@ export default function Container() {
       </header>
       <div className="row">
         <div className="col">
-          <List items={ items } />
+          <List items={ state.items } />
         </div>
       </div>
     </div>
