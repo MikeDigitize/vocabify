@@ -67,3 +67,11 @@ article.vocabify-item {
     padding: 20px;
     border-bottom: 1px solid lightgray;
 }
+
+.MuiFormLabel-root.Mui-focused {
+    color: darkgrey !important;
+}
+
+.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-color: darkgray !important;
+}
