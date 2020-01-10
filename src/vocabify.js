@@ -22,6 +22,11 @@ export default function App() {
 
 ReactDOM.render(<App />, document.getElementById('vocabify'));
 
+/**
+ * 
+ * 
+ */
+
 // fetch('https://words.bighugelabs.com/api/2/572698ba07a9e0baa4543f8df1889d3b/advocate/json').then(function(response) { 
 // 	// Convert to JSON
 // 	return response.json();

@@ -30,6 +30,7 @@ export default function Container() {
           <h1>Vocabify</h1>
           <p className="subtitle">Your vocabulary development tool</p>
           <Search dispatcher={ dispatch } />
+          <small>You can edit the word or definition by clicking into the text.</small>
           <hr />
         </div>
       </header>

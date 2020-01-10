@@ -104,3 +104,22 @@ export function filterSearchItems(searchTerm, items) {
   }
   
 }
+
+export function validateEdit(str) {
+  switch(true) {
+    case !isTwoCharactersOrMore(str) :
+      return '!isTwoCharactersOrMore';
+    case !isFourHundredCharactersOrLess(str) :
+      return '!isFourHundredCharactersOrLess';
+    default:
+      return true;
+  }
+}
+
+/**
+ * ensure not duplicate
+ * ensure not less than 2 chars
+ * ensure not more than 400 chars
+ * capitalise first letter
+ * add full stop to end
+ */
