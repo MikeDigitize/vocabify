@@ -50,6 +50,16 @@ export function addToItems({ word, definition, items }) {
   return items.concat(item);
 }
 
+export function updateItems({ type, originalText, newText, items }) {
+  let updatedItems = items.map(function(item) {
+    if(item[type] === originalText) {
+      item[type] = newText;
+    }
+    return item;
+  });
+  return updatedItems;
+}
+
 export async function saveItem({ key, items, callback }) {
   return await callback(key, items);
 }
@@ -105,12 +115,14 @@ export function filterSearchItems(searchTerm, items) {
   
 }
 
-export function validateEdit(str) {
+export function validateItemEdit(str, items) {
   switch(true) {
     case !isTwoCharactersOrMore(str) :
       return '!isTwoCharactersOrMore';
     case !isFourHundredCharactersOrLess(str) :
       return '!isFourHundredCharactersOrLess';
+    case isDuplicateWord(items, str) :
+      return 'isDuplicateWord';
     default:
       return true;
   }

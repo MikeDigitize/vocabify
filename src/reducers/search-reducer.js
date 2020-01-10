@@ -1,4 +1,10 @@
-import { filterSearchItems } from '../utils/general-utils';
+import { 
+  filterSearchItems, 
+  validateItemEdit,
+  capitaliseFirstLetter,
+  addFullStop, 
+  updateItems
+} from '../utils/general-utils';
 
 export const initialSearchState = {
   items: [],
@@ -28,6 +34,40 @@ export function searchReducer(state, action) {
         ...state,
         currentItems: action.state.searchTerm === '' ? state.items: state.currentItems
       }
+    case 'on-word-edit':
+      console.log('on-word-edit', action.state, state);
+      if(validateItemEdit(action.state.newWord, state.currentItems)) {
+        console.log('validated word');
+        return {
+          ...state,
+          currentItems: updateItems({
+            type: 'word',
+            originalText: action.state.originalWord,
+            newText: capitaliseFirstLetter(action.state.newWord),
+            items: state.currentItems
+          })
+        }
+      }
+      return {
+        ...state
+      }
+    case 'on-definition-edit':
+        console.log('on-definition-edit', action.state, state);
+        if(validateItemEdit(action.state.newDefinition, state.currentItems)) {
+          console.log('validated definition');
+          return {
+            ...state,
+            currentItems: updateItems({
+              type: 'definition',
+              originalText: action.state.originalDefinition,
+              newText: addFullStop(capitaliseFirstLetter(action.state.newDefinition)),
+              items: state.currentItems
+            })
+          }
+        }
+        return {
+          ...state
+        }
     default:
       throw new Error();
   }

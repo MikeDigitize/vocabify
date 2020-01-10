@@ -5,6 +5,7 @@ import {
     isTwoCharactersOrMore,
     isDefaultText,
     addToItems,
+    updateItems,
     toEmptyString,
     setPlaceholderText,
     capitaliseFirstLetter,
@@ -89,6 +90,37 @@ import {
       let items = [];
       let result = addToItems({ word, definition, items });
       expect(result).toHaveLength(1);
+      expect(result[0]).toHaveProperty('word', word);
+      expect(result[0]).toHaveProperty('definition', definition);
+    });
+
+    test('...updateItems should update the word of an item in the array', function() {
+      let word = 'Word';
+      let definition = 'A single distinct meaningful element of speech or writing';
+      let items = [{ word, definition }];
+      let newText = 'Wordy';
+      let result = updateItems({ type: 'word', originalText: word, newText, items });
+      expect(result[0]).toHaveProperty('word', newText);
+      expect(result[0]).toHaveProperty('definition', definition);
+    });
+
+    test('...updateItems should update the definition of an item in the array', function() {
+      let word = 'Word';
+      let definition = 'A single distinct meaningful element of speech or writing';
+      let items = [{ word, definition }];
+      let newText = 'A new definition';
+      let result = updateItems({ type: 'definition', originalText: definition, newText, items });
+      expect(result[0]).toHaveProperty('word', word);
+      expect(result[0]).toHaveProperty('definition', newText);
+    });
+
+    test('...updateItems should not make any changes if the original text cannot be found', function() {
+      let word = 'Word';
+      let definition = 'A single distinct meaningful element of speech or writing';
+      let wrongDefinition = 'Wrong definition';
+      let items = [{ word, definition }];
+      let newText = 'A new definition';
+      let result = updateItems({ type: 'definition', originalText: wrongDefinition, newText, items });
       expect(result[0]).toHaveProperty('word', word);
       expect(result[0]).toHaveProperty('definition', definition);
     });

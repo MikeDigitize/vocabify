@@ -1,10 +1,10 @@
 import React, { useEffect, useReducer } from 'react';
-import { __VOCABIFY_SAVED_ITEMS__ } from '../utils/constants';
-import { getVocabifyData } from '../utils/general-utils';
 import testData from '../test-data';
 import List from './list';
 import Search from './search';
 import { searchReducer, initialSearchState } from '../reducers/search-reducer'; 
+import { __VOCABIFY_SAVED_ITEMS__ } from '../utils/constants';
+import { getVocabifyData } from '../utils/general-utils';
 
 export default function Container() {
 
@@ -36,7 +36,7 @@ export default function Container() {
       </header>
       <div className="row">
         <div className="col">
-          <List items={ state.currentItems } />
+          <List items={ state.currentItems } dispatcher={ dispatch } />
         </div>
       </div>
     </div>
