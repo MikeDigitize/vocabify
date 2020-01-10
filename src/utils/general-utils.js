@@ -88,3 +88,19 @@ export function isDuplicateWord(savedItems, word) {
   });
   return isPresent;
 }
+
+export function sortAlphabetically(items) {
+  return items.sort((a, b) => a.word.localeCompare(b.word))
+}
+
+export function filterSearchItems(searchTerm, items) {
+  switch(searchTerm) {
+    case '':
+      return [];
+    default:
+      let reg = new RegExp(`^${searchTerm}`, 'i');
+      let matches = sortAlphabetically(items.filter(item => reg.test(item.word)));
+      return matches;
+  }
+  
+}

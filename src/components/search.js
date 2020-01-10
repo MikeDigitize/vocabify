@@ -22,6 +22,8 @@ export default function Search({ dispatcher }) {
         label="Search your vocabulary..." 
         variant="outlined" 
         onChange={ evt => dispatcher({ type: 'on-search', state: { searchTerm: evt.target.value }})}
+        onFocus={ evt => dispatcher({ type: 'on-search', state: { searchTerm: evt.target.value }})}
+        onBlur={ evt => dispatcher({ type: 'on-search-blur', state: { searchTerm: evt.target.value }}) }
       />
     </form>
   );

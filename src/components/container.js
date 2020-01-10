@@ -35,7 +35,7 @@ export default function Container() {
       </header>
       <div className="row">
         <div className="col">
-          <List items={ state.items } />
+          <List items={ state.currentItems } />
         </div>
       </div>
     </div>
