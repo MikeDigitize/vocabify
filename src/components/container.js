@@ -2,6 +2,7 @@ import React, { useEffect, useReducer } from 'react';
 import testData from '../test-data';
 import List from './list';
 import Search from './search';
+import MessagePopup from './message-popup';
 import { searchReducer, initialSearchState } from '../reducers/search-reducer'; 
 import { __VOCABIFY_SAVED_ITEMS__ } from '../utils/constants';
 import { getVocabifyData } from '../utils/general-utils';
@@ -37,6 +38,11 @@ export default function Container() {
       <div className="row">
         <div className="col">
           <List items={ state.currentItems } dispatcher={ dispatch } />
+          <MessagePopup 
+            open={ state.showPopup } 
+            msg={ state.popupMessage }
+            dispatcher={ dispatch }
+          />
         </div>
       </div>
     </div>

@@ -118,11 +118,11 @@ export function filterSearchItems(searchTerm, items) {
 export function validateItemEdit(str, items) {
   switch(true) {
     case !isTwoCharactersOrMore(str) :
-      return '!isTwoCharactersOrMore';
+      return false;
     case !isFourHundredCharactersOrLess(str) :
-      return '!isFourHundredCharactersOrLess';
+      return false;
     case isDuplicateWord(items, str) :
-      return 'isDuplicateWord';
+      return false;
     default:
       return true;
   }

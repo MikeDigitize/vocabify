@@ -1,9 +1,6 @@
-import React, { Fragment, useState } from 'react';
-import MessagePopup from './message-popup';
+import React, { Fragment } from 'react';
 
 export default function List({ items, dispatcher }) {
-
-  const [popupVisibility, setPopupVisibility] = useState(false);
 
   function createList() {
     return items.map(function(item, index) {
@@ -14,8 +11,13 @@ export default function List({ items, dispatcher }) {
             suppressContentEditableWarning
             onBlur={ evt => {
               console.log(evt.currentTarget.textContent, item.word);
-              dispatcher({ type: 'on-word-edit', state: { originalWord: item.word, newWord: evt.currentTarget.textContent }})
-              setPopupVisibility(!popupVisibility);
+              dispatcher({ 
+                type: 'on-word-edit', 
+                state: { 
+                  originalWord: item.word, 
+                  newWord: evt.currentTarget.textContent 
+                }
+              })
             }}
           >
             { item.word }
@@ -24,9 +26,14 @@ export default function List({ items, dispatcher }) {
             contentEditable
             suppressContentEditableWarning
             onBlur={ evt => {
-              console.log(evt.currentTarget.textContent, item.word);
-              dispatcher({ type: 'on-definition-edit', state: { originalDefinition: item.definition, newDefinition: evt.currentTarget.textContent }});
-              setPopupVisibility(!popupVisibility);
+              console.log(evt.currentTarget.textContent, item.definition);
+              dispatcher({ 
+                type: 'on-definition-edit', 
+                state: { 
+                  originalDefinition: item.definition, 
+                  newDefinition: evt.currentTarget.textContent 
+                }
+              });
             }}
           >
             { item.definition }
@@ -42,11 +49,6 @@ export default function List({ items, dispatcher }) {
     return (
       <Fragment>
         { list }
-        <MessagePopup 
-          open={ popupVisibility } 
-          onToggle={ () => setPopupVisibility(!popupVisibility) }
-          msg={ "I love snacks" }
-        />
       </Fragment>
     );
   }
