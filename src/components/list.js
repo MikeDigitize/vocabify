@@ -1,7 +1,10 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
+import MessagePopup from './message-popup';
 import { validateEdit } from '../utils/general-utils';
 
 export default function List({ items }) {
+
+  const [popupVisibility, setVisibility] = useState(false);
 
   function createList() {
     return items.map(function(item, index) {
@@ -10,7 +13,10 @@ export default function List({ items }) {
           <h2 
             contentEditable
             suppressContentEditableWarning
-            onBlur={ e => console.log(validateEdit(e.currentTarget.textContent)) }
+            onBlur={ e => {
+              console.log(validateEdit(e.currentTarget.textContent));
+              setVisibility(!popupVisibility);
+            } }
           >
             { item.word }
           </h2>
@@ -32,6 +38,11 @@ export default function List({ items }) {
     return (
       <Fragment>
         { list }
+        <MessagePopup 
+          open={ popupVisibility } 
+          onToggle={ () => setVisibility(!popupVisibility) }
+          msg={ "I love snacks" }
+        />
       </Fragment>
     );
   }
