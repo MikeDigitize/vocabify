@@ -86,6 +86,12 @@ export function searchReducer(state, action) {
         ...state,
         showPopup: false
       }
+    case 'on-show-popup':
+      return {
+        ...state,
+        showPopup: true,
+        popupMessage: action.state.popupMessage
+      }
     default:
       throw new Error();
   }

@@ -26,6 +26,11 @@ body {
     padding: 10px 0px 10px 0px;
 }
 
+button.MuiButtonBase-root.MuiButton-root.MuiButton-text.makeStyles-root-64.MuiButton-textSizeSmall.MuiButton-sizeSmall {
+    text-transform: capitalize;
+    font-family: 'Lato', sans-serif;
+}
+
 hr {
     margin-top: 0.8rem;
     margin-bottom: 0.7rem;
