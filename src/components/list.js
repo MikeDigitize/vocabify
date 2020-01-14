@@ -11,19 +11,30 @@ export default function List({ items, dispatcher }) {
             contentEditable
             suppressContentEditableWarning
             onBlur={ evt => {
+
               let text = evt.currentTarget.textContent;
+
+              if(text === item.word) {
+                return;
+              }
+
               if(isTwoCharactersOrMore(text) && isFourHundredCharactersOrLess(text)) {
+
                 console.log(evt.currentTarget.textContent, item.word);
+                
                 dispatcher({ 
                   type: 'on-word-edit', 
                   state: { 
                     originalWord: item.word, 
                     newWord: evt.currentTarget.textContent 
                   }
-                })
+                });
+
               }
               else {
+
                 evt.currentTarget.textContent = item.word;
+                
                 dispatcher({
                   type: 'on-show-popup',
                   state: {
@@ -32,7 +43,9 @@ export default function List({ items, dispatcher }) {
                       'Words saved need to be less than 400 characters long!'
                   }
                 });
+
               }
+
             }}
           >
             { item.word }
@@ -41,9 +54,17 @@ export default function List({ items, dispatcher }) {
             contentEditable
             suppressContentEditableWarning
             onBlur={ evt => {
+
               let text = evt.currentTarget.textContent;
+
+              if(text === item.definition) {
+                return;
+              }
+
               if(isTwoCharactersOrMore(text) && isFourHundredCharactersOrLess(text)) {
+
                 console.log(text, item.definition);
+                
                 dispatcher({ 
                   type: 'on-definition-edit', 
                   state: { 
@@ -51,9 +72,12 @@ export default function List({ items, dispatcher }) {
                     newDefinition: text 
                   }
                 });
+
               }
               else {
+                
                 evt.currentTarget.textContent = item.definition;
+                
                 dispatcher({
                   type: 'on-show-popup',
                   state: {
@@ -62,7 +86,9 @@ export default function List({ items, dispatcher }) {
                       'Definitions saved need to be less than 400 characters long!'
                   }
                 });
+
               }
+              
             }}
           >
             { item.definition }

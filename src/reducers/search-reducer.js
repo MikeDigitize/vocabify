@@ -11,42 +11,51 @@ export const initialSearchState = {
   searchTerm: '',
   currentItems: [],
   showPopup: false,
-  popupMessage: 'Boo!'
+  popupMessage: ''
 };
 
 export function searchReducer(state, action) {
+
+  let result;
+
   switch (action.type) {
+
     case 'on-loaded-items':
-        console.log('on-search', action.state, state);
+
         return { 
             ...state,
             items: action.state.items,
             currentItems: action.state.items,
             showPopup: false
         };
+
     case 'on-search':
-        console.log('on-search', action.state, state);
+
         return { 
             ...state,
             currentItems: filterSearchItems(action.state.searchTerm, state.items),
             searchTerm: action.state.searchTerm,
             showPopup: false 
         };
+
     case 'on-search-blur':
-      console.log('on-search-blur', action.state, state);
+
       return {
         ...state,
         currentItems: action.state.searchTerm === '' ? state.items: state.currentItems,
         showPopup: false
       }
+
     case 'on-word-edit':
-      console.log('on-word-edit', action.state, state);
-      if(validateItemEdit(action.state.newWord, state.currentItems)) {
+      
+      result = validateItemEdit(action.state.newWord, state.currentItems, 'word');
+      
+      if(result.validated) {
         console.log('validated word');
         return {
           ...state,
           showPopup: true,
-          popupMessage: 'Success',
+          popupMessage: result.response,
           currentItems: updateItems({
             type: 'word',
             originalText: action.state.originalWord,
@@ -57,17 +66,20 @@ export function searchReducer(state, action) {
       }
       return {
         ...state,
-        popupMessage: 'Fail',
+        popupMessage: result.response,
         showPopup: true
       }
+
     case 'on-definition-edit':
-        console.log('on-definition-edit', action.state, state);
-        if(validateItemEdit(action.state.newDefinition, state.currentItems)) {
+
+        result = validateItemEdit(action.state.newDefinition, state.currentItems, 'definition');
+        
+        if(result.validated) {
           console.log('validated definition');
           return {
             ...state,
             showPopup: true,
-            popupMessage: 'Success',
+            popupMessage: result.response,
             currentItems: updateItems({
               type: 'definition',
               originalText: action.state.originalDefinition,
@@ -78,21 +90,28 @@ export function searchReducer(state, action) {
         }
         return {
           ...state,
-          popupMessage: 'Fail',
+          popupMessage: result.response,
           showPopup: true
         }
+
     case 'on-hide-popup':
+
       return {
         ...state,
         showPopup: false
       }
+
     case 'on-show-popup':
+
       return {
         ...state,
         showPopup: true,
         popupMessage: action.state.popupMessage
       }
+
     default:
-      throw new Error();
+      throw new Error('No case statement matched in reducer!');
+
   }
+
 }
