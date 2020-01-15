@@ -114,28 +114,3 @@ export function filterSearchItems(searchTerm, items) {
   }
   
 }
-
-export function validateItemEdit(str, items, type) {
-  switch(true) {
-    case !isTwoCharactersOrMore(str) :
-      return {
-        validated: false,
-        response: `Be sure to make sure your ${type} is two or more characters!`
-      };
-    case !isFourHundredCharactersOrLess(str) :
-      return {
-        validated: false,
-        response: `Be sure to make sure your ${type} is less than four hundred characters!`
-      };
-    case isDuplicateWord(items, str) :
-      return {
-        validated: false,
-        response: `${str} already exists in Vocabify, save cancelled!`
-      };
-    default:
-      return {
-        validated: true,
-        response: `${capitaliseFirstLetter(type)} updated.`
-      };
-  }
-}

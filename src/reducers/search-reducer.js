@@ -1,9 +1,9 @@
 import { 
   filterSearchItems, 
-  validateItemEdit,
   capitaliseFirstLetter,
   addFullStop, 
-  updateItems
+  updateItems,
+  isDuplicateWord
 } from '../utils/general-utils';
 
 export const initialSearchState = {
@@ -15,8 +15,6 @@ export const initialSearchState = {
 };
 
 export function searchReducer(state, action) {
-
-  let result;
 
   switch (action.type) {
 
@@ -48,14 +46,12 @@ export function searchReducer(state, action) {
 
     case 'on-word-edit':
       
-      result = validateItemEdit(action.state.newWord, state.currentItems, 'word');
-      
-      if(result.validated) {
-        console.log('validated word');
+      if(!isDuplicateWord(state.currentItems, action.state.newWord)) {
+        
         return {
           ...state,
           showPopup: true,
-          popupMessage: result.response,
+          popupMessage: 'Word updated',
           currentItems: updateItems({
             type: 'word',
             originalText: action.state.originalWord,
@@ -66,33 +62,23 @@ export function searchReducer(state, action) {
       }
       return {
         ...state,
-        popupMessage: result.response,
+        popupMessage: `${capitaliseFirstLetter(action.state.newWord)} already exists in Vocabify, save cancelled!`,
         showPopup: true
       }
 
     case 'on-definition-edit':
-
-        result = validateItemEdit(action.state.newDefinition, state.currentItems, 'definition');
-        
-        if(result.validated) {
-          console.log('validated definition');
-          return {
-            ...state,
-            showPopup: true,
-            popupMessage: result.response,
-            currentItems: updateItems({
-              type: 'definition',
-              originalText: action.state.originalDefinition,
-              newText: addFullStop(capitaliseFirstLetter(action.state.newDefinition)),
-              items: state.currentItems
-            })
-          }
-        }
-        return {
-          ...state,
-          popupMessage: result.response,
-          showPopup: true
-        }
+      
+      return {
+        ...state,
+        showPopup: true,
+        popupMessage: 'Definition updated',
+        currentItems: updateItems({
+          type: 'definition',
+          originalText: action.state.originalDefinition,
+          newText: addFullStop(capitaliseFirstLetter(action.state.newDefinition)),
+          items: state.currentItems
+        })
+      }
 
     case 'on-hide-popup':
 

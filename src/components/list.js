@@ -19,8 +19,6 @@ export default function List({ items, dispatcher }) {
               }
 
               if(isTwoCharactersOrMore(text) && isFourHundredCharactersOrLess(text)) {
-
-                console.log(evt.currentTarget.textContent, item.word);
                 
                 dispatcher({ 
                   type: 'on-word-edit', 
@@ -62,8 +60,6 @@ export default function List({ items, dispatcher }) {
               }
 
               if(isTwoCharactersOrMore(text) && isFourHundredCharactersOrLess(text)) {
-
-                console.log(text, item.definition);
                 
                 dispatcher({ 
                   type: 'on-definition-edit', 
