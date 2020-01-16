@@ -1,5 +1,10 @@
 import React, { Fragment } from 'react';
-import { isFourHundredCharactersOrLess, isTwoCharactersOrMore } from '../utils/general-utils';
+import { 
+  isFourHundredCharactersOrLess, 
+  isTwoCharactersOrMore, 
+  validateAndSaveWord,
+  validateAndSaveDefinition
+} from '../utils/general-utils';
 
 export default function List({ items, dispatcher }) {
 
@@ -19,13 +24,13 @@ export default function List({ items, dispatcher }) {
               }
 
               if(isTwoCharactersOrMore(text) && isFourHundredCharactersOrLess(text)) {
-                
-                dispatcher({ 
-                  type: 'on-word-edit', 
-                  state: { 
-                    originalWord: item.word, 
-                    newWord: evt.currentTarget.textContent 
-                  }
+
+                validateAndSaveWord({
+                  type: 'word',
+                  originalText: item.word,
+                  newText: evt.currentTarget.textContent,
+                  items,
+                  dispatcher
                 });
 
               }
@@ -61,12 +66,11 @@ export default function List({ items, dispatcher }) {
 
               if(isTwoCharactersOrMore(text) && isFourHundredCharactersOrLess(text)) {
                 
-                dispatcher({ 
-                  type: 'on-definition-edit', 
-                  state: { 
-                    originalDefinition: item.definition, 
-                    newDefinition: text 
-                  }
+                validateAndSaveDefinition({
+                  originalText: item.definition,
+                  newText: text,
+                  dispatcher,
+                  items
                 });
 
               }

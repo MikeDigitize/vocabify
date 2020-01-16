@@ -46,25 +46,23 @@ export function searchReducer(state, action) {
 
     case 'on-word-edit':
       
-      if(!isDuplicateWord(state.currentItems, action.state.newWord)) {
+      if(action.state.success) {
         
         return {
           ...state,
           showPopup: true,
           popupMessage: 'Word updated',
-          currentItems: updateItems({
-            type: 'word',
-            originalText: action.state.originalWord,
-            newText: capitaliseFirstLetter(action.state.newWord),
-            items: state.currentItems
-          })
+          currentItems: action.state.items
         }
       }
-      return {
-        ...state,
-        popupMessage: `${capitaliseFirstLetter(action.state.newWord)} already exists in Vocabify, save cancelled!`,
-        showPopup: true
+      else {
+        return {
+          ...state,
+          popupMessage: `${capitaliseFirstLetter(action.state.newText)} already exists in Vocabify, save cancelled!`,
+          showPopup: true
+        }
       }
+      
 
     case 'on-definition-edit':
       
@@ -72,12 +70,7 @@ export function searchReducer(state, action) {
         ...state,
         showPopup: true,
         popupMessage: 'Definition updated',
-        currentItems: updateItems({
-          type: 'definition',
-          originalText: action.state.originalDefinition,
-          newText: addFullStop(capitaliseFirstLetter(action.state.newDefinition)),
-          items: state.currentItems
-        })
+        currentItems: action.state.items
       }
 
     case 'on-hide-popup':

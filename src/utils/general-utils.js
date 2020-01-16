@@ -1,6 +1,7 @@
 import { 
   __VOCABIFY_NO_WORD_SELECTED__,
-  __VOCABIFY_NO_DEFINITION_SELECTED__
+  __VOCABIFY_NO_DEFINITION_SELECTED__,
+  __VOCABIFY_SAVED_ITEMS__
 } from '../utils/constants';
 
 
@@ -113,4 +114,87 @@ export function filterSearchItems(searchTerm, items) {
       return matches;
   }
   
+}
+
+export async function validateAndSaveWord({
+  originalText,
+  newText,
+  dispatcher,
+  items
+}) {
+
+  if(!isDuplicateWord(items, newText)) {
+    
+    let updatedItems;
+
+    items = updateItems({
+      type: 'word',
+      originalText: originalText,
+      newText: capitaliseFirstLetter(newText),
+      items
+    });
+
+    if (typeof window.chrome !== 'undefined' && typeof window.chrome.storage !== 'undefined') {
+      updatedItems = await setVocabifyData(__VOCABIFY_SAVED_ITEMS__, items);
+    }
+    else {
+      updatedItems = updatedItems && Object.keys(updatedItems).length ? updatedItems[__VOCABIFY_SAVED_ITEMS__] : items;
+    }
+
+    console.log('updated items', updatedItems);
+    
+    dispatcher({ 
+      type: 'on-word-edit', 
+      state: { 
+        items: updatedItems,
+        success: true 
+      }
+    });
+
+  }
+  else {
+    dispatcher({ 
+      type: 'on-word-edit', 
+      state: { 
+        items,
+        success: false,
+        newText 
+      }
+    });
+  }
+
+}
+
+export async function validateAndSaveDefinition({
+  originalText,
+  newText,
+  dispatcher,
+  items
+}) {
+
+  let updatedItems;
+
+  items = updateItems({
+    type: 'definition',
+    originalText: originalText,
+    newText: addFullStop(capitaliseFirstLetter(newText)),
+    items
+  });
+
+  if (typeof window.chrome !== 'undefined' && typeof window.chrome.storage !== 'undefined') {
+    updatedItems = await setVocabifyData(__VOCABIFY_SAVED_ITEMS__, items);
+  }
+  else {
+    updatedItems = updatedItems && Object.keys(updatedItems).length ? updatedItems[__VOCABIFY_SAVED_ITEMS__] : items;
+  }
+
+  console.log('updated definition', updatedItems);
+  
+  dispatcher({ 
+    type: 'on-definition-edit', 
+    state: { 
+      items: updatedItems 
+    }
+  });
+
 }
