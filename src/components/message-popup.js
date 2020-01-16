@@ -20,7 +20,7 @@ export default function MessagePopup({ open, dispatcher, msg }) {
     <Snackbar
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
         key={`bottom,horizontal`}
-        autoHideDuration={6000}
+        onClose={ () => setTimeout(() => dispatcher({ type: 'on-hide-popup' }), 4000) }
         open={open}
         onClick={() => dispatcher({ type: 'on-hide-popup' })}
         message={ msg }
@@ -30,7 +30,7 @@ export default function MessagePopup({ open, dispatcher, msg }) {
             onClick={() => dispatcher({ type: 'on-hide-popup' })}
             className={ classes.root }
           >
-              Close
+            Close
           </Button>
         }
     />
