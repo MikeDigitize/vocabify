@@ -80,3 +80,16 @@ article.vocabify-item {
 .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
     border-color: darkgray !important;
 }
+
+.vocabify-item-controls {
+    padding-top: 20px;
+}
+
+.vocabify-item-controls h2 {
+    font-size: 15px;
+    transition: color 0.5s ease-in-out;
+    font-family: 'Lato', sans-serif;
+    margin-bottom: .5rem;
+    font-weight: 500;
+    line-height: 1.2;
+}

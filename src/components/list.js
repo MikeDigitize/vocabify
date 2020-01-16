@@ -93,6 +93,17 @@ export default function List({ items, dispatcher }) {
           >
             { item.definition }
           </p>
+          <div className="row vocabify-item-controls">
+            <div className="col divider-right">
+              <h2>Delete</h2>
+              <i className="fas fa-trash-alt fa-lg"></i>
+            </div>
+            <div className="col">
+              <h2>Synonyms</h2>
+              <i className="fas fa-search-plus fa-lg"></i>
+            </div>
+          </div>
+          
         </article>
       )
     });

@@ -1,9 +1,6 @@
 import { 
   filterSearchItems, 
-  capitaliseFirstLetter,
-  addFullStop, 
-  updateItems,
-  isDuplicateWord
+  capitaliseFirstLetter
 } from '../utils/general-utils';
 
 export const initialSearchState = {
