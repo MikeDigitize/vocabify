@@ -29,7 +29,7 @@ export default function List({ items, dispatcher }) {
                   type: 'word',
                   originalText: item.word,
                   newText: evt.currentTarget.textContent,
-                  items,
+                  currentItems: items,
                   dispatcher
                 });
 
@@ -70,7 +70,7 @@ export default function List({ items, dispatcher }) {
                   originalText: item.definition,
                   newText: text,
                   dispatcher,
-                  items
+                  currentItems: items
                 });
 
               }

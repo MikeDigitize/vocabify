@@ -120,44 +120,59 @@ export async function validateAndSaveWord({
   originalText,
   newText,
   dispatcher,
-  items
+  currentItems
 }) {
 
-  if(!isDuplicateWord(items, newText)) {
+  if(!isDuplicateWord(currentItems, newText)) {
     
-    let updatedItems;
     let totalItems;
 
+    /**
+     * get all the items from storage 
+     */
     if (typeof window.chrome !== 'undefined' && typeof window.chrome.storage !== 'undefined') {
       totalItems = await getVocabifyData(__VOCABIFY_SAVED_ITEMS__);
       totalItems = totalItems[__VOCABIFY_SAVED_ITEMS__];
     }
+    /**
+     * grab them from the window if local
+     */
     else {
-      totalItems = items;
+      totalItems = window[__VOCABIFY_SAVED_ITEMS__];
     }
 
-    console.log('totalItems', totalItems);
+    currentItems = updateItems({
+      type: 'word',
+      originalText: originalText,
+      newText: capitaliseFirstLetter(newText),
+      items: currentItems
+    });
 
-    items = updateItems({
+    totalItems = updateItems({
       type: 'word',
       originalText: originalText,
       newText: capitaliseFirstLetter(newText),
       items: totalItems
     });
 
+    /**
+     * set items 
+     */
     if (typeof window.chrome !== 'undefined' && typeof window.chrome.storage !== 'undefined') {
-      updatedItems = await setVocabifyData(__VOCABIFY_SAVED_ITEMS__, items);
+      await setVocabifyData(__VOCABIFY_SAVED_ITEMS__, totalItems);
     }
     else {
-      updatedItems = updatedItems && Object.keys(updatedItems).length ? updatedItems[__VOCABIFY_SAVED_ITEMS__] : items;
+      window[__VOCABIFY_SAVED_ITEMS__] = totalItems;
     }
 
-    console.log('updated items', updatedItems);
+    console.log('---update word: current and total items---');
+    console.log('updated current items', currentItems);
+    console.log('totalItems', totalItems);
     
     dispatcher({ 
       type: 'on-word-edit', 
       state: { 
-        items: updatedItems,
+        items: currentItems,
         success: true 
       }
     });
@@ -167,7 +182,6 @@ export async function validateAndSaveWord({
     dispatcher({ 
       type: 'on-word-edit', 
       state: { 
-        items,
         success: false,
         newText 
       }
@@ -180,10 +194,9 @@ export async function validateAndSaveDefinition({
   originalText,
   newText,
   dispatcher,
-  items
+  currentItems
 }) {
 
-  let updatedItems;
   let totalItems;
 
   if (typeof window.chrome !== 'undefined' && typeof window.chrome.storage !== 'undefined') {
@@ -191,10 +204,17 @@ export async function validateAndSaveDefinition({
     totalItems = totalItems[__VOCABIFY_SAVED_ITEMS__];
   }
   else {
-    totalItems = items;
+    totalItems = window[__VOCABIFY_SAVED_ITEMS__];
   }
 
-  items = updateItems({
+  currentItems = updateItems({
+    type: 'definition',
+    originalText: originalText,
+    newText: addFullStop(capitaliseFirstLetter(newText)),
+    items: currentItems
+  });
+
+  totalItems = updateItems({
     type: 'definition',
     originalText: originalText,
     newText: addFullStop(capitaliseFirstLetter(newText)),
@@ -202,18 +222,20 @@ export async function validateAndSaveDefinition({
   });
 
   if (typeof window.chrome !== 'undefined' && typeof window.chrome.storage !== 'undefined') {
-    updatedItems = await setVocabifyData(__VOCABIFY_SAVED_ITEMS__, items);
+    await setVocabifyData(__VOCABIFY_SAVED_ITEMS__, totalItems);
   }
   else {
-    updatedItems = updatedItems && Object.keys(updatedItems).length ? updatedItems[__VOCABIFY_SAVED_ITEMS__] : items;
+    window[__VOCABIFY_SAVED_ITEMS__] = totalItems;
   }
 
-  console.log('updated definition', updatedItems);
+  console.log('---update definition: current and total items---');
+  console.log('updated current items', currentItems);
+  console.log('totalItems', totalItems);
   
   dispatcher({ 
     type: 'on-definition-edit', 
     state: { 
-      items: updatedItems 
+      items: currentItems 
     }
   });
 

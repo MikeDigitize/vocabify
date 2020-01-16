@@ -13,13 +13,25 @@ export default function Container() {
 
   useEffect(function() {
     async function getData() {
+    
       let items;
       if (typeof window.chrome !== 'undefined' && typeof window.chrome.storage !== 'undefined') {
         items = await getVocabifyData(__VOCABIFY_SAVED_ITEMS__);
       }
       items = items && Object.keys(items).length ? items[__VOCABIFY_SAVED_ITEMS__] : testData;
+      
+      /**
+       * For local testing
+       * save items to window
+       * for retrieval later
+       */
+      if(typeof window.chrome === 'undefined' || typeof window.chrome.storage === 'undefined') {
+        window[__VOCABIFY_SAVED_ITEMS__] = items;
+      }
+
       let updatedState = { ...state, items };
       dispatch({ type: 'on-loaded-items', state: updatedState });
+
     }
     getData();
   }, []);
