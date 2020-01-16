@@ -126,12 +126,23 @@ export async function validateAndSaveWord({
   if(!isDuplicateWord(items, newText)) {
     
     let updatedItems;
+    let totalItems;
+
+    if (typeof window.chrome !== 'undefined' && typeof window.chrome.storage !== 'undefined') {
+      totalItems = await getVocabifyData(__VOCABIFY_SAVED_ITEMS__);
+      totalItems = totalItems[__VOCABIFY_SAVED_ITEMS__];
+    }
+    else {
+      totalItems = items;
+    }
+
+    console.log('totalItems', totalItems);
 
     items = updateItems({
       type: 'word',
       originalText: originalText,
       newText: capitaliseFirstLetter(newText),
-      items
+      items: totalItems
     });
 
     if (typeof window.chrome !== 'undefined' && typeof window.chrome.storage !== 'undefined') {
@@ -173,12 +184,21 @@ export async function validateAndSaveDefinition({
 }) {
 
   let updatedItems;
+  let totalItems;
+
+  if (typeof window.chrome !== 'undefined' && typeof window.chrome.storage !== 'undefined') {
+    totalItems = await getVocabifyData(__VOCABIFY_SAVED_ITEMS__);
+    totalItems = totalItems[__VOCABIFY_SAVED_ITEMS__];
+  }
+  else {
+    totalItems = items;
+  }
 
   items = updateItems({
     type: 'definition',
     originalText: originalText,
     newText: addFullStop(capitaliseFirstLetter(newText)),
-    items
+    items: totalItems
   });
 
   if (typeof window.chrome !== 'undefined' && typeof window.chrome.storage !== 'undefined') {
