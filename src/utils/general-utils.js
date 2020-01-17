@@ -240,3 +240,7 @@ export async function validateAndSaveDefinition({
   });
 
 }
+
+export function removeItem(word, items) {
+  return items.filter(item => item.word.toUpperCase() !== word.toUpperCase());
+}

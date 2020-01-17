@@ -17,7 +17,6 @@ describe('List tests', function() {
     }];
     const { getByText, container } = render(<List items={ items }/>);
     expect(container.firstChild.tagName.toLowerCase()).toBe('article');
-    expect(container.firstChild.childElementCount).toBe(2);
     const word = getByText(/^defenestration$/i);
     expect(word.tagName.toLowerCase()).toBe('h2');
     const definition = getByText(/^Defenestration is the act of throwing someone or something out of a window\.$/i);

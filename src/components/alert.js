@@ -12,11 +12,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export default function Alert({ open, dispatcher, alertMessage }) {
-//   const [open, setOpen] = React.useState(false);
-
-//   const handleClickOpen = () => {
-//     setOpen(true);
-//   };
 
   const handleClose = () => {
     dispatcher({ type: 'on-delete-item-response', state: {
@@ -37,7 +32,7 @@ export default function Alert({ open, dispatcher, alertMessage }) {
         <DialogTitle id="alert-dialog-slide-title">{`${alertMessage}`}</DialogTitle>
         <DialogContent>
             <DialogContentText id="alert-dialog-slide-description">
-            It cannot be undone! Remember you can click on any words and definitions you have saved if you want to edit them.
+            It cannot be undone! Remember you can click into any words and definitions you have saved to edit them.
             </DialogContentText>
         </DialogContent>
         <DialogActions>
