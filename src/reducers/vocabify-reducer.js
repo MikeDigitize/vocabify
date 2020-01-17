@@ -8,10 +8,12 @@ export const initialSearchState = {
   searchTerm: '',
   currentItems: [],
   showPopup: false,
-  popupMessage: ''
+  showAlert: false,
+  popupMessage: '',
+  alertMessage: ''
 };
 
-export function searchReducer(state, action) {
+export function vocabifyReducer(state, action) {
 
   switch (action.type) {
 
@@ -84,7 +86,28 @@ export function searchReducer(state, action) {
         showPopup: true,
         popupMessage: action.state.popupMessage
       }
+    
+    case 'on-delete-item':
 
+      return {
+        ...state,
+        showAlert: true,
+        alertMessage: `Are you sure you want to permanently delete ${action.state}?`
+      }
+
+    case 'on-delete-item-response':
+
+      if(action.state.delete) {
+
+      }
+      else {
+        return {
+          ...state,
+          showAlert: false,
+          alertMessage: ''
+        }
+      }
+      
     default:
       throw new Error('No case statement matched in reducer!');
 

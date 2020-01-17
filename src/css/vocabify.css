@@ -2,6 +2,7 @@ p {
     margin-bottom: 0;
     font-size: 0.8rem;
 }
+
 h1 {
     font-family: 'Raleway', sans-serif;
     margin-bottom: 0;
@@ -21,8 +22,6 @@ h2 {
 
 body {
     font-family: 'Lato', sans-serif;
-    width: 380px;
-    margin: auto;
     padding: 10px 0px 10px 0px;
 }
 
@@ -42,12 +41,12 @@ hr {
 
 i {
     cursor: pointer;
-    color: darkslategrey;
+    color: darkgray;
     transition: color 0.5s ease-in-out;
 }
 
 i:hover {
-    color: black
+    color: darkslategrey;
 }
 
 .divider-right {
@@ -71,6 +70,9 @@ i:hover {
 article.vocabify-item {
     padding: 20px;
     border-bottom: 1px solid lightgray;
+    position: relative;
+    width: 400px;
+    margin: auto;
 }
 
 .MuiFormLabel-root.Mui-focused {
@@ -81,15 +83,21 @@ article.vocabify-item {
     border-color: darkgray !important;
 }
 
-.vocabify-item-controls {
-    padding-top: 20px;
+.delete-item-holder {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 10px;
 }
 
-.vocabify-item-controls h2 {
-    font-size: 15px;
-    transition: color 0.5s ease-in-out;
-    font-family: 'Lato', sans-serif;
-    margin-bottom: .5rem;
-    font-weight: 500;
-    line-height: 1.2;
+.MuiTypography-h6 {
+    font-size: inherit !important;
+    font-family: 'Lato', sans-serif !important;
+    font-weight: bold !important;
+    line-height: inherit !important;
+    letter-spacing: inherit !important;
+}
+
+.MuiDialogTitle-root h2 {
+    font-size: 20px !important;
 }

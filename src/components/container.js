@@ -3,13 +3,14 @@ import testData from '../test-data';
 import List from './list';
 import Search from './search';
 import MessagePopup from './message-popup';
-import { searchReducer, initialSearchState } from '../reducers/search-reducer'; 
+import Alert from './alert';
+import { vocabifyReducer, initialSearchState } from '../reducers/vocabify-reducer'; 
 import { __VOCABIFY_SAVED_ITEMS__ } from '../utils/constants';
 import { getVocabifyData } from '../utils/general-utils';
 
 export default function Container() {
 
-  const [state, dispatch] = useReducer(searchReducer, initialSearchState);
+  const [state, dispatch] = useReducer(vocabifyReducer, initialSearchState);
 
   useEffect(function() {
     async function getData() {
@@ -54,6 +55,11 @@ export default function Container() {
             open={ state.showPopup } 
             msg={ state.popupMessage }
             dispatcher={ dispatch }
+          />
+          <Alert 
+            open={ state.showAlert }
+            dispatcher={ dispatch }
+            alertMessage={ state.alertMessage } 
           />
         </div>
       </div>

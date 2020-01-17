@@ -12,6 +12,17 @@ export default function List({ items, dispatcher }) {
     return items.map(function(item, index) {
       return (
         <article className="vocabify-item" key={`${item.word}${index}`}>
+          <div className="delete-item-holder">
+              <i 
+                className="fas fa-times-circle" 
+                title={`Delete ${item.word}`}
+                onClick={ () => dispatcher({ 
+                  type: 'on-delete-item',
+                  state: item.word
+                })}
+              >
+              </i>
+          </div>
           <h2 
             contentEditable
             suppressContentEditableWarning
@@ -93,7 +104,7 @@ export default function List({ items, dispatcher }) {
           >
             { item.definition }
           </p>
-          <div className="row vocabify-item-controls">
+          {/* <div className="row vocabify-item-controls">
             <div className="col divider-right">
               <h2>Delete</h2>
               <i className="fas fa-trash-alt fa-lg"></i>
@@ -102,7 +113,7 @@ export default function List({ items, dispatcher }) {
               <h2>Synonyms</h2>
               <i className="fas fa-search-plus fa-lg"></i>
             </div>
-          </div>
+          </div> */}
           
         </article>
       )
