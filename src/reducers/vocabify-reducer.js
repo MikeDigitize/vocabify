@@ -1,6 +1,7 @@
 import { 
   filterSearchItems, 
-  capitaliseFirstLetter
+  capitaliseFirstLetter,
+  removeItem
 } from '../utils/general-utils';
 
 export const initialSearchState = {
@@ -10,7 +11,7 @@ export const initialSearchState = {
   showPopup: false,
   showAlert: false,
   popupMessage: '',
-  alertMessage: ''
+  wordToDelete: ''
 };
 
 export function vocabifyReducer(state, action) {
@@ -92,19 +93,27 @@ export function vocabifyReducer(state, action) {
       return {
         ...state,
         showAlert: true,
-        alertMessage: `Are you sure you want to permanently delete ${action.state}?`
+        wordToDelete: action.state
       }
 
     case 'on-delete-item-response':
 
       if(action.state.delete) {
-
+        return {
+          ...state,
+          currentItems: removeItem(action.state.wordToDelete, state.currentItems),
+          items: removeItem(action.state.wordToDelete, state.items),
+          showAlert: false,
+          wordToDelete: '',
+          showPopup: true,
+          popupMessage: `${action.state.wordToDelete} has been deleted`
+        }
       }
       else {
         return {
           ...state,
           showAlert: false,
-          alertMessage: ''
+          wordToDelete: ''
         }
       }
       

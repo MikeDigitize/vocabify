@@ -11,7 +11,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function Alert({ open, dispatcher, alertMessage }) {
+export default function Alert({ open, dispatcher, wordToDelete }) {
 
   const handleClose = () => {
     dispatcher({ type: 'on-delete-item-response', state: {
@@ -29,14 +29,14 @@ export default function Alert({ open, dispatcher, alertMessage }) {
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
         >
-        <DialogTitle id="alert-dialog-slide-title">{`${alertMessage}`}</DialogTitle>
+        <DialogTitle id="alert-dialog-slide-title">{`Are you sure you want to delete ${wordToDelete}`}</DialogTitle>
         <DialogContent>
             <DialogContentText id="alert-dialog-slide-description">
             It cannot be undone! Remember you can click into any words and definitions you have saved to edit them.
             </DialogContentText>
         </DialogContent>
         <DialogActions>
-            <Button onClick={handleClose} color="primary">
+            <Button onClick={() => dispatcher({ type: 'on-delete-item-response', state: { delete: true, wordToDelete} })} color="primary">
             Delete
             </Button>
             <Button onClick={handleClose} color="primary">

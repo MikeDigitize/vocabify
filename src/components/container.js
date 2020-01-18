@@ -59,7 +59,7 @@ export default function Container() {
           <Alert 
             open={ state.showAlert }
             dispatcher={ dispatch }
-            alertMessage={ state.alertMessage } 
+            wordToDelete={ state.wordToDelete } 
           />
         </div>
       </div>
