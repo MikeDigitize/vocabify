@@ -50,7 +50,7 @@ export default function Container() {
       </header>
       <div className="row">
         <div className="col">
-          <List items={ state.currentItems } dispatcher={ dispatch } />
+          <List currentItems={ state.currentItems } dispatcher={ dispatch } />
           <MessagePopup 
             open={ state.showPopup } 
             msg={ state.popupMessage }
@@ -59,7 +59,8 @@ export default function Container() {
           <Alert 
             open={ state.showAlert }
             dispatcher={ dispatch }
-            wordToDelete={ state.wordToDelete } 
+            wordToDelete={ state.wordToDelete }
+            currentItems={ state.currentItems } 
           />
         </div>
       </div>

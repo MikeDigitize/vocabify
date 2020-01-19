@@ -6,10 +6,10 @@ import {
   validateAndSaveDefinition
 } from '../utils/general-utils';
 
-export default function List({ items, dispatcher }) {
+export default function List({ currentItems, dispatcher }) {
 
   function createList() {
-    return items.map(function(item, index) {
+    return currentItems.map(function(item, index) {
       return (
         <article className="vocabify-item" key={`${item.word}${index}`}>
           <div className="delete-item-holder">
@@ -17,7 +17,7 @@ export default function List({ items, dispatcher }) {
                 className="fas fa-times-circle" 
                 title={`Delete ${item.word}`}
                 onClick={ () => dispatcher({ 
-                  type: 'on-delete-item',
+                  type: 'on-delete-item-request',
                   state: item.word
                 })}
               >
@@ -40,7 +40,7 @@ export default function List({ items, dispatcher }) {
                   type: 'word',
                   originalText: item.word,
                   newText: evt.currentTarget.textContent,
-                  currentItems: items,
+                  currentItems: currentItems,
                   dispatcher
                 });
 
@@ -81,7 +81,7 @@ export default function List({ items, dispatcher }) {
                   originalText: item.definition,
                   newText: text,
                   dispatcher,
-                  currentItems: items
+                  currentItems: currentItems
                 });
 
               }
@@ -103,18 +103,7 @@ export default function List({ items, dispatcher }) {
             }}
           >
             { item.definition }
-          </p>
-          {/* <div className="row vocabify-item-controls">
-            <div className="col divider-right">
-              <h2>Delete</h2>
-              <i className="fas fa-trash-alt fa-lg"></i>
-            </div>
-            <div className="col">
-              <h2>Synonyms</h2>
-              <i className="fas fa-search-plus fa-lg"></i>
-            </div>
-          </div> */}
-          
+          </p>          
         </article>
       )
     });

@@ -244,3 +244,33 @@ export async function validateAndSaveDefinition({
 export function removeItem(word, items) {
   return items.filter(item => item.word.toUpperCase() !== word.toUpperCase());
 }
+
+export async function removeItemFromSavedData({
+  wordToDelete,
+  currentItems,
+  dispatcher
+}) {
+
+  let totalItems;
+
+  if (typeof window.chrome !== 'undefined' && typeof window.chrome.storage !== 'undefined') {
+    totalItems = await getVocabifyData(__VOCABIFY_SAVED_ITEMS__);
+    totalItems = totalItems[__VOCABIFY_SAVED_ITEMS__];
+  }
+  else {
+    totalItems = window[__VOCABIFY_SAVED_ITEMS__];
+  }
+
+  totalItems = removeItem(wordToDelete, totalItems);
+  currentItems = removeItem(wordToDelete, currentItems);
+
+  if (typeof window.chrome !== 'undefined' && typeof window.chrome.storage !== 'undefined') {
+    await setVocabifyData(__VOCABIFY_SAVED_ITEMS__, totalItems);
+  }
+  else {
+    window[__VOCABIFY_SAVED_ITEMS__] = totalItems;
+  }
+
+  dispatcher({ type: 'on-delete-item-response', state: { delete: true, wordToDelete, currentItems } });
+
+}

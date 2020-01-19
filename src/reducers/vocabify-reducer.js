@@ -88,7 +88,7 @@ export function vocabifyReducer(state, action) {
         popupMessage: action.state.popupMessage
       }
     
-    case 'on-delete-item':
+    case 'on-delete-item-request':
 
       return {
         ...state,
