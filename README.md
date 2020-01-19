@@ -24,3 +24,10 @@ Now you've got a word and defintion to add to your vocabulary so click the "Save
 
 You can view your saved words by clicking the "Launch Vocabify" button in the popup which will launch Vocabify in a new tab and list out all your saved words and definitions.
 
+### TODO
+
+1. Add a context menu that gives you two options when a piece of text is highlighted
+2. Change options to select word and select definition
+3. When click on save word, get the highlighted word fron the dom
+4. Send the word to the popup and populate the word
+5. Repeat for definition
