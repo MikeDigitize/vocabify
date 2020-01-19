@@ -29,7 +29,7 @@
   },
   "scripts": {
     "start": "webpack-dev-server --watch --mode=development",
-    "dist": "webpack --mode=production",
+    "dist": "webpack --mode=production --watch",
     "test": "jest --watchAll --verbose"
   }
 }

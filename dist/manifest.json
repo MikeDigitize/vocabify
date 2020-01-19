@@ -7,7 +7,7 @@
     "page": "vocabify.html",
     "open_in_tab": true
   },
-  "permissions": ["activeTab", "storage", "tabs"],
+  "permissions": ["activeTab", "storage", "tabs", "contextMenus"],
   "browser_action": {
     "default_icon": "images/vocabify_icon32.png",
     "default_popup": "popup.html"
