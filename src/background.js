@@ -1,5 +1,6 @@
 import { backgroundUtils } from './utils/background-utils';
-import { __VOCABIFY_SET_SELECTED_TEXT__ } from './utils/constants';
+import { __VOCABIFY_WORD__, __VOCABIFY_DEFINITION__ } from './utils/constants';
+import { setVocabifyData } from './utils/general-utils';
 let { onNewSelectedText, onRequestForSelectedText } = backgroundUtils;
 
 /**
@@ -7,6 +8,7 @@ let { onNewSelectedText, onRequestForSelectedText } = backgroundUtils;
  * regardless of whether the user requests it.
  * This way the text is pre-stored and ready to send
  * via the onMessage handler below
+ * whenever the user clicks the copy word or copy definition button in the vocabify popup
  */
 
 chrome.runtime.onConnect.addListener(function(port) {
@@ -21,9 +23,9 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
   onRequestForSelectedText(msg, sendResponse);
 });
 
-function onContextMenuClick(info, tab) {
+async function onContextMenuClick(info, tab) {
   let { pageUrl, selectionText, menuItemId } = info;
-  alert(`${pageUrl} and ${selectionText} and ${menuItemId}`);
+  await setVocabifyData(menuItemId, selectionText);
 }
 
 chrome.runtime.onInstalled.addListener(function() {
@@ -37,14 +39,14 @@ chrome.runtime.onInstalled.addListener(function() {
   chrome.contextMenus.create({
     title: "Save '%s' as highlighted word",
     parentId: 'selection',
-    id: 'word',
+    id: __VOCABIFY_WORD__,
     contexts: ['selection']
   });
 
   chrome.contextMenus.create({
     title: "Save '%s' as highlighted definition",
     parentId: 'selection',
-    id: 'definition',
+    id: __VOCABIFY_DEFINITION__,
     contexts: ['selection']
   });
   
