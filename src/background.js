@@ -37,14 +37,14 @@ chrome.runtime.onInstalled.addListener(function() {
   });
 
   chrome.contextMenus.create({
-    title: "Save '%s' as highlighted word",
+    title: "Save '%s' as Vocabify word",
     parentId: 'selection',
     id: __VOCABIFY_WORD__,
     contexts: ['selection']
   });
 
   chrome.contextMenus.create({
-    title: "Save '%s' as highlighted definition",
+    title: "Save '%s' as Vocabify definition",
     parentId: 'selection',
     id: __VOCABIFY_DEFINITION__,
     contexts: ['selection']
