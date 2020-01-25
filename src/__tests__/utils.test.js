@@ -11,7 +11,8 @@ import {
   capitaliseFirstLetter,
   addFullStop,
   isDuplicateWord,
-  removeItem
+  removeItem,
+  inChromeExtension
 } from '../utils/general-utils';
 
 import {
@@ -236,6 +237,25 @@ describe('The user can delete items from storage', function() {
     let result = removeItem(word, items);
     expect(result).toHaveLength(3);
 
+  });
+
+});
+
+describe('We can detect whether we are in the Chrome extension environment or not', function() {
+
+  test('...we are in a dev env because window.chrome does not exist', function() {
+    expect(inChromeExtension()).toBe(false);
+  });
+
+  test('...we are in a dev env because window.chrome exists but not chrome.storage', function() {
+    window.chrome = {}
+    expect(inChromeExtension()).toBe(false);
+  });
+
+  test('...we are not in a dev env because window.chrome and chrome.storage exists', function() {
+    window.chrome = {};
+    window.chrome.storage = {};
+    expect(inChromeExtension()).toBe(true);
   });
 
 });

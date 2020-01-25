@@ -130,7 +130,7 @@ export async function validateAndSaveWord({
     /**
      * get all the items from storage 
      */
-    if (typeof window.chrome !== 'undefined' && typeof window.chrome.storage !== 'undefined') {
+    if (inChromeExtension()) {
       totalItems = await getVocabifyData(__VOCABIFY_SAVED_ITEMS__);
       totalItems = totalItems[__VOCABIFY_SAVED_ITEMS__];
     }
@@ -158,7 +158,7 @@ export async function validateAndSaveWord({
     /**
      * set items 
      */
-    if (typeof window.chrome !== 'undefined' && typeof window.chrome.storage !== 'undefined') {
+    if (inChromeExtension()) {
       await setVocabifyData(__VOCABIFY_SAVED_ITEMS__, totalItems);
     }
     else {
@@ -199,7 +199,7 @@ export async function validateAndSaveDefinition({
 
   let totalItems;
 
-  if (typeof window.chrome !== 'undefined' && typeof window.chrome.storage !== 'undefined') {
+  if (inChromeExtension()) {
     totalItems = await getVocabifyData(__VOCABIFY_SAVED_ITEMS__);
     totalItems = totalItems[__VOCABIFY_SAVED_ITEMS__];
   }
@@ -221,7 +221,7 @@ export async function validateAndSaveDefinition({
     items: totalItems
   });
 
-  if (typeof window.chrome !== 'undefined' && typeof window.chrome.storage !== 'undefined') {
+  if (inChromeExtension()) {
     await setVocabifyData(__VOCABIFY_SAVED_ITEMS__, totalItems);
   }
   else {
@@ -253,7 +253,7 @@ export async function removeItemFromSavedData({
 
   let totalItems;
 
-  if (typeof window.chrome !== 'undefined' && typeof window.chrome.storage !== 'undefined') {
+  if (inChromeExtension()) {
     totalItems = await getVocabifyData(__VOCABIFY_SAVED_ITEMS__);
     totalItems = totalItems[__VOCABIFY_SAVED_ITEMS__];
   }
@@ -264,7 +264,7 @@ export async function removeItemFromSavedData({
   totalItems = removeItem(wordToDelete, totalItems);
   currentItems = removeItem(wordToDelete, currentItems);
 
-  if (typeof window.chrome !== 'undefined' && typeof window.chrome.storage !== 'undefined') {
+  if (inChromeExtension()) {
     await setVocabifyData(__VOCABIFY_SAVED_ITEMS__, totalItems);
   }
   else {
@@ -273,4 +273,8 @@ export async function removeItemFromSavedData({
 
   dispatcher({ type: 'on-delete-item-response', state: { delete: true, wordToDelete, currentItems } });
 
+}
+
+export function inChromeExtension() {
+  return typeof window.chrome !== 'undefined' && typeof window.chrome.storage !== 'undefined';
 }

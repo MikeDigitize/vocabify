@@ -6,7 +6,7 @@ describe('List tests', function() {
 
   test('the list does not render when no items are present', function() {
     const items = [];
-    const { container } = render(<List items={ items }/>);
+    const { container } = render(<List currentItems={ items }/>);
     expect(container.firstChild).toBe(null);
   });
 
@@ -15,7 +15,7 @@ describe('List tests', function() {
       "definition":"Defenestration is the act of throwing someone or something out of a window.",
       "word":"Defenestration"
     }];
-    const { getByText, container } = render(<List items={ items }/>);
+    const { getByText, container } = render(<List currentItems={ items }/>);
     expect(container.firstChild.tagName.toLowerCase()).toBe('article');
     const word = getByText(/^defenestration$/i);
     expect(word.tagName.toLowerCase()).toBe('h2');

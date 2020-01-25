@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { 
   isFourHundredCharactersOrLess, 
   isTwoCharactersOrMore, 
@@ -7,6 +7,10 @@ import {
 } from '../utils/general-utils';
 
 export default function List({ currentItems, dispatcher }) {
+
+  useEffect(function(...args) {
+    console.log('trigger synonyms retrieval');
+  }, []);
 
   function createList() {
     return currentItems.map(function(item, index) {

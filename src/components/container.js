@@ -6,7 +6,7 @@ import MessagePopup from './message-popup';
 import Alert from './alert';
 import { vocabifyReducer, initialSearchState } from '../reducers/vocabify-reducer'; 
 import { __VOCABIFY_SAVED_ITEMS__ } from '../utils/constants';
-import { getVocabifyData } from '../utils/general-utils';
+import { getVocabifyData,inChromeExtension } from '../utils/general-utils';
 
 export default function Container() {
 
@@ -16,17 +16,17 @@ export default function Container() {
     async function getData() {
     
       let items;
-      if (typeof window.chrome !== 'undefined' && typeof window.chrome.storage !== 'undefined') {
+      if (inChromeExtension()) {
         items = await getVocabifyData(__VOCABIFY_SAVED_ITEMS__);
       }
       items = items && Object.keys(items).length ? items[__VOCABIFY_SAVED_ITEMS__] : testData;
       
       /**
-       * For local testing
+       * For local development
        * save items to window
        * for retrieval later
        */
-      if(typeof window.chrome === 'undefined' || typeof window.chrome.storage === 'undefined') {
+      if(!inChromeExtension()) {
         window[__VOCABIFY_SAVED_ITEMS__] = items;
       }
 
@@ -45,7 +45,6 @@ export default function Container() {
           <p className="subtitle">Your vocabulary development tool</p>
           <Search dispatcher={ dispatch } />
           <small>You can edit the word or definition by clicking into the text.</small>
-          <hr />
         </div>
       </header>
       <div className="row">
