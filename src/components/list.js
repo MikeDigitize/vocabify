@@ -10,6 +10,18 @@ export default function List({ currentItems, dispatcher }) {
 
   useEffect(function(...args) {
     console.log('trigger synonyms retrieval');
+
+    /**
+     * Check if there's an API key for words.bighugelabs.com
+     * 
+     * Render list
+     * One by one, check each item for synonyms
+     * If item does not have synonyms, send request to API
+     * Save response with the item as additional data, if a successful response is returned and API limit not exceeded
+     * Display synonyms under description
+     * 
+     */
+
   }, []);
 
   function createList() {
